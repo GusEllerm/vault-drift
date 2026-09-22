@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Obsidian: per-machine UI state (shared vault config in .obsidian/ is versioned)
+live-docs-vault/.obsidian/workspace.json
+live-docs-vault/.obsidian/workspace-mobile.json
+live-docs-vault/.trash/
+
+# Claude Code: local session state
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+
+# Phase 1 testbench: detached clone of a real project, never committed here
+testbench/
