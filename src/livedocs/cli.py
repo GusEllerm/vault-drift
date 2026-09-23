@@ -118,6 +118,11 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--json", action="store_true")
     s.set_defaults(fn=cmd_affected)
 
+    s = sub.add_parser("verify", help="CI: check every stamped note against the checked-out tree; exit 1 on changed/broken")
+    _common(s)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_verify)
+
     s = sub.add_parser("coverage", help="which of each note's code mentions are anchored; dangling names")
     _common(s)
     s.add_argument("--json", action="store_true")
@@ -185,6 +190,22 @@ def cmd_affected(args: argparse.Namespace) -> int:
         lines = af.summary_lines(reports)
         print("\n".join(lines) if lines else "no affected notes")
     return 0
+
+
+def cmd_verify(args: argparse.Namespace) -> int:
+    from . import affected as af, check as ck
+    reports = af.verify(Path(args.repo), args.vault)
+    bad = [r for r in reports if r.state in (ck.CHANGED, ck.BROKEN)]
+    if args.json:
+        print(json.dumps([r.to_dict() for r in reports], indent=1))
+    else:
+        counts = Counter(r.state for r in reports)
+        print(f"livedocs verify: {len(reports)} stamped notes — " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))
+        for line in af.summary_lines(bad):
+            print("  " + line)
+        if bad:
+            print("Unreconciled notes: this commit changed code they mention without an update or ack (pre-commit skipped?).")
+    return 1 if bad else 0
 
 
 def cmd_coverage(args: argparse.Namespace) -> int:

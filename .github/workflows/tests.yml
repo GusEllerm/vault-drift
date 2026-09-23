@@ -1,0 +1,13 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: install drift (end-to-end tests skip if this fails)
+        run: curl -fsSL https://drift.fp.dev/install.sh | sh && echo "$HOME/.local/bin" >> "$GITHUB_PATH" || true
+      - run: uv sync
+      - run: uv run pytest -q
+      - run: uv build

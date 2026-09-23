@@ -39,6 +39,22 @@ def affected(repo: str | Path, vault_rel: str, *, cached: bool = False, base: st
     return [ck.check(files_root, vault_rel, n, drift_json=dj, all_stamps=all_stamps, refine=refine, git_repo=repo) for n in notes]
 
 
+def verify(repo: str | Path, vault_rel: str, *, refine: bool = False) -> list[ck.Report]:
+    """CI check: every stamped, non-snapshot note against the tree as checked out. Catches commits
+    made with --no-verify, merges and rebases, which pre-commit never sees."""
+    repo = Path(repo)
+    vault = repo / vault_rel
+    all_stamps = st.load(vault)
+    notes = sorted({s.note for s in all_stamps})
+    if not notes:
+        return []
+    try:
+        dj = drift_io.check_json(repo)
+    except drift_io.DriftError as e:
+        return [ck.Report(n, ck.UNKNOWN, [f"checker-error: {e}"]) for n in notes]
+    return [ck.check(repo, vault_rel, n, drift_json=dj, all_stamps=all_stamps, refine=refine) for n in notes]
+
+
 def summary_lines(reports: list[ck.Report]) -> list[str]:
     out = []
     for r in reports:

@@ -1,0 +1,9 @@
+# For repositories using the pre-commit framework (https://pre-commit.com).
+# Requires `livedocs` and `drift` on PATH (see README). The hook itself is the same gate as
+# `livedocs init` installs through .githooks.
+- id: livedocs-gate
+  name: livedocs gate (notes reconciled with the code they mention)
+  entry: livedocs hook pre-commit
+  language: system
+  pass_filenames: false
+  always_run: true

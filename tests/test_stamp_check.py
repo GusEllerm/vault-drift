@@ -27,6 +27,20 @@ def test_snapshot_notes_bind_nothing_and_never_block(mini_repo):
     _git(repo, "checkout", "--", "src")
 
 
+def test_verify_reports_unreconciled_notes(mini_repo):
+    from livedocs import affected as af
+    repo, vault = mini_repo, "vault"
+    stp.stamp(repo, vault, "Modules/a.md", by="test")
+    _git(repo, "add", "-A"); _git(repo, "commit", "-qm", "stamps")
+    states = {r.note: r.state for r in af.verify(repo, vault)}
+    assert states["Modules/a.md"] == ck.FRESH and states.get("Sessions/log.md") in (ck.SNAPSHOT, None)
+    a = repo / "src/pkg/a.py"
+    a.write_text(a.read_text().replace("CONST = 1", "CONST = 3"))
+    _git(repo, "commit", "-qam", "no-verify style change")
+    assert {r.note: r.state for r in af.verify(repo, vault)}["Modules/a.md"] == ck.CHANGED
+    _git(repo, "reset", "-q", "--hard", "HEAD~1")
+
+
 def test_constant_anchor_and_member_annotation(mini_repo):
     repo, vault = mini_repo, "vault"
     r = stp.stamp(repo, vault, "Modules/a.md", by="test")

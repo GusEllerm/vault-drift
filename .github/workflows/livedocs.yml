@@ -1,0 +1,14 @@
+# The gate for this repository's own vault (live-docs-vault/): catches --no-verify commits, merges
+# and rebases. The vault's notes are mostly design and results (no code mentions to bind), so this is
+# mainly a working example of the CI job adopters copy.
+name: livedocs
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -fsSL https://drift.fp.dev/install.sh | sh && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - uses: astral-sh/setup-uv@v5
+      - run: uv tool install .
+      - run: livedocs verify --repo . --vault live-docs-vault

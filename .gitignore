@@ -24,3 +24,4 @@ results/*/rows.jsonl
 results/*/items.jsonl
 results/*/batches/
 results/*.log
+dist/

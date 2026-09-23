@@ -1,9 +1,22 @@
 [project]
 name = "livedocs"
-version = "0.0.1"
-description = "Hash-anchored live docs: a thin wrapper over drift that tells agents when a note is out of date."
+version = "0.1.0"
+description = "Notes that know when the code moved on: hash-anchored live docs with a git commit gate, over Fiberplane drift."
+readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+keywords = ["documentation", "drift", "agents", "obsidian", "git-hooks"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Documentation",
+  "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Repository = "https://github.com/GusEllerm/vault-drift"
 
 [project.scripts]
 livedocs = "livedocs.cli:main"

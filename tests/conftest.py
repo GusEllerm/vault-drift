@@ -54,7 +54,7 @@ class Qux:
 }
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture  # per test: the stamp/check tests mutate the repo
 def mini_repo(tmp_path_factory) -> Path:
     root = tmp_path_factory.mktemp("mini")
     for rel, content in FILES.items():
