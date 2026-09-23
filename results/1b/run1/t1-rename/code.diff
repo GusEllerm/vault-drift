@@ -1,0 +1,94 @@
+diff --git a/src/hpc_bridge/config.py b/src/hpc_bridge/config.py
+index 49567b6..7692e7b 100644
+--- a/src/hpc_bridge/config.py
++++ b/src/hpc_bridge/config.py
+@@ -183,7 +183,7 @@ TASK_CEILING_MARGIN_S = 20.0
+ PROVISION_GRACE_S = 45.0
+ 
+ 
+-def _parse_hhmmss(s: str | None) -> int:
++def _parse_walltime(s: str | None) -> int:
+     """HH:MM:SS (also H:MM:SS / MM:SS / SS) -> seconds. Deterministic and total: returns 0 on anything
+     missing or malformed so callers fall back rather than crash; never negative."""
+     if not s:
+@@ -215,7 +215,7 @@ def _task_ceiling_s(uec: dict) -> float:
+     walltime minus a margin (so a task dies with a 124 result just BEFORE the scheduler reclaims the
+     block), optionally capped by HPC_BRIDGE_MAX_TASK_S (unset = the full block walltime — the
+     deterministic default). Falls back to a safe non-zero value when the block walltime is absent."""
+-    block_s = _parse_hhmmss(uec.get("walltime"))
++    block_s = _parse_walltime(uec.get("walltime"))
+     ceiling = block_s - TASK_CEILING_MARGIN_S
+     if ceiling <= 0:  # missing/tiny walltime (e.g. LocalFacility has none) -> a safe default
+         ceiling = max(SYNC_WAIT_S + TASK_CEILING_MARGIN_S, 300.0)
+diff --git a/src/hpc_bridge/server.py b/src/hpc_bridge/server.py
+index 6612d6e..2a74a68 100644
+--- a/src/hpc_bridge/server.py
++++ b/src/hpc_bridge/server.py
+@@ -37,7 +37,7 @@ from .config import (  # noqa: F401 - re-exported: tests patch/import these on s
+     _env_endpoint_id,
+     _env_float,
+     _env_mode,
+-    _parse_hhmmss,
++    _parse_walltime,
+     _require_env,
+     _short_control_dir,
+     _task_ceiling_s,
+diff --git a/tests/test_review_bugs.py b/tests/test_review_bugs.py
+index b33db7c..d40181b 100644
+--- a/tests/test_review_bugs.py
++++ b/tests/test_review_bugs.py
+@@ -19,7 +19,7 @@ from hpc_bridge.server import (
+     _connect_facility,
+     _explain_provision_error,
+     _forget_identity_verdicts,
+-    _parse_hhmmss,
++    _parse_walltime,
+     _poll_task,
+     _run_shell,
+     _runner_for,
+@@ -76,8 +76,8 @@ async def test_provisioning_clock_resets_when_warm_by_any_route():
+ 
+ # 3. Slurm's day-format walltime --------------------------------------------------------------
+ def test_day_walltime_parses_and_keeps_the_task_ceiling():
+-    assert _parse_hhmmss("2-00:00:00") == 172800 and _parse_hhmmss("1-12:30") == 131400 and _parse_hhmmss("3-5") == 277200
+-    assert _parse_hhmmss("48:00:00") == 172800 and _parse_hhmmss("x-1:00:00") == 0 and _parse_hhmmss("2-") == 0
++    assert _parse_walltime("2-00:00:00") == 172800 and _parse_walltime("1-12:30") == 131400 and _parse_walltime("3-5") == 277200
++    assert _parse_walltime("48:00:00") == 172800 and _parse_walltime("x-1:00:00") == 0 and _parse_walltime("2-") == 0
+     assert _task_ceiling_s({"walltime": "2-00:00:00"}) == _task_ceiling_s({"walltime": "48:00:00"}) > 100000
+ 
+ 
+@@ -452,7 +452,7 @@ async def test_discover_transport_error_is_no_facilities_but_a_bug_raises(monkey
+ 
+ 
+ def test_bare_walltime_is_slurm_minutes():
+-    assert _parse_hhmmss("30") == 1800 and _parse_hhmmss("0:30") == 30 and _parse_hhmmss("00:30:00") == 1800
++    assert _parse_walltime("30") == 1800 and _parse_walltime("0:30") == 30 and _parse_walltime("00:30:00") == 1800
+ 
+ 
+ def test_identity_label_reset_on_new_login(monkeypatch):
+diff --git a/tests/test_server.py b/tests/test_server.py
+index 1885e0c..d7a6ca5 100644
+--- a/tests/test_server.py
++++ b/tests/test_server.py
+@@ -1631,15 +1631,15 @@ async def test_poll_with_wait_times_out_to_running():
+     assert running.task_id in app.tasks
+ 
+ 
+-def test_parse_hhmmss_and_task_ceiling():
++def test_parse_walltime_and_task_ceiling():
+     import os
+ 
+-    from hpc_bridge.server import _parse_hhmmss, _task_ceiling_s
++    from hpc_bridge.server import _parse_walltime, _task_ceiling_s
+ 
+-    assert _parse_hhmmss("00:30:00") == 1800
+-    assert _parse_hhmmss("48:00:00") == 172800
+-    assert _parse_hhmmss("90") == 5400 and _parse_hhmmss("5:00") == 300  # a bare number is Slurm minutes
+-    assert _parse_hhmmss("") == 0 and _parse_hhmmss(None) == 0 and _parse_hhmmss("abc") == 0
++    assert _parse_walltime("00:30:00") == 1800
++    assert _parse_walltime("48:00:00") == 172800
++    assert _parse_walltime("90") == 5400 and _parse_walltime("5:00") == 300  # a bare number is Slurm minutes
++    assert _parse_walltime("") == 0 and _parse_walltime(None) == 0 and _parse_walltime("abc") == 0
+     assert _task_ceiling_s({"walltime": "00:30:00"}) == 1780.0  # block walltime - margin
+     assert _task_ceiling_s({}) >= 300.0  # missing walltime -> safe non-zero fallback, not 0/crash
+     os.environ["HPC_BRIDGE_MAX_TASK_S"] = "600"  # opt-in cap clamps a long-walltime facility

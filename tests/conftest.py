@@ -42,7 +42,7 @@ class Qux:
 ''',
     "src/pkg/thing.py": "def go():\n    pass\n",
     "tests/test_x.py": "def baz():\n    pass\n",
-    "vault/Modules/a.md": "---\ntags: [x]\n---\n# a.py\n\n`Foo.bar` calls `baz` and `shared`; `CONST` is `1`. See `sub/b.py:3` and `only_here()`.\n",
+    "vault/Modules/a.md": "---\ntags: [x]\n---\n# a.py\n\n`Foo` is a dataclass; `Foo.bar` calls `baz` and `shared`; `CONST` is `1`. See `sub/b.py:3` and `only_here()`.\n",
     "vault/Concepts/idea.md": "# An idea\n\nUses `baz`, `Qux`, `nothing_here`, `visible_to: public`, `$HOME`, `id`.\n",
 }
 

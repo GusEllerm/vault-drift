@@ -1,0 +1,1 @@
+04317cb66c4392b8f25c081d3c86e9ef5374a82e warmth: add keyword-only strict flag to _apply_partition

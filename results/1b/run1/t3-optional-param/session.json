@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 43851,
+ "stop_reason": "end_turn",
+ "session_id": "9f9f0f9f-bdd4-4fbc-8424-59e8ff5d1c1f",
+ "total_cost_usd": 0.4256004,
+ "usage": {
+  "input_tokens": 30,
+  "cache_creation_input_tokens": 28583,
+  "cache_read_input_tokens": 531382,
+  "output_tokens": 4527,
+  "output_tokens_details": {
+   "thinking_tokens": 627
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 28583,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 659,
+    "cache_read_input_tokens": 41506,
+    "cache_creation_input_tokens": 554,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 554
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 30,
+   "outputTokens": 4527,
+   "cacheReadInputTokens": 531382,
+   "cacheCreationInputTokens": 28583,
+   "webSearchRequests": 0,
+   "costUSD": 0.4256004,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 627,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 16,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I've added `strict` to `_apply_partition` and committed it on `1b/t3-optional-param-1790181980` as `04317cb`. Nothing was pushed.\n\n**The change** (`src/hpc_bridge/warmth.py:223`): the new signature is `_apply_partition(app, shape, rt, partition, *, strict=False)`. When `strict=True` and the change is rejected, it raises `ValueError` with the same message it would have returned. With the default `False`, it behaves exactly as before, so the one caller in `server.py` is unaffected.\n\n**How I read \"fails validation\":** this function doesn't check the partition name itself; `server.py` does that before calling it, using `_VALID_PARTITION`. The only notice it returns is the refusal to change partition while a task is still running on the shape, so that is what `strict` now raises on. If you meant for `strict` to also check the name inside this function, that's a small follow-up.\n\n**Checks:** 552 unit tests passed (2 skipped), and ruff and mypy are clean. The tests only ran with `uv run --extra dev python -m pytest -q`; the plain `python -m pytest -q` from CLAUDE.md fails in this shell because pytest isn't installed there. I didn't add a test for the new flag.\n\n**Livedocs:** eight vault notes that mention `_apply_partition` were flagged. None of them describe its parameters, so I marked each as still correct (`--ack`) with a reason and committed the updated `drift.lock` and `stamps.jsonl`. A ninth note was acknowledged automatically when I committed.\n\nThe cache file `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted in the working tree before I started. The pre-commit hook recreated it, so it now shows as modified, and I left it out of the commit.",
+ "ttft_ms": 2096,
+ "type": "result",
+ "duration_ms": 83436,
+ "uuid": "10014790-50cb-4a58-bddb-0acd11fe03ba",
+ "ttft_stream_ms": 1183,
+ "time_to_request_ms": 254,
+ "first_content_frame_ms": 1183,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 53920,
+ "stop_reason": "end_turn",
+ "session_id": "81db09e4-1a4b-474a-880c-daaa6b2fe2ae",
+ "total_cost_usd": 0.5103642,
+ "usage": {
+  "input_tokens": 30,
+  "cache_creation_input_tokens": 34491,
+  "cache_read_input_tokens": 573481,
+  "output_tokens": 5981,
+  "output_tokens_details": {
+   "thinking_tokens": 420
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 34491,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 685,
+    "cache_read_input_tokens": 46893,
+    "cache_creation_input_tokens": 1075,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 1075
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 30,
+   "outputTokens": 5981,
+   "cacheReadInputTokens": 573481,
+   "cacheCreationInputTokens": 34491,
+   "webSearchRequests": 0,
+   "costUSD": 0.5103642,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 420,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 17,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I've committed the change on `1b/t2-format-change-1790181878` and haven't pushed it. `_session_endpoint_name` now returns `hpcb-<slug>`, and the slug logic is the same as before.\n\n**What changed:**\n- **`src/hpc_bridge/binding.py`:** the return value, plus the docstring and a nearby comment that gave the old name as an example.\n- **`tests/test_catalog_flow.py`:** 7 assertions on names built by this function. I left `hpc-bridge-globus1-run-42` and `hpc-bridge-recover-00` alone. Those are fixed names the tests pass in themselves, so they don't use the prefix.\n- **Vault notes:** the pre-commit gate required these. I edited and stamped the five notes that describe the name (`Facility catalog`, `server`, `Configuration`, `Discovery channel model`, `Globus index discovery channel`). I marked `binding.md` and three dated review notes as still correct, and the gate auto-marked three others at commit.\n\n**Tests:** all pass with the change (552 passed, 2 skipped), and ruff is clean. The plain `python -m pytest -q` from CLAUDE.md didn't work here because pytest and jinja2 aren't installed in that Python, so I ran the tests through `uv run --with pytest --with pytest-asyncio --with jinja2`.\n\n**Not changed:** curated catalog entries still get `hpc-bridge-<id>` from `facility/remote.py:354`, so curated and session endpoints now use different prefixes. Also, existing session endpoints registered under the old name won't be reused, and new `hpcb-` ones will be registered alongside them.\n\n**Left untouched:** `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted before I started, and the pre-commit hook rewrote it during the commit. I didn't include it in the commit, so it still shows as modified.",
+ "ttft_ms": 2161,
+ "type": "result",
+ "duration_ms": 99365,
+ "uuid": "78aa61f1-c2f1-4d88-87d3-f9a794feca62",
+ "ttft_stream_ms": 1377,
+ "time_to_request_ms": 248,
+ "first_content_frame_ms": 1377,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

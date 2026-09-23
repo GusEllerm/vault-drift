@@ -1,0 +1,92 @@
+{
+ "task": "t4-move",
+ "expect": "auto-ack (verified pure move) or ack",
+ "branch": "1b/t4-move-1790182067",
+ "model": "opus",
+ "seconds": 117,
+ "turns": 14,
+ "cost_usd": 0.5216812,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Modules/server.md",
+   "verdict": "update",
+   "by": "human",
+   "reason": "",
+   "stamped": "2026-09-23T16:49:08Z"
+  },
+  {
+   "note": "Modules/config.md",
+   "verdict": "update",
+   "by": "human",
+   "reason": "",
+   "stamped": "2026-09-23T16:49:08Z"
+  },
+  {
+   "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "dated review snapshot; _task_ceiling_s moved config.py -> ceilings.py unchanged (still re-exported by config)",
+   "stamped": "2026-09-23T16:49:08Z"
+  },
+  {
+   "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "dated review snapshot; _task_ceiling_s moved config.py -> ceilings.py unchanged (still re-exported by config)",
+   "stamped": "2026-09-23T16:49:09Z"
+  },
+  {
+   "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "dated review snapshot; config.py only lost _task_ceiling_s to ceilings.py (re-exported), plan text still accurate as history",
+   "stamped": "2026-09-23T16:49:27Z"
+  },
+  {
+   "note": "Concepts/Warmth, the canary & cold-start.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:32Z"
+  },
+  {
+   "note": "Modules/scheduler_ops.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:32Z"
+  },
+  {
+   "note": "Planned/Agentic testing - Plan B (runtime sandbox).md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:32Z"
+  },
+  {
+   "note": "Planned/Endpoint reuse and MEP integration.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:33Z"
+  },
+  {
+   "note": "Planned/V1 release.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:33Z"
+  },
+  {
+   "note": "Reference/Plugin review 2026-09-05.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:49:34Z"
+  }
+ ],
+ "uncommitted": true,
+ "result_tail": "id not create a `Modules/ceilings.md` note, even though the vault documents each module in its own note; say if you want one. `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted when I started, and the commit hook recreated it. It now shows as modified, and I left it out of the commit.\n\nThe claude.ai Booking.com, Kiwi.com, Tripadvisor and lastminute.com connectors need authorizing in your claude.ai connector settings, and the Cloudflare plugin servers need `/mcp`. The `endpoint` and `local-websearch` MCP servers failed to connect. None of them were needed for this task."
+}

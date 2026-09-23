@@ -1,0 +1,26 @@
+diff --git a/docs/hpc-bridge-vault/Modules/config.md b/docs/hpc-bridge-vault/Modules/config.md
+index a922dcb..b064644 100644
+--- a/docs/hpc-bridge-vault/Modules/config.md
++++ b/docs/hpc-bridge-vault/Modules/config.md
+@@ -3,7 +3,7 @@
+ > [!abstract] Role
+ > Every environment variable hpc-bridge reads, behind typed accessors with ONE idiom (`env(name)` → stripped value or `None`), plus the runtime tunables (`CANARY_TTL_S`, `CANARY_TIMEOUT_S`, `SYNC_WAIT_S`, `TASK_CEILING_MARGIN_S`, `TRANSIENT_CONFLICT_LIMIT`, `PROVISION_GRACE_S`) and the SSH ControlMaster settings (`_control_settings`, `_short_control_dir`).
+ 
+-Split step 2 (2026-09-03). Before, 26 inline `os.environ.get` reads in `server.py` disagreed on `or None` — an empty `HPC_BRIDGE_ACCOUNT` reached a Slurm template as `account: ""`. Now a caller that needs a string writes `config.account() or ""`, and the twin of this module is [[Configuration]]: when one changes, change the other. Callers reach it as `config._control_settings()` ([[binding]], [[connect]]), so tests patch `config._control_settings`.
++Split step 2 (2026-09-03). Before, 26 inline `os.environ.get` reads in `server.py` disagreed on `or None` — an empty `HPC_BRIDGE_ACCOUNT` reached a Slurm template as `account: ""`. Now a caller that needs a string writes `config.account() or ""`, and the twin of this module is [[Configuration]]: when one changes, change the other. Callers reach it as `config._control_settings()` ([[binding]], [[connect]]), so tests patch `config._control_settings`. The per-task kill ceiling `_task_ceiling_s` lives in `ceilings.py` (it reads `_parse_hhmmss`, `SYNC_WAIT_S`, `TASK_CEILING_MARGIN_S` and `max_task_s` from here); config re-exports it at the bottom of the module, so `from .config import _task_ceiling_s` still works.
+ 
+ ## See also
+ [[server]] · [[Configuration]] · [[context]]
+diff --git a/docs/hpc-bridge-vault/Modules/server.md b/docs/hpc-bridge-vault/Modules/server.md
+index 531e9cb..77c591a 100644
+--- a/docs/hpc-bridge-vault/Modules/server.md
++++ b/docs/hpc-bridge-vault/Modules/server.md
+@@ -54,7 +54,7 @@
+ > [!note] Split in progress (2026-09-03)
+ > Step 1 moved the runtime data types (`AppCtx`, `ShapeRuntime`, `TaskHandle`, `DEFAULT_SHAPE`) to [[context]]; `server` re-exports them. The plan and the remaining steps are in [[Review 2026-09-03 — code quality]] §1.
+ > Step 2 moved the env reads (as typed accessors), the runtime tunables and the ControlMaster settings to [[config]].
+-> Steps 3–4 moved every pure notice/outcome builder to [[notices]] and the spend clock to [[cost]]; the shape-capability reads (`_supported_shapes`, `_has_login_shape`, `_idle_release_s`) went to [[context]] and the task-ceiling maths (`_parse_hhmmss`, `_task_ceiling_s`) to [[config]]. `server.py` is now ~1810 lines (from 2276).
++> Steps 3–4 moved every pure notice/outcome builder to [[notices]] and the spend clock to [[cost]]; the shape-capability reads (`_supported_shapes`, `_has_login_shape`, `_idle_release_s`) went to [[context]] and the task-ceiling maths (`_parse_hhmmss`, `_task_ceiling_s`) to [[config]] (`_task_ceiling_s` since moved on to `ceilings.py`, still re-exported by config). `server.py` is now ~1810 lines (from 2276).
+ > Step 5 moved facility/catalog construction to [[binding]] — callers use module attributes; tests patch `binding.*` / `config._control_settings`. `server.py` ≈ 1550 lines.
+ > Step 6 moved the scheduler ops (block release, pilot status) to [[scheduler_ops]] with the login-shape runner injected (`_login_runner`).
+ > Steps 7–8 moved the warmth state machine and task-handle bookkeeping to [[warmth]]; tests patch `warmth._provision` / `warmth._drop_compute_shape`.

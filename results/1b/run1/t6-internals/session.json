@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 46838,
+ "stop_reason": "end_turn",
+ "session_id": "93ad71ea-2547-42f8-bcdd-3f32f0c1d37e",
+ "total_cost_usd": 0.56203,
+ "usage": {
+  "input_tokens": 26,
+  "cache_creation_input_tokens": 44077,
+  "cache_read_input_tokens": 536350,
+  "output_tokens": 5102,
+  "output_tokens_details": {
+   "thinking_tokens": 558
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 44077,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 670,
+    "cache_read_input_tokens": 56780,
+    "cache_creation_input_tokens": 774,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 774
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 26,
+   "outputTokens": 5102,
+   "cacheReadInputTokens": 536350,
+   "cacheCreationInputTokens": 44077,
+   "webSearchRequests": 0,
+   "costUSD": 0.56203,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 558,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 17,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I committed the change on `1b/t6-internals-1790182202` as `26ef867`. It is not pushed.\n\n**Change:** `CatalogEntry._safe_host` in `src/hpc_bridge/catalog/entry.py` now removes one trailing dot from `ssh_host` before calling `validate_host`. `None` still passes through unchanged.\n\n**Test:** I added `test_ssh_host_trailing_dot_is_stripped` in `tests/test_catalog_entry.py`. It checks three things:\n- `anvil.rcac.purdue.edu.` becomes `anvil.rcac.purdue.edu`.\n- Only one dot is removed: `anvil..` becomes `anvil.`.\n- A bad host with a trailing dot, like `-oProxyCommand=x.`, is still rejected.\n\nThe unit tests pass (553 passed, 2 skipped), and ruff and mypy report no problems.\n\n**Things to know:**\n- **The host check allows trailing dots:** the host pattern in `models.py` (`SAFE_HOST`) accepts them, so `host..` passes as `host.`. That's why the test checks the one-dot behaviour rather than expecting `host..` to fail. If you'd rather reject hosts with two or more trailing dots, that would need a change to `SAFE_HOST`.\n- **Documentation notes:** the pre-commit check flagged seven vault notes that mention `CatalogEntry`. None of them describe how the host is cleaned up, so I marked each as still correct with a reason instead of editing it. The updated `drift.lock` and `stamps.jsonl` are in the commit.\n- **Cache file:** `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already showing as deleted before I started. The pre-commit hook recreated it, so it now shows as modified. I didn't include it in the commit.",
+ "ttft_ms": 1657,
+ "type": "result",
+ "duration_ms": 98277,
+ "uuid": "ea6be75e-ff7c-47ec-9671-f4e14b938133",
+ "ttft_stream_ms": 1102,
+ "time_to_request_ms": 238,
+ "first_content_frame_ms": 1102,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

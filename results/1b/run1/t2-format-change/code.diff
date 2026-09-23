@@ -1,0 +1,71 @@
+diff --git a/src/hpc_bridge/binding.py b/src/hpc_bridge/binding.py
+index cbfc43f..ec4ed6a 100644
+--- a/src/hpc_bridge/binding.py
++++ b/src/hpc_bridge/binding.py
+@@ -235,11 +235,11 @@ def _session_endpoint_name(ssh_host: str) -> str:
+     """A stable endpoint name for a session (BYO) facility, keyed on the **SSH host** — the canonical
+     per-cluster identity — so it never SHARES a registration with another facility AND doesn't sprawl
+     when the agent picks different facility ids for the same host (`midway` vs `midway3` both →
+-    `hpc-bridge-midway3`). Endpoints are keyed by (identity, name); a bare 'hpc-bridge' would collide
++    `hpcb-midway3`). Endpoints are keyed by (identity, name); a bare 'hpc-bridge' would collide
+     with the curated Anvil endpoint and any stale 'online' registration, which find_online_endpoint
+     would then wrongly reuse — leaving a canary that can never warm."""
+     slug = re.sub(r"[^a-z0-9]+", "-", (ssh_host or "session").lower()).strip("-") or "session"
+-    return f"hpc-bridge-{slug}"
++    return f"hpcb-{slug}"
+ 
+ def _facility_store():
+     """The persistent local-discovery cache of confirmed BYO facility configs (keyed by ssh_host).
+@@ -267,7 +267,7 @@ def _entry_from_details(facility: str, details: FacilityDetails) -> CatalogEntry
+         facility=details.display_name or facility,
+         description="session-local facility (user-supplied, not catalogued)",
+         # The endpoint's UI title (manager config display_name) follows the same convention as its
+-        # registration name — `hpc-bridge-<ssh_host>` (ssh-host-keyed) — so the two never diverge.
++        # registration name — `hpcb-<ssh_host>` (ssh-host-keyed) — so the two never diverge.
+         display_name=details.display_name or ep_name,
+         transfer_endpoint_uuid=None,
+         ssh_host=details.ssh_host,
+diff --git a/tests/test_catalog_flow.py b/tests/test_catalog_flow.py
+index ff578f3..9f01020 100644
+--- a/tests/test_catalog_flow.py
++++ b/tests/test_catalog_flow.py
+@@ -479,9 +479,9 @@ async def test_explicit_details_rebuild_overrides_cached_entry(monkeypatch):
+ 
+ def test_session_endpoint_name_keyed_on_ssh_host():
+     from hpc_bridge.server import _session_endpoint_name
+-    assert _session_endpoint_name("midway3") == "hpc-bridge-midway3"
+-    assert _session_endpoint_name("midway3.rcc.uchicago.edu") == "hpc-bridge-midway3-rcc-uchicago-edu"
+-    assert _session_endpoint_name("") == "hpc-bridge-session"  # never a bare 'hpc-bridge' (would collide)
++    assert _session_endpoint_name("midway3") == "hpcb-midway3"
++    assert _session_endpoint_name("midway3.rcc.uchicago.edu") == "hpcb-midway3-rcc-uchicago-edu"
++    assert _session_endpoint_name("") == "hpcb-session"  # never a bare 'hpc-bridge' (would collide)
+ 
+ 
+ def test_facility_store_roundtrip(tmp_path):
+@@ -598,14 +598,14 @@ def test_entry_from_details_builds_session_local_entry():
+     assert e.transfer_endpoint_uuid is None and e.subject == "session:frontier"
+     assert e.compute.interface == "hsn0" and e.compute.scheduler == "slurm"
+     assert e.allocation is not None and e.allocation.parser == "mybalance"
+-    assert e.compute.endpoint_name == "hpc-bridge-frontier-olcf-ornl-gov"  # keyed on ssh_host, not facility id
++    assert e.compute.endpoint_name == "hpcb-frontier-olcf-ornl-gov"  # keyed on ssh_host, not facility id
+     assert e.display_name == "Frontier (BYO)"  # explicit display_name preserved
+     # no allocation tool -> allocation omitted
+     bare = _entry_from_details("x", _details(ssh_host="zeta", allocation_command=None, allocation_parser=None))
+     assert bare.allocation is None
+-    assert bare.display_name == "hpc-bridge-zeta"  # UI title = the ssh-host-keyed endpoint name (not the id "x")
++    assert bare.display_name == "hpcb-zeta"  # UI title = the ssh-host-keyed endpoint name (not the id "x")
+     # facility id is slugified into the endpoint name; an explicit name is preserved (override)
+-    assert _entry_from_details("x", _details(ssh_host="uchicago_globus")).compute.endpoint_name == "hpc-bridge-uchicago-globus"
++    assert _entry_from_details("x", _details(ssh_host="uchicago_globus")).compute.endpoint_name == "hpcb-uchicago-globus"
+     assert _entry_from_details("frontier", _details(endpoint_name="my-ep")).compute.endpoint_name == "my-ep"
+     # PBS facility with an explicit cpus_per_node flows through to defaults (full-node compute blocks)
+     pbs = _entry_from_details(
+@@ -629,7 +629,7 @@ def test_entry_from_details_endpoint_name_env_override(monkeypatch):
+     assert _entry_from_details("x", _details(endpoint_name="hpc-bridge-recover-00")).compute.endpoint_name == "hpc-bridge-globus1-run-42"
+     # unset -> product default (ssh-host key) is unchanged
+     monkeypatch.delenv("HPC_BRIDGE_ENDPOINT_NAME", raising=False)
+-    assert _entry_from_details("x", _details(ssh_host="globus1")).compute.endpoint_name == "hpc-bridge-globus1"
++    assert _entry_from_details("x", _details(ssh_host="globus1")).compute.endpoint_name == "hpcb-globus1"
+ 
+ 
+ 

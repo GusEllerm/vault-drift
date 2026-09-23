@@ -1,0 +1,35 @@
+diff --git a/src/hpc_bridge/warmth.py b/src/hpc_bridge/warmth.py
+index 63fa556..dd1a958 100644
+--- a/src/hpc_bridge/warmth.py
++++ b/src/hpc_bridge/warmth.py
+@@ -220,11 +220,14 @@ async def _provision(
+ _VALID_PARTITION = re.compile(r"^[A-Za-z0-9_.:-]{1,64}$")
+ _VALID_ACCOUNT = re.compile(r"^[A-Za-z0-9_.:-]{1,64}$")
+ 
+-def _apply_partition(app: AppCtx, shape: str, rt: ShapeRuntime, partition: str | None) -> str | None:
++def _apply_partition(
++    app: AppCtx, shape: str, rt: ShapeRuntime, partition: str | None, *, strict: bool = False
++) -> str | None:
+     """Point this shape's next provision at `partition`, invalidating a stale runner. Returns a
+     rejection notice (and applies nothing) when a task is still running on the shape: the change would
+     mark the runner stale, and the next _runner_for would close its Executor and cancel that task — so
+-    make the caller poll_task/stop_endpoint first. Otherwise returns None.
++    make the caller poll_task/stop_endpoint first. Otherwise returns None. With `strict=True` the
++    rejection is raised as a ValueError (carrying the notice) instead of returned.
+ 
+     No-op when `partition` is None (keep the facility/profile default) or unchanged, or for the
+     login shape, which has no partition. A real change means a different scheduler block,
+@@ -238,8 +241,11 @@ def _apply_partition(app: AppCtx, shape: str, rt: ShapeRuntime, partition: str |
+         return None
+     live = _live_task_handles(app, shape)
+     if live:
+-        return (f"can't change partition to {partition!r}: a task is still running "
+-                f"(task_id={live[0][0]!r}) on shape {shape!r}. poll_task it or stop_endpoint first.")
++        notice = (f"can't change partition to {partition!r}: a task is still running "
++                  f"(task_id={live[0][0]!r}) on shape {shape!r}. poll_task it or stop_endpoint first.")
++        if strict:
++            raise ValueError(notice)
++        return notice
+     rt.user_endpoint_config["partition"] = partition
+     rt.runner_stale = True
+     rt.warm_confirmed_at = None

@@ -20,7 +20,7 @@ def test_constant_anchor_and_member_annotation(mini_repo):
     b = r.stamp.bindings
     # `CONST` binds the file, carrying its own member hash (P24); `Foo.bar` binds the class.
     assert "src/pkg/a.py" in b and "CONST" in b["src/pkg/a.py"].members
-    assert "src/pkg/a.py#Foo" in b and "Foo.bar" in b["src/pkg/a.py#Foo"].members
+    assert "src/pkg/a.py#Foo" in b and {"Foo", "Foo.bar"} <= set(b["src/pkg/a.py#Foo"].members)
     _git(repo, "add", "-A"); _git(repo, "commit", "-qm", "stamps")
     assert ck.check(repo, vault, "Modules/a.md").state == ck.FRESH
 

@@ -22,7 +22,7 @@
   {
     "id": "t5-constant",
     "expect": "ack or update depending on what shapes.md claims about the template",
-    "prompt": "In src/hpc_bridge/facility/remote.py, add the line `#SBATCH --comment=hpc-bridge` to the `_SLURM_TEMPLATE` batch script header, after the existing #SBATCH lines. Then commit your work on the current branch with a clear commit message. Do not push."
+    "prompt": "In src/hpc_bridge/facility/remote.py, the module constant `_SLURM_TEMPLATE` is a Jinja/YAML endpoint-config template. Add a new line `  label: hpc-bridge` directly under `engine:` (before the `type:` line). Then commit your work on the current branch with a clear commit message. Do not push."
   },
   {
     "id": "t6-internals",

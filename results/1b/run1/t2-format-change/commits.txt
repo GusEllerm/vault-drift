@@ -1,0 +1,1 @@
+4ed21bee980f2ec2535c79ae68a388db3d608661 binding: shorten session endpoint-name prefix to hpcb-

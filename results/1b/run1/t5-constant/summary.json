@@ -1,0 +1,14 @@
+{
+ "task": "t5-constant",
+ "expect": "ack or update depending on what shapes.md claims about the template",
+ "branch": "1b/t5-constant-1790182184",
+ "model": "opus",
+ "seconds": 18,
+ "turns": 3,
+ "cost_usd": 0.2002684,
+ "commits": 0,
+ "gate_runs": 0,
+ "new_stamps": [],
+ "uncommitted": true,
+ "result_tail": "values (see the `config_template` docstring, lines 859\u2013867). A new default has to be pre-quoted the same way (a new `@@...@@` placeholder filled via `json.dumps`), and the template must not quote it again with `tojson`.\n\nHere's what I'd suggest: always add `#SBATCH --comment=hpc-bridge`, put any user-supplied `scheduler_options` after it, and add a unit test that renders the template and checks the line is there. That touches a documented module, so the livedocs note would need re-stamping too. Should I go ahead with that, or did you mean a different file that really does have `#SBATCH` lines?"
+}

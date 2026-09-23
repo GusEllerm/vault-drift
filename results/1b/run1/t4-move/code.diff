@@ -1,0 +1,52 @@
+diff --git a/src/hpc_bridge/ceilings.py b/src/hpc_bridge/ceilings.py
+new file mode 100644
+index 0000000..3a455e4
+--- /dev/null
++++ b/src/hpc_bridge/ceilings.py
+@@ -0,0 +1,23 @@
++"""The per-task kill ceiling: how long one task may run on a block before the worker kills it (exit 124).
++Moved out of config.py; config re-exports `_task_ceiling_s` so existing imports keep working."""
++from __future__ import annotations
++
++
++def _task_ceiling_s(uec: dict) -> float:
++    """The per-task kill ceiling (seconds) passed to the runner as the ShellFunction walltime: the block
++    walltime minus a margin (so a task dies with a 124 result just BEFORE the scheduler reclaims the
++    block), optionally capped by HPC_BRIDGE_MAX_TASK_S (unset = the full block walltime — the
++    deterministic default). Falls back to a safe non-zero value when the block walltime is absent."""
++    block_s = _parse_hhmmss(uec.get("walltime"))
++    ceiling = block_s - TASK_CEILING_MARGIN_S
++    if ceiling <= 0:  # missing/tiny walltime (e.g. LocalFacility has none) -> a safe default
++        ceiling = max(SYNC_WAIT_S + TASK_CEILING_MARGIN_S, 300.0)
++    cap = max_task_s()
++    if cap > 0:
++        ceiling = min(ceiling, cap)
++    return float(ceiling)
++
++
++# Imported AFTER the def: config re-exports _task_ceiling_s from here, so if this module is imported first,
++# config's re-export must find the function already defined (the names are only read at call time).
++from .config import SYNC_WAIT_S, TASK_CEILING_MARGIN_S, _parse_hhmmss, max_task_s  # noqa: E402
+diff --git a/src/hpc_bridge/config.py b/src/hpc_bridge/config.py
+index 49567b6..fd7a815 100644
+--- a/src/hpc_bridge/config.py
++++ b/src/hpc_bridge/config.py
+@@ -210,16 +210,5 @@ def _parse_hhmmss(s: str | None) -> int:
+         secs = secs * 60 + int(p)
+     return days * 86400 + secs
+ 
+-def _task_ceiling_s(uec: dict) -> float:
+-    """The per-task kill ceiling (seconds) passed to the runner as the ShellFunction walltime: the block
+-    walltime minus a margin (so a task dies with a 124 result just BEFORE the scheduler reclaims the
+-    block), optionally capped by HPC_BRIDGE_MAX_TASK_S (unset = the full block walltime — the
+-    deterministic default). Falls back to a safe non-zero value when the block walltime is absent."""
+-    block_s = _parse_hhmmss(uec.get("walltime"))
+-    ceiling = block_s - TASK_CEILING_MARGIN_S
+-    if ceiling <= 0:  # missing/tiny walltime (e.g. LocalFacility has none) -> a safe default
+-        ceiling = max(SYNC_WAIT_S + TASK_CEILING_MARGIN_S, 300.0)
+-    cap = max_task_s()
+-    if cap > 0:
+-        ceiling = min(ceiling, cap)
+-    return float(ceiling)
++
++from .ceilings import _task_ceiling_s  # noqa: E402, F401  (re-export; ceilings imports from this module)

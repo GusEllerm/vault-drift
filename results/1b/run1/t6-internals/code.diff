@@ -1,0 +1,38 @@
+diff --git a/src/hpc_bridge/catalog/entry.py b/src/hpc_bridge/catalog/entry.py
+index c55be30..eaa7988 100644
+--- a/src/hpc_bridge/catalog/entry.py
++++ b/src/hpc_bridge/catalog/entry.py
+@@ -163,7 +163,11 @@ class CatalogEntry(BaseModel):
+     @field_validator("ssh_host")
+     @classmethod
+     def _safe_host(cls, v: str | None) -> str | None:
+-        return None if v is None else validate_host(v)  # a registry entry's host reaches ssh's argv (review 2026-09-04)
++        if v is None:
++            return None
++        # A fully-qualified `host.example.org.` names the same host; store one canonical spelling.
++        v = v.removesuffix(".")
++        return validate_host(v)  # a registry entry's host reaches ssh's argv (review 2026-09-04)
+ 
+     @field_validator("id", "facility_key")
+     @classmethod
+diff --git a/tests/test_catalog_entry.py b/tests/test_catalog_entry.py
+index a9ad5bd..780c63a 100644
+--- a/tests/test_catalog_entry.py
++++ b/tests/test_catalog_entry.py
+@@ -105,6 +105,16 @@ def test_entry_without_reach_rejected():
+         CatalogEntry.model_validate(_entry(ssh_host=None))
+ 
+ 
++def test_ssh_host_trailing_dot_is_stripped():
++    e = CatalogEntry.model_validate(_entry(ssh_host="anvil.rcac.purdue.edu."))
++    assert e.ssh_host == "anvil.rcac.purdue.edu"
++    # only a single trailing dot is stripped
++    assert CatalogEntry.model_validate(_entry(ssh_host="anvil..")).ssh_host == "anvil."
++    # the stripped host still goes through validate_host
++    with pytest.raises(ValidationError, match="invalid login host"):
++        CatalogEntry.model_validate(_entry(ssh_host="-oProxyCommand=x."))
++
++
+ def test_init_blocks_defaults_zero_and_overridable():
+     assert CatalogEntry.model_validate(_entry()).defaults.init_blocks == 0
+     e = CatalogEntry.model_validate(_entry(defaults={"partition": "main", "init_blocks": 1}))

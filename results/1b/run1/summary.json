@@ -1,0 +1,588 @@
+[
+ {
+  "task": "t1-rename",
+  "expect": "update (the note names the old function)",
+  "branch": "1b/t1-rename-1790181729",
+  "model": "opus",
+  "seconds": 148,
+  "turns": 17,
+  "cost_usd": 0.4697782,
+  "commits": 1,
+  "gate_runs": 2,
+  "new_stamps": [
+   {
+    "note": "Modules/server.md",
+    "verdict": "update",
+    "by": "human",
+    "reason": "",
+    "stamped": "2026-09-23T16:43:52Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 bugs.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; _parse_hhmmss was renamed to _parse_walltime (same behaviour) after the review \u2014 historical name kept",
+    "stamped": "2026-09-23T16:43:52Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; _parse_hhmmss was renamed to _parse_walltime (same behaviour) after the review \u2014 historical name kept",
+    "stamped": "2026-09-23T16:43:53Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; _parse_hhmmss was renamed to _parse_walltime (same behaviour) after the review \u2014 historical name kept",
+    "stamped": "2026-09-23T16:43:54Z"
+   },
+   {
+    "note": "Concepts/Warmth, the canary & cold-start.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:10Z"
+   },
+   {
+    "note": "Modules/config.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:10Z"
+   },
+   {
+    "note": "Modules/scheduler_ops.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:10Z"
+   },
+   {
+    "note": "Planned/Agentic testing - Plan B (runtime sandbox).md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:11Z"
+   },
+   {
+    "note": "Planned/Cross-harness portability.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:11Z"
+   },
+   {
+    "note": "Planned/Endpoint reuse and MEP integration.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:11Z"
+   },
+   {
+    "note": "Planned/V1 release.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:12Z"
+   },
+   {
+    "note": "Reference/Agentic framework review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:12Z"
+   },
+   {
+    "note": "Reference/Plugin packaging.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:12Z"
+   },
+   {
+    "note": "Reference/Plugin review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:13Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 dependencies.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:13Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04 \u2014 raw C.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:44:14Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "Modules/server.md only had _parse_hhmmss renamed to _parse_walltime; this dated review's references to it still hold",
+    "stamped": "2026-09-23T16:44:23Z"
+   }
+  ],
+  "uncommitted": true,
+  "result_tail": "notes from 2026-09-03:** they record the code as it was then, with that day's line numbers. I left the old name in their text and signed them off as historical.\n- **`Review 2026-09-03 \u2014 code quality.md`:** flagged only because it links to `Modules/server.md`, which I'd edited. The rename doesn't affect what it says, so I signed it off too.\n- **Other notes:** the gate automatically signed off 12 more notes whose code references hadn't changed.\n\n`docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already showing as changed before I started. It's still unstaged and not part of the commit."
+ },
+ {
+  "task": "t2-format-change",
+  "expect": "update (server.md states the hpc-bridge-<slug> format)",
+  "branch": "1b/t2-format-change-1790181878",
+  "model": "opus",
+  "seconds": 103,
+  "turns": 17,
+  "cost_usd": 0.5103642,
+  "commits": 1,
+  "gate_runs": 1,
+  "new_stamps": [
+   {
+    "note": "Concepts/Facility catalog.md",
+    "verdict": "update",
+    "by": "claude",
+    "reason": "",
+    "stamped": "2026-09-23T16:45:54Z"
+   },
+   {
+    "note": "Modules/server.md",
+    "verdict": "update",
+    "by": "claude",
+    "reason": "",
+    "stamped": "2026-09-23T16:45:55Z"
+   },
+   {
+    "note": "Planned/Globus index discovery channel.md",
+    "verdict": "update",
+    "by": "claude",
+    "reason": "",
+    "stamped": "2026-09-23T16:45:55Z"
+   },
+   {
+    "note": "Reference/Configuration.md",
+    "verdict": "update",
+    "by": "claude",
+    "reason": "",
+    "stamped": "2026-09-23T16:45:55Z"
+   },
+   {
+    "note": "Planned/Discovery channel model.md",
+    "verdict": "update",
+    "by": "claude",
+    "reason": "",
+    "stamped": "2026-09-23T16:45:56Z"
+   },
+   {
+    "note": "Modules/binding.md",
+    "verdict": "ack",
+    "by": "claude",
+    "reason": "Endpoint-name prefix change (hpc-bridge- -> hpcb-) doesn't touch anything this note states",
+    "stamped": "2026-09-23T16:45:56Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "claude",
+    "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+    "stamped": "2026-09-23T16:45:57Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "claude",
+    "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+    "stamped": "2026-09-23T16:45:58Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04 \u2014 raw B.md",
+    "verdict": "ack",
+    "by": "claude",
+    "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+    "stamped": "2026-09-23T16:45:59Z"
+   },
+   {
+    "note": "Reference/Plugin review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: comment-or-docstring-only",
+    "stamped": "2026-09-23T16:46:11Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 static analysis.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: comment-or-docstring-only",
+    "stamped": "2026-09-23T16:46:11Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04 \u2014 raw C.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: comment-or-docstring-only",
+    "stamped": "2026-09-23T16:46:12Z"
+   }
+  ],
+  "uncommitted": true,
+  "result_tail": "through `uv run --with pytest --with pytest-asyncio --with jinja2`.\n\n**Not changed:** curated catalog entries still get `hpc-bridge-<id>` from `facility/remote.py:354`, so curated and session endpoints now use different prefixes. Also, existing session endpoints registered under the old name won't be reused, and new `hpcb-` ones will be registered alongside them.\n\n**Left untouched:** `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted before I started, and the pre-commit hook rewrote it during the commit. I didn't include it in the commit, so it still shows as modified."
+ },
+ {
+  "task": "t3-optional-param",
+  "expect": "ack (benign addition; claims hold)",
+  "branch": "1b/t3-optional-param-1790181980",
+  "model": "opus",
+  "seconds": 87,
+  "turns": 16,
+  "cost_usd": 0.4256004,
+  "commits": 1,
+  "gate_runs": 1,
+  "new_stamps": [
+   {
+    "note": "Concepts/Resource shapes & the spend floor.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:24Z"
+   },
+   {
+    "note": "Modules/facility-mep.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:24Z"
+   },
+   {
+    "note": "Modules/profile.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:25Z"
+   },
+   {
+    "note": "Modules/server.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:26Z"
+   },
+   {
+    "note": "Modules/warmth.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:26Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:27Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:28Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+    "stamped": "2026-09-23T16:47:29Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 static analysis.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:47:39Z"
+   }
+  ],
+  "uncommitted": true,
+  "result_tail": "ll because pytest isn't installed there. I didn't add a test for the new flag.\n\n**Livedocs:** eight vault notes that mention `_apply_partition` were flagged. None of them describe its parameters, so I marked each as still correct (`--ack`) with a reason and committed the updated `drift.lock` and `stamps.jsonl`. A ninth note was acknowledged automatically when I committed.\n\nThe cache file `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted in the working tree before I started. The pre-commit hook recreated it, so it now shows as modified, and I left it out of the commit."
+ },
+ {
+  "task": "t4-move",
+  "expect": "auto-ack (verified pure move) or ack",
+  "branch": "1b/t4-move-1790182067",
+  "model": "opus",
+  "seconds": 117,
+  "turns": 14,
+  "cost_usd": 0.5216812,
+  "commits": 1,
+  "gate_runs": 1,
+  "new_stamps": [
+   {
+    "note": "Modules/server.md",
+    "verdict": "update",
+    "by": "human",
+    "reason": "",
+    "stamped": "2026-09-23T16:49:08Z"
+   },
+   {
+    "note": "Modules/config.md",
+    "verdict": "update",
+    "by": "human",
+    "reason": "",
+    "stamped": "2026-09-23T16:49:08Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; _task_ceiling_s moved config.py -> ceilings.py unchanged (still re-exported by config)",
+    "stamped": "2026-09-23T16:49:08Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; _task_ceiling_s moved config.py -> ceilings.py unchanged (still re-exported by config)",
+    "stamped": "2026-09-23T16:49:09Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "dated review snapshot; config.py only lost _task_ceiling_s to ceilings.py (re-exported), plan text still accurate as history",
+    "stamped": "2026-09-23T16:49:27Z"
+   },
+   {
+    "note": "Concepts/Warmth, the canary & cold-start.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:32Z"
+   },
+   {
+    "note": "Modules/scheduler_ops.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:32Z"
+   },
+   {
+    "note": "Planned/Agentic testing - Plan B (runtime sandbox).md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:32Z"
+   },
+   {
+    "note": "Planned/Endpoint reuse and MEP integration.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:33Z"
+   },
+   {
+    "note": "Planned/V1 release.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:33Z"
+   },
+   {
+    "note": "Reference/Plugin review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:49:34Z"
+   }
+  ],
+  "uncommitted": true,
+  "result_tail": "id not create a `Modules/ceilings.md` note, even though the vault documents each module in its own note; say if you want one. `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted when I started, and the commit hook recreated it. It now shows as modified, and I left it out of the commit.\n\nThe claude.ai Booking.com, Kiwi.com, Tripadvisor and lastminute.com connectors need authorizing in your claude.ai connector settings, and the Cloudflare plugin servers need `/mcp`. The `endpoint` and `local-websearch` MCP servers failed to connect. None of them were needed for this task."
+ },
+ {
+  "task": "t5-constant",
+  "expect": "ack or update depending on what shapes.md claims about the template",
+  "branch": "1b/t5-constant-1790182184",
+  "model": "opus",
+  "seconds": 18,
+  "turns": 3,
+  "cost_usd": 0.2002684,
+  "commits": 0,
+  "gate_runs": 0,
+  "new_stamps": [],
+  "uncommitted": true,
+  "result_tail": "values (see the `config_template` docstring, lines 859\u2013867). A new default has to be pre-quoted the same way (a new `@@...@@` placeholder filled via `json.dumps`), and the template must not quote it again with `tojson`.\n\nHere's what I'd suggest: always add `#SBATCH --comment=hpc-bridge`, put any user-supplied `scheduler_options` after it, and add a unit test that renders the template and checks the line is there. That touches a documented module, so the livedocs note would need re-stamping too. Should I go ahead with that, or did you mean a different file that really does have `#SBATCH` lines?"
+ },
+ {
+  "task": "t6-internals",
+  "expect": "silent pass (no note mentions _safe_host)",
+  "branch": "1b/t6-internals-1790182202",
+  "model": "opus",
+  "seconds": 101,
+  "turns": 17,
+  "cost_usd": 0.56203,
+  "commits": 1,
+  "gate_runs": 1,
+  "new_stamps": [
+   {
+    "note": "Concepts/Facility catalog.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:14Z"
+   },
+   {
+    "note": "Planned/Globus index discovery channel.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:14Z"
+   },
+   {
+    "note": "Reference/Plugin review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:15Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:15Z"
+   },
+   {
+    "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:17Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04 \u2014 raw C.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:17Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04.md",
+    "verdict": "ack",
+    "by": "human",
+    "reason": "CatalogEntry._safe_host now strips one trailing dot from ssh_host before validate_host; note does not describe host normalization, still accurate",
+    "stamped": "2026-09-23T16:51:17Z"
+   },
+   {
+    "note": "Concepts/Discovery today.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:31Z"
+   },
+   {
+    "note": "Concepts/MEP & templated endpoints.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:31Z"
+   },
+   {
+    "note": "Concepts/Standing up the endpoint.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:32Z"
+   },
+   {
+    "note": "Modules/facility-base.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:32Z"
+   },
+   {
+    "note": "Modules/facility-mep.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:32Z"
+   },
+   {
+    "note": "Modules/facility-remote.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:32Z"
+   },
+   {
+    "note": "Modules/server.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:33Z"
+   },
+   {
+    "note": "Planned/Discovery channel model.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:34Z"
+   },
+   {
+    "note": "Planned/Endpoint reuse and MEP integration.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:34Z"
+   },
+   {
+    "note": "Planned/MEP block rejection visibility.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:34Z"
+   },
+   {
+    "note": "Planned/MFA and interactive SSH auth.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:34Z"
+   },
+   {
+    "note": "Reference/Agentic framework review 2026-09-05.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:35Z"
+   },
+   {
+    "note": "Reference/Configuration.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:35Z"
+   },
+   {
+    "note": "Reference/Review 2 2026-09-03 \u2014 static analysis.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:35Z"
+   },
+   {
+    "note": "Reference/Security review 2026-09-04 \u2014 raw B.md",
+    "verdict": "ack",
+    "by": "pre-commit",
+    "reason": "mechanical: unchanged",
+    "stamped": "2026-09-23T16:51:36Z"
+   }
+  ],
+  "uncommitted": true,
+  "result_tail": "rather reject hosts with two or more trailing dots, that would need a change to `SAFE_HOST`.\n- **Documentation notes:** the pre-commit check flagged seven vault notes that mention `CatalogEntry`. None of them describe how the host is cleaned up, so I marked each as still correct with a reason instead of editing it. The updated `drift.lock` and `stamps.jsonl` are in the commit.\n- **Cache file:** `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already showing as deleted before I started. The pre-commit hook recreated it, so it now shows as modified. I didn't include it in the commit."
+ }
+]

@@ -1,0 +1,99 @@
+{
+ "task": "t2-format-change",
+ "expect": "update (server.md states the hpc-bridge-<slug> format)",
+ "branch": "1b/t2-format-change-1790181878",
+ "model": "opus",
+ "seconds": 103,
+ "turns": 17,
+ "cost_usd": 0.5103642,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Concepts/Facility catalog.md",
+   "verdict": "update",
+   "by": "claude",
+   "reason": "",
+   "stamped": "2026-09-23T16:45:54Z"
+  },
+  {
+   "note": "Modules/server.md",
+   "verdict": "update",
+   "by": "claude",
+   "reason": "",
+   "stamped": "2026-09-23T16:45:55Z"
+  },
+  {
+   "note": "Planned/Globus index discovery channel.md",
+   "verdict": "update",
+   "by": "claude",
+   "reason": "",
+   "stamped": "2026-09-23T16:45:55Z"
+  },
+  {
+   "note": "Reference/Configuration.md",
+   "verdict": "update",
+   "by": "claude",
+   "reason": "",
+   "stamped": "2026-09-23T16:45:55Z"
+  },
+  {
+   "note": "Planned/Discovery channel model.md",
+   "verdict": "update",
+   "by": "claude",
+   "reason": "",
+   "stamped": "2026-09-23T16:45:56Z"
+  },
+  {
+   "note": "Modules/binding.md",
+   "verdict": "ack",
+   "by": "claude",
+   "reason": "Endpoint-name prefix change (hpc-bridge- -> hpcb-) doesn't touch anything this note states",
+   "stamped": "2026-09-23T16:45:56Z"
+  },
+  {
+   "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "claude",
+   "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+   "stamped": "2026-09-23T16:45:57Z"
+  },
+  {
+   "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "claude",
+   "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+   "stamped": "2026-09-23T16:45:58Z"
+  },
+  {
+   "note": "Reference/Security review 2026-09-04 \u2014 raw B.md",
+   "verdict": "ack",
+   "by": "claude",
+   "reason": "Dated review snapshot; the prefix change doesn't invalidate what it recorded",
+   "stamped": "2026-09-23T16:45:59Z"
+  },
+  {
+   "note": "Reference/Plugin review 2026-09-05.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: comment-or-docstring-only",
+   "stamped": "2026-09-23T16:46:11Z"
+  },
+  {
+   "note": "Reference/Review 2 2026-09-03 \u2014 static analysis.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: comment-or-docstring-only",
+   "stamped": "2026-09-23T16:46:11Z"
+  },
+  {
+   "note": "Reference/Security review 2026-09-04 \u2014 raw C.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: comment-or-docstring-only",
+   "stamped": "2026-09-23T16:46:12Z"
+  }
+ ],
+ "uncommitted": true,
+ "result_tail": "through `uv run --with pytest --with pytest-asyncio --with jinja2`.\n\n**Not changed:** curated catalog entries still get `hpc-bridge-<id>` from `facility/remote.py:354`, so curated and session endpoints now use different prefixes. Also, existing session endpoints registered under the old name won't be reused, and new `hpcb-` ones will be registered alongside them.\n\n**Left untouched:** `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted before I started, and the pre-commit hook rewrote it during the commit. I didn't include it in the commit, so it still shows as modified."
+}

@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 13153,
+ "stop_reason": "end_turn",
+ "session_id": "e1563ce1-2610-4263-b88e-3f96f7e1c57c",
+ "total_cost_usd": 0.2002684,
+ "usage": {
+  "input_tokens": 6,
+  "cache_creation_input_tokens": 20181,
+  "cache_read_input_tokens": 70882,
+  "output_tokens": 1231,
+  "output_tokens_details": {
+   "thinking_tokens": 322
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 20181,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 909,
+    "cache_read_input_tokens": 29604,
+    "cache_creation_input_tokens": 4054,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 4054
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 6,
+   "outputTokens": 1231,
+   "cacheReadInputTokens": 70882,
+   "cacheCreationInputTokens": 20181,
+   "webSearchRequests": 0,
+   "costUSD": 0.2002684,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 322,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 3,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I didn't make the change or commit anything. The request assumes something about the file that isn't true.\n\n`_SLURM_TEMPLATE` (`src/hpc_bridge/facility/remote.py:724`) isn't a batch script, and there are no `#SBATCH` lines anywhere in the file. It's the YAML config template for the Globus Compute endpoint. That YAML sets up a `SlurmProvider`, and parsl generates the actual sbatch script from it when it submits a job. If I pasted `#SBATCH --comment=hpc-bridge` into the template, YAML would read it as a comment and throw it away, so it would never reach Slurm. It would look like a fix without doing anything.\n\nThe way to add a `#SBATCH` line through this template is the provider's `scheduler_options` key, which parsl copies into the sbatch header. That key is currently only written out when the caller supplies it (lines 755\u2013757). Two things need deciding first:\n\n1. **Always add it, or only as a default?** If a user sets their own `scheduler_options` and we only default to ours, the comment disappears. If we always add it, we have to combine our line with theirs.\n2. **Quoting.** The endpoint manager's sanitizer already JSON-quotes string values (see the `config_template` docstring, lines 859\u2013867). A new default has to be pre-quoted the same way (a new `@@...@@` placeholder filled via `json.dumps`), and the template must not quote it again with `tojson`.\n\nHere's what I'd suggest: always add `#SBATCH --comment=hpc-bridge`, put any user-supplied `scheduler_options` after it, and add a unit test that renders the template and checks the line is there. That touches a documented module, so the livedocs note would need re-stamping too. Should I go ahead with that, or did you mean a different file that really does have `#SBATCH` lines?",
+ "ttft_ms": 2550,
+ "type": "result",
+ "duration_ms": 14490,
+ "uuid": "f2fe94f7-5472-4397-a065-c269c08699ee",
+ "ttft_stream_ms": 1146,
+ "time_to_request_ms": 236,
+ "first_content_frame_ms": 1146,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

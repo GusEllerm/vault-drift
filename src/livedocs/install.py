@@ -89,6 +89,13 @@ def install_config(repo: Path, vault_rel: str) -> Path:
     cfg = json.loads(p.read_text()) if p.exists() else {}
     cfg["vault"] = vault_rel
     p.write_text(json.dumps(cfg, indent=2) + "\n")
+    # The vault's cache (audit and bypass logs, symbol caches) is per-machine noise; keep it out of git
+    # so agents never see it as an unexplained modified file (a 1b finding).
+    vd = repo / vault_rel / ".livedocs"
+    vd.mkdir(parents=True, exist_ok=True)
+    gi = vd / ".gitignore"
+    if not gi.exists() or "cache/" not in gi.read_text():
+        gi.write_text((gi.read_text() if gi.exists() else "") + "cache/\n")
     return p
 
 

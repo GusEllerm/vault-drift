@@ -202,12 +202,15 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
         return out
     top = target.split("#", 1)[1] if "#" in target else path.rsplit("/", 1)[-1]
     for q in quals:
-        if was_src is not None:
+        member_same = bool(binding.members.get(q)) and astdiff.member_hash(now_src, q) == binding.members[q]
+        if member_same:
+            # The member hash is what a mention depends on (a class's shell, a function's substance):
+            # if it is unchanged the change is benign by construction, whatever a full-AST diff says
+            # (a class mention must not flag when only an unmentioned method body changed — 1b, t6).
+            ch = astdiff.Change(astdiff.UNCHANGED, astdiff.symbol_source(was_src or "", q) if was_src else None,
+                                astdiff.symbol_source(now_src or "", q))
+        elif was_src is not None:
             ch = astdiff.classify(was_src, now_src, q)
-        elif binding.members.get(q) and astdiff.member_hash(now_src, q) == binding.members[q]:
-            # No committed diff base (the stamp is uncommitted) but the mentioned member's hash is
-            # unchanged: the change is comments/formatting or elsewhere in the symbol — benign by construction.
-            ch = astdiff.Change(astdiff.UNCHANGED, None, astdiff.symbol_source(now_src or "", q))
         else:
             ch = astdiff.Change("unknown-base", None, astdiff.symbol_source(now_src or "", q))
         detail = ""

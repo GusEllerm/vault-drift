@@ -1,0 +1,78 @@
+{
+ "task": "t3-optional-param",
+ "expect": "ack (benign addition; claims hold)",
+ "branch": "1b/t3-optional-param-1790181980",
+ "model": "opus",
+ "seconds": 87,
+ "turns": 16,
+ "cost_usd": 0.4256004,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Concepts/Resource shapes & the spend floor.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:24Z"
+  },
+  {
+   "note": "Modules/facility-mep.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:24Z"
+  },
+  {
+   "note": "Modules/profile.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:25Z"
+  },
+  {
+   "note": "Modules/server.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:26Z"
+  },
+  {
+   "note": "Modules/warmth.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:26Z"
+  },
+  {
+   "note": "Reference/Review 2 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:27Z"
+  },
+  {
+   "note": "Reference/Review 2026-09-03 \u2014 bugs.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:28Z"
+  },
+  {
+   "note": "Reference/Review 2026-09-03 \u2014 code quality.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained an optional keyword-only strict=False (raise ValueError instead of returning the live-task notice); default behaviour unchanged, note's claims still hold",
+   "stamped": "2026-09-23T16:47:29Z"
+  },
+  {
+   "note": "Reference/Review 2 2026-09-03 \u2014 static analysis.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T16:47:39Z"
+  }
+ ],
+ "uncommitted": true,
+ "result_tail": "ll because pytest isn't installed there. I didn't add a test for the new flag.\n\n**Livedocs:** eight vault notes that mention `_apply_partition` were flagged. None of them describe its parameters, so I marked each as still correct (`--ack`) with a reason and committed the updated `drift.lock` and `stamps.jsonl`. A ninth note was acknowledged automatically when I committed.\n\nThe cache file `docs/hpc-bridge-vault/.livedocs/cache/precommit.jsonl` was already deleted in the working tree before I started. The pre-commit hook recreated it, so it now shows as modified, and I left it out of the commit."
+}
