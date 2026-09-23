@@ -23,6 +23,7 @@ These rules are for any agent or human writing to this vault. The vault follows 
 | `Design/` | Design docs |
 | `Research/` | Findings about the outside world: tools, papers, platforms |
 | `Reviews/` | Critiques of designs and plans, named `YYYY-MM-DD Topic.md` |
+| `Results/` | Experiment results, one note per run; the raw artefacts live in the repo's `results/` |
 | `Sessions/` | One log per working session, named `YYYY-MM-DD Topic.md` |
 | `Templates/` | Note templates (the Templates core plugin points here) |
 | `Archive/` | Retired or superseded notes (create it when first needed) |
@@ -33,7 +34,7 @@ Every note except templates starts with this block:
 
 ```yaml
 ---
-type: index | conventions | design | research | review | decision-log | decision | session
+type: index | conventions | design | research | review | results | decision-log | decision | session
 status: draft | active | superseded | retired      # decision notes: proposed | accepted | rejected | superseded
 authority: describes | specifies | log | reference
 summary: "One sentence: enough for an agent to decide whether to open the note."

@@ -191,30 +191,46 @@ def summarize(out_dir: str | Path, exclude_prose_only: bool = True) -> dict:
     out_dir = Path(out_dir)
     items = {json.loads(l)["id"]: json.loads(l) for l in (out_dir / "items.jsonl").read_text().splitlines()}
     verdicts = _load_verdicts(out_dir)
-    hits = false_flags = misses = at_risk_ok = 0
+    hits = false_flags = misses = at_risk_ok = prose_only = 0
+    note_wrong_flagged = note_wrong_known = 0  # note-level precision among episodes with a note_wrong field
+    reader_hits = reader_false = 0  # the same, excluding mechanical (auto) verdicts
     causes: Counter = Counter()
+    by: Counter = Counter()
     for v in verdicts:
         it = items.get(v["id"])
         if not it:
             continue
+        by[v.get("by", "agent")] += 1
         causes[(it["kind"], v["verdict"], v.get("cause", ""))] += 1
         if it["kind"] == "episode":
             if v["verdict"] == "wrong":
                 hits += 1
+                reader_hits += v.get("by") != "auto"
             else:
                 false_flags += 1
+                reader_false += v.get("by") != "auto"
+            if "note_wrong" in v:
+                note_wrong_known += 1
+                note_wrong_flagged += bool(v["note_wrong"])
         else:
             if v["verdict"] == "wrong":
-                if exclude_prose_only and v.get("cause") == "prose-only-claim":
-                    continue
+                if v.get("cause") == "prose-only-claim":
+                    prose_only += 1
+                    if exclude_prose_only:
+                        continue
                 misses += 1
             else:
                 at_risk_ok += 1
+    r3 = lambda x: round(x, 3) if x is not None else None
     precision = hits / (hits + false_flags) if hits + false_flags else None
+    reader_precision = reader_hits / (reader_hits + reader_false) if reader_hits + reader_false else None
     miss_rate = misses / (misses + hits) if misses + hits else None
-    res = {"graded": len(verdicts), "episodes_wrong(hits)": hits, "episodes_still_right(false_flags)": false_flags,
-           "unflagged_wrong(misses)": misses, "unflagged_ok": at_risk_ok,
-           "precision": precision, "miss_rate": miss_rate,
+    res = {"graded": len(verdicts), "graded_by": dict(by),
+           "episodes_wrong(hits)": hits, "episodes_still_right(false_flags)": false_flags,
+           "unflagged_wrong(misses)": misses, "unflagged_ok": at_risk_ok, "misses_prose_only(excluded)": prose_only,
+           "flag_precision_all": r3(precision), "flag_precision_reader_graded": r3(reader_precision),
+           "note_level_precision(note_wrong among reader-graded episodes)": r3(note_wrong_flagged / note_wrong_known) if note_wrong_known else None,
+           "miss_rate": r3(miss_rate),
            "causes": {f"{k[0]}/{k[1]}/{k[2]}": n for k, n in causes.most_common()}}
     print(json.dumps(res, indent=1))
     return res

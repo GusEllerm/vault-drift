@@ -86,6 +86,22 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
   - Trailing blank lines changed the note hash.
 - Verified: multi-line `-S` pickaxe on `drift.lock` works and, with blob verification, returns the right commit for shared and recurring sigs (unit test); full `drift check` on hpc-bridge takes 0.11 s.
 
+## M4 built and the first 1a run completed (2026-09-23)
+
+- `livedocs replay` walks the first-parent history on a replay branch in a worktree (`read-tree`, carried lock + stamps, per-step commits). Bug found in the smoke run: `git diff-tree --first-parent <c>` silently returns nothing (rev-list flag), so no note edits or changed paths were seen; fixed with an explicit `c^ c` range.
+- **Run 1** (`results/1a-run1/`, 28 min): 141 commits, 7,744 checks, 302 history re-stamps, 0 stamp failures. Check states: fresh 1,384 / changed 3,345 / broken 2,478 / unknown 305 (all `unbound`). **830 flag episodes**, **377 at-risk rows**, 24 pre-edit-fresh rows.
+- **Pre-edit signal:** of 128 author edits to notes whose anchored files changed in the same commit, the checker had already flagged 104 (84 changed + 20 broken); 24 read fresh (candidate misses).
+- `broken` is common because the history contains the "split server.py into modules" refactor: notes kept saying `server.py#ShapeRuntime` after the class moved to `context.py`.
+- **Grading:** `grade export` (1,231 items), `grade pregrade` settled 403 episodes mechanically (all findings `unchanged` → class-granularity, or comment-only), `grade split` wrote 12 batches of 70 for the remaining 828. `grade summarize` merges auto/agent/user verdicts, user winning.
+- Caveat: run 1 predates the sync→async = signature fix, so those cases carry kind `body`.
+
+## 1a run 1 graded (2026-09-23)
+
+- 12 grader agents (one pilot, then 11 in parallel; ~3.5M tokens) graded the 828 non-mechanical items against `results/rubric.md`. After the pilot, the rubric gained a note-level `note_wrong` field, an `irrelevant` cause, and two conventions (exhaustive enumerations vs optional additions).
+- **Headline:** miss rate 4.3% (passes), flag precision 2.7% (fails). Full analysis and the four options in [[1a Run 1]]; logged as C5 in [[Decision Log]].
+- Recurring grader observations worth acting on: pure moves flood `broken`; stale helper names in notes go unflagged because unresolvable mentions aren't anchored (dangling-mention lint); `pyproject.toml` claims go stale (package anchors); truncated `was`/`now` excerpts should be diffs.
+- The user's calibration packet is ready: `results/1a-run1/user-calibration.md` (32 items; key in `user-calibration-key.jsonl`, verdicts go to `results/1a-run1/verdicts/user.jsonl`).
+
 ## Repo published
 
 - Initial commit `46c102f`, then pushed to **https://github.com/GusEllerm/vault-drift** (private). The user chose the name `vault-drift`. The local directory remains `~/Projects/live-docs`.

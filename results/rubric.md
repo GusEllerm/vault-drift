@@ -4,8 +4,16 @@ Each item in `items.md` / `items.jsonl` asks one question about one note at one 
 `verdicts.jsonl`:
 
 ```json
-{"id": "<item id>", "verdict": "wrong" | "still-right", "cause": "<tag>", "by": "agent" | "user", "note": "<optional>"}
+{"id": "<item id>", "verdict": "wrong" | "still-right", "cause": "<tag>", "note_wrong": true | false, "by": "agent" | "user", "note": "<optional>"}
 ```
+
+- `verdict` is about **the flagged change** (for `episode`) or **the diff shown** (for `at_risk` / `pre_edit_fresh`): does *that* change make a claim in the note false?
+- `note_wrong` is note-level: at this commit, is any code claim in the note false **for any reason**, including changes to symbols that weren't flagged? (`verdict: wrong` implies `note_wrong: true`; the reverse need not hold.)
+
+Conventions (from the pilot batch, keep them consistent):
+- An enumerated set the note presents as exhaustive (a `Literal[...]` of phases/statuses, a table of "the N tools") gaining or losing a member → **wrong**.
+- A new optional parameter or field the note doesn't mention → **still-right** (incomplete, not wrong).
+- Plan/status prose ("slice 1 (next)") is not a code claim.
 
 ## The question
 
@@ -33,6 +41,7 @@ Each item in `items.md` / `items.jsonl` asks one question about one note at one 
 ## Cause tags (one per verdict)
 
 For `episode` + `still-right` (false flag), say why the flag was noise:
+- `irrelevant` — the mentioned symbol did change, but in a way the note doesn't describe (the common case)
 - `class-granularity` — the class changed, but not the member the note mentions
 - `formatter` — whitespace, quotes, trailing commas
 - `comment-only` — comments or docstrings only

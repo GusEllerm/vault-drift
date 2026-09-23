@@ -61,6 +61,12 @@ These came out of [[2026-09-21 Design Review]]. All three critics agreed on them
 | P21 | 2026-09-22 | 1a is primary and tests the guarantee; 1b is secondary and gates Phase 2 investment only | §8 |
 | P22 | 2026-09-22 | Replay window is vault-creation → tip (~249 commits), not tip−200. A real edit to a note in history counts as a re-stamp by its author; the check runs against the note as last stamped. | §8 |
 
+## Needs the user (2026-09-23)
+
+| ID | Question | Context |
+|---|---|---|
+| C5 | **1a verdict.** Recall passed (4.3% misses) but flag precision failed (2.7%) against the pre-registered rules. Stop (A), redefine `CHANGED` as a fact rather than a verdict (B), add an LLM judge between the hash and the agent (C), or fix the tooling noise and re-run first (D)? The agent recommends D then C. | [[1a Run 1]] |
+
 ## Contested: resolved 2026-09-22
 
 | ID | Question | Resolution |
