@@ -46,16 +46,62 @@ def cmd_survey(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_stamp(args: argparse.Namespace) -> int:
+    from . import stamp as stp, stamps as st
+    verdict = st.ACK if args.ack else None
+    try:
+        r = stp.stamp(Path(args.repo), args.vault, args.note, by=args.by, verdict=verdict,
+                      reason=args.reason or "", file_anchors=args.file_anchors)
+    except stp.StampError as e:
+        print(f"refused: {e}", file=sys.stderr)
+        return 2
+    print(f"stamped {args.note}: {r.linked} bindings, {len(r.stamp.unresolved)} unresolved mentions, verdict={r.stamp.verdict}")
+    for f in r.failed:
+        print(f"  failed: {f}", file=sys.stderr)
+    return 0
+
+
+def cmd_check(args: argparse.Namespace) -> int:
+    from . import check as ck, render
+    rep = ck.check(Path(args.repo), args.vault, args.note)
+    if args.json:
+        print(json.dumps(rep.to_dict(), indent=1))
+    else:
+        print(render.render(rep))
+    return 0 if rep.state == ck.FRESH else 1
+
+
+def _common(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--repo", required=True)
+    p.add_argument("--vault", required=True, help="vault path relative to the repo")
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="livedocs")
     sub = ap.add_subparsers(dest="cmd", required=True)
+
     s = sub.add_parser("survey", help="resolve mentions across a vault and report counts")
-    s.add_argument("--repo", required=True)
-    s.add_argument("--vault", required=True, help="vault path relative to the repo")
+    _common(s)
     s.add_argument("--ref", default="HEAD")
     s.add_argument("--json", help="write per-note resolutions here")
     s.add_argument("-v", "--verbose", action="store_true")
     s.set_defaults(fn=cmd_survey)
+
+    s = sub.add_parser("stamp", help="bind a note's code mentions with drift and record a stamp")
+    _common(s)
+    s.add_argument("note", help="note path relative to the vault")
+    s.add_argument("--by", default="human")
+    s.add_argument("--ack", action="store_true", help="re-verify without edits (requires --reason)")
+    s.add_argument("--reason")
+    s.add_argument("--file-anchors", action="store_true", help="also bind bare module mentions to whole files")
+    s.set_defaults(fn=cmd_stamp)
+
+    s = sub.add_parser("check", help="report a note's freshness (read-only)")
+    _common(s)
+    s.add_argument("note")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_check)
+
     args = ap.parse_args(argv)
     return args.fn(args)
 

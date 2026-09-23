@@ -27,7 +27,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **drift v0.10.1 is installed and smoke-tested** on the clone: it binds notes to Python symbols, flags body edits, ignores whitespace. Details in [[2026-09-22 Resolving the Review]].
 - **No livedocs code yet.** The repo is `GusEllerm/vault-drift` on GitHub (private); the local folder is still named `live-docs`.
 - **[[Implementation Plan]] v0.2 is written and reviewed.** Order: M1 mentions+symbols → M2 stamp/check → M4 replay harness (the 1a number) → M3 hooks → M5 pre-commit.
-- **Next:** start M1.
+- **M1 and M2 are done** (2026-09-23): `livedocs survey | stamp | check` work on the testbench; see the session log for the proof.
+- **Next:** M4, the replay harness and the first 1a run.
 
 *Update this section at the end of every session.*
 

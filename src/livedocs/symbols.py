@@ -126,14 +126,23 @@ def _symbols_in_source(path: str, source: str) -> list[Symbol]:
 
 
 def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] = ("src/",)) -> SymbolIndex:
-    """Index every tracked *.py under `roots` at `ref`."""
+    """Index every tracked *.py under `roots` at `ref`, or the working tree if ref is "WORKTREE"."""
     repo = Path(repo)
     idx = SymbolIndex(ref=ref)
-    listing = _git(repo, "ls-tree", "-r", "--name-only", ref, "--", *roots)
+    if ref == "WORKTREE":
+        listing = _git(repo, "ls-files", "--", *roots)
+    else:
+        listing = _git(repo, "ls-tree", "-r", "--name-only", ref, "--", *roots)
     for path in listing.split("\n"):
         if not path.endswith(".py"):
             continue
-        source = _git(repo, "show", f"{ref}:{path}")
+        if ref == "WORKTREE":
+            p = repo / path
+            if not p.exists():
+                continue
+            source = p.read_text(encoding="utf-8", errors="replace")
+        else:
+            source = _git(repo, "show", f"{ref}:{path}")
         idx.files.add(path)
         for s in _symbols_in_source(path, source):
             idx.add(s)

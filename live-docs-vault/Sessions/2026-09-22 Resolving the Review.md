@@ -76,6 +76,16 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
   - `Class.member` where the class part is an alias (`app.teardown_task`) resolves by member name.
 - Caveat for grading: short attribute names (`profile`, `compute`, `tasks`) bind to whichever class has that field; wrong guesses over-flag, never false-fresh. Cause tag `attribute-guess`.
 
+## M2 built: stamp, check, astdiff (2026-09-23)
+
+- New modules: `gitx` (blobs, first-parent, block-pickaxe diff base with blob verification), `drift_io` (link with `--doc-is-still-accurate`, unlink, check JSON, lock reader, reason-code → broken), `stamps` (append-only JSONL, body-only note hash), `astdiff` (symbol source at two versions; signature / decorator / body / comment-only / removed / unparseable), `check` (the §6.5 state machine), `render` (minimal), `stamp`. CLI: `stamp`, `check`. 18 tests.
+- **M2 proof on the testbench** (branch `livedocs-m2`, stamps committed locally so the diff base resolves): `server.md` → 104 bindings from its mentions; clean → `fresh`; body edit to `_connect_facility` → `changed(body)` on that anchor only, with note lines 13, 30, 32, 34, 46, 62; decorator added → `changed(decorator)`; `_control_settings` renamed → `broken(symbol_not_found)`; revert → `fresh`; note edited → `unknown(edited-since-stamp)`; re-stamp → `fresh`; `--ack` without `--reason` and `stamp` with no edits both refused.
+- Bugs found by the proof and fixed:
+  - An unparseable (mid-edit) Python file made every symbol look "removed". Now `unknown(parse-error: path)`, fail closed.
+  - `link()` took any output containing "error" as failure; `_explain_provision_error` tripped it. Now only lines starting `error:`/`refused` count.
+  - Trailing blank lines changed the note hash.
+- Verified: multi-line `-S` pickaxe on `drift.lock` works and, with blob verification, returns the right commit for shared and recurring sigs (unit test); full `drift check` on hpc-bridge takes 0.11 s.
+
 ## Repo published
 
 - Initial commit `46c102f`, then pushed to **https://github.com/GusEllerm/vault-drift** (private). The user chose the name `vault-drift`. The local directory remains `~/Projects/live-docs`.
