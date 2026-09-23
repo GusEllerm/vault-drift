@@ -20,6 +20,17 @@ that adds what an agent-written vault needs:
 The guarantee is a mechanism of the development framework (git), not a capability of any agent:
 it holds for Claude Code, Codex, a human at a terminal, or anything else that commits.
 
+## New project? One command
+
+```sh
+livedocs new-vault docs/vault --scaffold-modules
+```
+
+creates an Obsidian vault (`Home.md`, `Modules/ Concepts/ Reference/ Sessions/ Templates/`, a minimal
+`.obsidian/`), one empty note per source module, the livedocs config (sessions, reviews and templates
+are snapshots), the git gate, the Claude Code adapter, and an `AGENTS.md` block — then commit. Open the
+folder in Obsidian as a vault. From there: write notes, commit, reconcile when the gate says so.
+
 ## Install
 
 ```sh
