@@ -123,11 +123,19 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--json", action="store_true")
     s.set_defaults(fn=cmd_coverage)
 
-    s = sub.add_parser("install-hooks", help="write Claude Code hooks, the git pre-commit gate, and .livedocs/config.json")
+    s = sub.add_parser("init", aliases=["install-hooks"],
+                       help="set up the git gate (.githooks + core.hooksPath), .livedocs/config.json, and the Claude Code Stop heads-up")
     _common(s)
-    s.add_argument("--no-claude", action="store_true")
-    s.add_argument("--no-git", action="store_true")
+    s.add_argument("--no-claude", action="store_true", help="skip the Claude Code adapter")
+    s.add_argument("--shared", action="store_true", help="write .claude/settings.json (project) instead of settings.local.json")
+    s.add_argument("--read-gate", action="store_true", help="also install the read-time gate (Tier 2, opt-in)")
+    s.add_argument("--bypass-log", action="store_true", help="also log reads that bypass the gate (measurement only)")
+    s.add_argument("--no-agents-block", action="store_true", help="don't append the instruction block to AGENTS.md/CLAUDE.md")
     s.set_defaults(fn=cmd_install)
+
+    s = sub.add_parser("hook", help="hook entry points (called by git and by the harness adapters)")
+    s.add_argument("name", choices=["pre-commit", "stop", "read-gate", "bypass-log"])
+    s.set_defaults(fn=cmd_hook)
 
     s = sub.add_parser("grade", help="export grading items from a replay run, or summarise verdicts")
     s.add_argument("action", choices=["export", "pregrade", "reuse", "split", "summarize"])
@@ -189,11 +197,22 @@ def cmd_install(args: argparse.Namespace) -> int:
     from . import install
     repo = Path(args.repo).resolve()
     print("wrote", install.install_config(repo, args.vault))
+    print("wrote", install.install_git(repo), "(core.hooksPath = .githooks)")
     if not args.no_claude:
-        print("wrote", install.install_claude(repo))
-    if not args.no_git:
-        print("wrote", install.install_git(repo))
+        print("wrote", install.install_claude(repo, shared=args.shared, read_gate=args.read_gate, bypass_log=args.bypass_log))
+    if not args.no_agents_block:
+        p = install.install_agents_block(repo, args.vault)
+        print("agents block:", p or "no AGENTS.md/CLAUDE.md found; add the block by hand if you want channel 3")
+    if not install.check_drift():
+        print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift  (or curl -fsSL https://drift.fp.dev/install.sh | sh)")
+    print("done. CI: run `livedocs affected --cached` or `livedocs check` in a job to catch --no-verify commits.")
     return 0
+
+
+def cmd_hook(args: argparse.Namespace) -> int:
+    mod = {"pre-commit": "pre_commit", "stop": "stop_heads_up", "read-gate": "read_gate", "bypass-log": "bypass_log"}[args.name]
+    import importlib
+    return importlib.import_module(f"livedocs.hooks.{mod}").main()
 
 
 if __name__ == "__main__":
