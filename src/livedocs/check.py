@@ -8,9 +8,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import astdiff, drift_io, gitx, stamps as st
+from . import astdiff, config, drift_io, gitx, stamps as st
 
-FRESH, CHANGED, BROKEN, UNKNOWN = "fresh", "changed", "broken", "unknown"
+FRESH, CHANGED, BROKEN, UNKNOWN, SNAPSHOT = "fresh", "changed", "broken", "unknown", "snapshot"
 
 
 @dataclass
@@ -86,6 +86,9 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
     current = st.note_hash(text)
 
     note_stamps = st.for_note(all_stamps if all_stamps is not None else st.load(vault), note)
+    latest = st.latest(note_stamps)
+    if config.is_snapshot(git_repo, note, text) or (latest is not None and latest.snapshot):
+        return Report(note, SNAPSHOT, ["dated record; not checked against code"], stamp=latest)
     if not note_stamps:
         return Report(note, UNKNOWN, ["never-stamped"])
     lock = drift_io.lock(repo)

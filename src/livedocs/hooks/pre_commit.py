@@ -59,7 +59,7 @@ def main() -> int:
             blocking: list[ck.Report] = []
             acked: list[str] = []
             for r in reports:
-                if r.state in (ck.FRESH, ck.UNKNOWN):
+                if r.state in (ck.FRESH, ck.UNKNOWN, ck.SNAPSHOT):
                     continue
                 if ck.mechanically_benign(r):
                     kinds = ", ".join(sorted({f.kind for f in r.findings}))

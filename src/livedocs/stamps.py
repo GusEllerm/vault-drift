@@ -35,6 +35,7 @@ class Stamp:
     verdict: str
     reason: str = ""
     dangling: list[str] = field(default_factory=list)  # code-like mentions that resolve to nothing in src
+    snapshot: bool = False  # P25: a dated record; binds nothing, never blocks
 
     def to_json(self) -> str:
         d = asdict(self)

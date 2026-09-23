@@ -14,6 +14,19 @@ def _git(repo, *a):
     subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True)
 
 
+def test_snapshot_notes_bind_nothing_and_never_block(mini_repo):
+    repo, vault = mini_repo, "vault"
+    for note in ("Reference/Review 2026-01-01.md", "Sessions/log.md"):  # glob-declared, frontmatter-declared
+        r = stp.stamp(repo, vault, note, by="test")
+        assert r.stamp.snapshot and r.stamp.bindings == {}
+        rep = ck.check(repo, vault, note)
+        assert rep.state == ck.SNAPSHOT and not ck.mechanically_benign(rep)
+    a = repo / "src/pkg/a.py"
+    a.write_text(a.read_text().replace("return x", "return -x"))  # baz changes; snapshots don't care
+    assert ck.check(repo, vault, "Reference/Review 2026-01-01.md").state == ck.SNAPSHOT
+    _git(repo, "checkout", "--", "src")
+
+
 def test_constant_anchor_and_member_annotation(mini_repo):
     repo, vault = mini_repo, "vault"
     r = stp.stamp(repo, vault, "Modules/a.md", by="test")

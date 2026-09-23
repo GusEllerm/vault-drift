@@ -88,6 +88,9 @@ def install_config(repo: Path, vault_rel: str) -> Path:
     p.parent.mkdir(exist_ok=True)
     cfg = json.loads(p.read_text()) if p.exists() else {}
     cfg["vault"] = vault_rel
+    # P25: dated records bind nothing. Add vault-relative globs here (or `livedocs: snapshot` in a
+    # note's frontmatter); e.g. ["Reference/Review *", "Sessions/*"].
+    cfg.setdefault("snapshot_globs", [])
     p.write_text(json.dumps(cfg, indent=2) + "\n")
     # The vault's cache (audit and bypass logs, symbol caches) is per-machine noise; keep it out of git
     # so agents never see it as an unexplained modified file (a 1b finding).

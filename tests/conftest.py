@@ -48,6 +48,9 @@ class Qux:
     "tests/test_x.py": "def baz():\n    pass\n",
     "vault/Modules/a.md": "---\ntags: [x]\n---\n# a.py\n\n`Foo` is a dataclass; `Foo.bar` calls `baz` and `shared`; `CONST` is `1`; `TEMPLATE` has two keys. See `sub/b.py:3` and `only_here()`.\n",
     "vault/Concepts/idea.md": "# An idea\n\nUses `baz`, `Qux`, `nothing_here`, `visible_to: public`, `$HOME`, `id`.\n",
+    "vault/Reference/Review 2026-01-01.md": "# Review 2026-01-01\n\nAt this date `baz` returned x and `Foo.bar` had one arg.\n",
+    "vault/Sessions/log.md": "---\nlivedocs: snapshot\n---\n# Log\n\nWe changed `baz` today.\n",
+    ".livedocs/config.json": '{"vault": "vault", "snapshot_globs": ["Reference/Review *"]}\n',
 }
 
 

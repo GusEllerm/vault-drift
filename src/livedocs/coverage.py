@@ -10,7 +10,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import mentions as mn, stamp as stp, stamps as st, symbols as sy
+from . import config, mentions as mn, stamp as stp, stamps as st, symbols as sy
 
 
 @dataclass
@@ -39,6 +39,9 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
             continue
         note = str(p.relative_to(vault))
         text = p.read_text(encoding="utf-8")
+        if config.is_snapshot(repo, note, text):
+            out.append(NoteCoverage(note, 0, 0, [], 0, True, 0))  # snapshots are out of scope by declaration
+            continue
         ms = mn.mentions(text)
         res = sy.resolve_note(f"{vault_rel}/{note}", text, idx, ms)
         anchored = sum(1 for r in res if r.status in (sy.RESOLVED, sy.SUPERSET) and r.targets)

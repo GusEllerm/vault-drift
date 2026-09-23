@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import astdiff, drift_io, mentions as mn, stamps as st, symbols as sy
+from . import astdiff, config, drift_io, mentions as mn, stamps as st, symbols as sy
 
 
 class StampError(RuntimeError):
@@ -58,6 +58,19 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
 
     if verdict is None:
         verdict = st.INITIAL if previous is None else st.UPDATE
+    if config.is_snapshot(repo, note, text):
+        # Snapshot notes bind nothing: drop any bindings an earlier stamp made and record the fact.
+        # Declaring a snapshot is always a valid re-stamp, so this precedes the update/ack rules.
+        for (d, t), _sig in drift_io.lock(repo).items():
+            if d == doc:
+                try:
+                    drift_io.unlink(repo, d, t)
+                except drift_io.DriftError:
+                    pass
+        s = st.Stamp(note=note, note_hash=current, bindings={}, mentions={}, unresolved=[],
+                     stamped=st.now_iso(), by=by, verdict=verdict, reason=reason or "snapshot", snapshot=True)
+        st.append(vault, s)
+        return StampResult(s, 0, [])
     if verdict == st.ACK:
         if previous is None:
             raise StampError("--ack needs an earlier stamp")

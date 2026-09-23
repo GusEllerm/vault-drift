@@ -15,6 +15,8 @@ def render(r: Report, max_chars: int = 1500, show_warnings: bool = True, max_war
         shown = r.warnings[:max_warnings]
         more = f"\n(+{len(r.warnings) - max_warnings} more possibly stale names)" if len(r.warnings) > max_warnings else ""
         warn = "\n" + "\n".join(f"Warning: {w}." for w in shown) + more
+    if r.state == "snapshot":
+        return f'LIVE-DOCS: "{name}" is a dated SNAPSHOT: it describes the code as it was when written, and is not checked against the current code.'
     if r.state == FRESH:
         return f'LIVE-DOCS: "{name}" is FRESH (verified {r.stamp.stamped[:10] if r.stamp else "?"}).' + warn
     if r.state == UNKNOWN:

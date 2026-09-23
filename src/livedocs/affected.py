@@ -42,7 +42,7 @@ def affected(repo: str | Path, vault_rel: str, *, cached: bool = False, base: st
 def summary_lines(reports: list[ck.Report]) -> list[str]:
     out = []
     for r in reports:
-        if r.state == ck.FRESH:
+        if r.state in (ck.FRESH, ck.SNAPSHOT):
             continue
         if ck.mechanically_benign(r):
             extra = " (benign: the members it mentions are unchanged — will be auto-acked at commit)"
