@@ -1,0 +1,67 @@
+{"id": "ep:Demos.md|2026-09-23T12:36:37Z|sha256:d8eab|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan C (human-in-the-loop).md|2026-09-23T12:36:57Z|sha256:00fe0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Model sweep 2026-09-03.md|2026-09-23T12:39:39Z|sha256:b41e0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T12:40:10Z|sha256:0fa6c|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T12:40:10Z|sha256:d8f12|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T12:40:11Z|sha256:e558d|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T12:40:11Z|sha256:29293|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Session continuity.md|2026-09-23T12:40:12Z|sha256:6bc2d|src/hpc_bridge/server.py#TaskHandle", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T12:40:12Z|sha256:1a1c2|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/cost.md|2026-09-23T12:36:37Z|sha256:dc50c|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T12:40:13Z|sha256:92c62|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/login.md|2026-09-23T12:40:14Z|sha256:8c6eb|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/profile.md|2026-09-23T12:40:15Z|sha256:27a93|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T12:40:15Z|sha256:4697a|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T12:37:28Z|sha256:d98a8|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T12:40:35Z|sha256:ac703|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T12:38:11Z|sha256:bfaad|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T12:40:18Z|sha256:9b949|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T12:40:19Z|sha256:753cb|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T12:40:19Z|sha256:753cb|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T12:39:22Z|sha256:9c330|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T12:40:14Z|sha256:6a4d3|src/hpc_bridge/server.py#_control_settings", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T12:40:14Z|sha256:6a4d3|src/hpc_bridge/server.py#_short_control_dir", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T12:40:35Z|sha256:ac703|src/hpc_bridge/server.py#_short_control_dir", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_env_endpoint_id", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#_supported_shapes", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T12:40:12Z|sha256:1a1c2|src/hpc_bridge/server.py#_worker_notice", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T12:40:12Z|sha256:1a1c2|src/hpc_bridge/server.py#_dispatch_error_suffix", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_supported_shapes", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_no_account_failure", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_no_account_failure", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T12:40:19Z|sha256:087ba|src/hpc_bridge/server.py#_needs_preauth_result", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T12:40:20Z|sha256:3c5a4|src/hpc_bridge/server.py#_orphaned_outcome", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T12:40:11Z|sha256:e558d|src/hpc_bridge/server.py#_session_endpoint_name", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_unsupported_entry_reason", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T12:40:19Z|sha256:753cb|src/hpc_bridge/server.py#_unsupported_entry_reason", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T12:40:19Z|sha256:753cb|src/hpc_bridge/server.py#_session_endpoint_name", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T12:40:19Z|sha256:753cb|src/hpc_bridge/server.py#_make_search_client", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T12:40:55Z|sha256:f9152|src/hpc_bridge/server.py#make_facility", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#_apply_partition", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#_shape_reject", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#_apply_account", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T12:40:11Z|sha256:51d85|src/hpc_bridge/server.py#_provision", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T12:40:12Z|sha256:1a1c2|src/hpc_bridge/server.py#_confirm_worker", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_shape_runtime", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_shape_reject", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_forget_identity_verdicts", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/profile.md|2026-09-23T12:40:15Z|sha256:27a93|src/hpc_bridge/server.py#_apply_partition", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/profile.md|2026-09-23T12:40:15Z|sha256:27a93|src/hpc_bridge/server.py#_apply_account", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T12:40:15Z|sha256:4697a|src/hpc_bridge/server.py#_runner_for", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_shape_reject", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_confirm_worker", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_forget_identity_verdicts", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T12:40:19Z|sha256:a519f|src/hpc_bridge/server.py#_forget_identity_verdicts", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T12:41:12Z|sha256:8c6d4|src/hpc_bridge/server.py#_endpoint_gone", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T12:40:21Z|sha256:3ec17|src/hpc_bridge/server.py#_shape_reject", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Vault style guide.md|2026-09-23T12:37:28Z|sha256:50309|src/hpc_bridge/server.py#_provision", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/login.md|2026-09-23T12:40:14Z|sha256:8c6eb|src/hpc_bridge/server.py#_start_login_and_wait", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T12:40:11Z|sha256:e558d|src/hpc_bridge/server.py#_connect_mep", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T12:40:12Z|sha256:ccebe|src/hpc_bridge/server.py#_connect_mep", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T12:40:14Z|sha256:a804a|src/hpc_bridge/server.py#_connect_mep", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T12:40:35Z|sha256:ac703|src/hpc_bridge/server.py#_drop_dead_pin", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T12:40:18Z|sha256:eb6ce|src/hpc_bridge/server.py#_connect_mep", "verdict": "still-right", "cause": "moved", "by": "auto"}
