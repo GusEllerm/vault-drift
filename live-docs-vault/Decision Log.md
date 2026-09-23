@@ -61,6 +61,8 @@ These came out of [[2026-09-21 Design Review]]. All three critics agreed on them
 | P20 | 2026-09-22 | Bypass escalation: measure in Phase 1; above 5% of vault reads, close holes in cost order (Bash deny → Grep tagging → MCP gateway) | §6.6 |
 | P21 | 2026-09-22 | 1a is primary and tests the guarantee; 1b is secondary and gates Phase 2 investment only | §8 |
 | P22 | 2026-09-22 | Replay window is vault-creation → tip (~249 commits), not tip−200. A real edit to a note in history counts as a re-stamp by its author; the check runs against the note as last stamped. | §8 |
+| P23 | 2026-09-23 | With a judge present, triggers stay coarse (drift top-level flags) and member hashes only annotate; member-level suppression is a no-judge fallback option. Run 2 showed suppression costs a quarter of real catches. | [[1a Run 2]] |
+| P24 | 2026-09-23 | Anchor module constants (drift binds the file; we hash the assignment). The one `unbound-mention` miss in run 2 was a constant. | [[1a Run 2]] |
 
 ## Contested: resolved
 

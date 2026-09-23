@@ -29,9 +29,9 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **[[Implementation Plan]] v0.2 is written and reviewed.** Order: M1 mentions+symbols → M2 stamp/check → M4 replay harness (the 1a number) → M3 hooks → M5 pre-commit.
 - **M1, M2 and M4 are done** (2026-09-23): `livedocs survey | stamp | check | replay | grade` work on the testbench.
 - **The first 1a run is graded** — [[1a Run 1]]. Recall passes (4.3% misses); flag precision fails (2.7%; 26% at note level). The hash is a high-recall trigger, not a staleness verdict.
-- **The user chose D then C (D12):** fix the tooling noise, re-run, then add an LLM judge. The D fixes are in (member-level fingerprints, move detection, dangling-mention warnings, config-file anchors, tighter attribute resolution); **run 2 is in progress** (`results/1a-run2/`). The judge is drafted in [[Judge]].
+- **The user chose D then C (D12).** D is done and measured — [[1a Run 2]]: false flags −40%, precision 2.7% → 5.1%, but member-level *suppression* lost a quarter of the real catches (miss rate 4.3% → 18.8%). Conclusion: keep coarse triggers, use member hashes as annotation, and let the judge decide (P23). The judge is drafted in [[Judge]].
 - **Pending:** the user's calibration pass, `results/1a-run1/user-calibration.md` (7 misses + 25 random flags).
-- **Next:** grade run 2 (reusing run-1 verdicts where the question is unchanged), update the results, then build the judge and evaluate it against the graded episodes.
+- **Next:** build the judge (step C): constant anchors (P24), a `--no-refine` trigger mode, the judge prompt, and evaluation against the 1,686 graded items from both runs.
 
 *Update this section at the end of every session.*
 
@@ -45,7 +45,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 3. [[Live Docs Design]]: the current proposal (v0.3).
 4. [[Decision Log]]: accepted and proposed decisions.
 5. [[2026-09-21 Design Review]]: why v0.2 differs from v0.1.
-6. The latest session log: [[2026-09-22 Resolving the Review]].
+6. The latest session log: [[2026-09-23 Runs 1 and 2]].
 7. Research notes, as needed (listed below).
 
 Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' live-docs-vault/`
@@ -58,6 +58,7 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
   - [[Judge]] (draft): step C — an LLM judge between the hash and the agent, its placement, stamps, prompt, cost and evaluation.
 - **Results:**
   - [[1a Run 1]]: the first replay run on hpc-bridge — numbers, causes, and the options they leave open.
+  - [[1a Run 2]]: the same history with the D fixes — what improved, and the precision/recall trade-off that shapes the judge.
 - **Reviews:**
   - [[2026-09-21 Design Review]]: three critics, two rounds, and what changed as a result.
   - [[2026-09-22 Implementation Plan Review]]: eleven issues against plan v0.1, most verified on the testbench.
@@ -68,6 +69,7 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
   - [[Obsidian Platform Constraints]]: what Obsidian can and can't do here.
 - **Decisions:** [[Decision Log]]
 - **Sessions** (newest first):
+  - [[2026-09-23 Runs 1 and 2]]
   - [[2026-09-22 Resolving the Review]]
   - [[2026-09-21 Research and Design]]
 - **Templates:** `Templates/` holds [[Session Log]], [[Research Note]] and [[Decision]].
