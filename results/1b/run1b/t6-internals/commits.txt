@@ -1,0 +1,1 @@
+7ee1e2fbd28a36f862f087b175bd8be60e46dc5a catalog: strip a single trailing dot from CatalogEntry.ssh_host

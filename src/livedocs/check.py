@@ -138,14 +138,17 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
                 reasons.append(f"parse-error: {path}")
             continue
         deco_now = astdiff.decorator_hash(current_text or "", target.split("#", 1)[1]) if "#" in target and current_text else ""
-        if a["result"] != "fresh" or deco_now != binding.deco:
-            # drift says the top-level symbol changed. Did anything the note *mentions* change?
-            if binding.members and current_text is not None:
-                changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q) != h]
-                if not changed_members:
-                    refined.append(target)
-                    if refine:
-                        continue
+        # The member hashes are authoritative for what the note mentions: drift's fingerprint is the
+        # trigger for symbols, but it does not see everything (a line added inside a string constant
+        # left a file anchor `fresh` in 1b t5), so compare members whether or not drift flagged.
+        changed_members: list[str] = []
+        if binding.members and current_text is not None:
+            changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q) != h]
+        if a["result"] != "fresh" or deco_now != binding.deco or changed_members:
+            if binding.members and not changed_members:
+                refined.append(target)
+                if refine:
+                    continue
             state = _worse(state, CHANGED)
             findings.extend(_findings_for(repo, doc, target, binding, text, stamp, current_text, git_repo))
     warnings = [f"mentions `{d}`, which does not exist in src" for d in stamp.dangling]

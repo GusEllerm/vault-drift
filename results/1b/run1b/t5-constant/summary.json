@@ -1,0 +1,14 @@
+{
+ "task": "t5-constant",
+ "expect": "ack or update depending on what shapes.md claims about the template",
+ "branch": "1b/t5-constant-1790182451",
+ "model": "opus",
+ "seconds": 45,
+ "turns": 7,
+ "cost_usd": 0.2088686,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [],
+ "uncommitted": false,
+ "result_tail": "I added `  label: hpc-bridge` directly under `engine:` in `_SLURM_TEMPLATE`, before the `type:` line (`src/hpc_bridge/facility/remote.py:726`). It's committed on `1b/t5-constant-1790182451` as `35055cf` and not pushed.\n\n- **Tests:** the unit tests pass (552 passed, 2 skipped).\n- **Docs gate:** `livedocs affected` found no vault notes that reference this code, so no notes needed updating and the pre-commit docs check passed.\n- **Scope:** I only changed the Slurm template. `_PBS_TEMPLATE` still has no `label`; tell me if you want it there too."
+}

@@ -1,0 +1,12 @@
+diff --git a/src/hpc_bridge/facility/remote.py b/src/hpc_bridge/facility/remote.py
+index 94fdd4d..918f748 100644
+--- a/src/hpc_bridge/facility/remote.py
++++ b/src/hpc_bridge/facility/remote.py
+@@ -723,6 +723,7 @@ class RemoteEndpointCLI:
+ 
+ _SLURM_TEMPLATE = """\
+ engine:
++  label: hpc-bridge
+   type: GlobusComputeEngine
+   run_in_sandbox: true
+   max_workers_per_node: {{ max_workers_per_node | default(@@MAXW@@) }}

@@ -34,6 +34,14 @@ def test_constant_anchor_and_member_annotation(mini_repo):
     assert "CONST = 1" in const.was and "CONST = 2" in const.now
     assert not ck.mechanically_benign(rep)
 
+    # A line added inside a module-level string constant: drift's file fingerprint misses this
+    # (1b t5); the member hash must catch it on its own.
+    a.write_text(a.read_text().replace("CONST = 2", "CONST = 1").replace("engine:\n  type: x", "engine:\n  label: y\n  type: x"))
+    rep = ck.check(repo, vault, "Modules/a.md")
+    assert rep.state == ck.CHANGED and ("TEMPLATE", "body") in {(f.qualname, f.kind) for f in rep.findings}
+    assert not ck.mechanically_benign(rep)
+    a.write_text(a.read_text().replace("engine:\n  label: y\n  type: x", "engine:\n  type: x").replace("CONST = 1", "CONST = 2"))
+
     # Revert; edit an unmentioned method's body → annotation only, mechanically benign.
     a.write_text(a.read_text().replace("CONST = 2", "CONST = 1").replace("return 0", "return 9"))
     rep = ck.check(repo, vault, "Modules/a.md")

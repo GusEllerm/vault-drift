@@ -1,0 +1,40 @@
+diff --git a/src/hpc_bridge/catalog/entry.py b/src/hpc_bridge/catalog/entry.py
+index c55be30..ca896ed 100644
+--- a/src/hpc_bridge/catalog/entry.py
++++ b/src/hpc_bridge/catalog/entry.py
+@@ -163,7 +163,12 @@ class CatalogEntry(BaseModel):
+     @field_validator("ssh_host")
+     @classmethod
+     def _safe_host(cls, v: str | None) -> str | None:
+-        return None if v is None else validate_host(v)  # a registry entry's host reaches ssh's argv (review 2026-09-04)
++        if v is None:
++            return None
++        # A fully-qualified `host.example.org.` names the same host; drop ONE trailing dot so it matches
++        # the bare form (ssh config Host patterns, session keys).
++        v = v.strip().removesuffix(".")
++        return validate_host(v)  # a registry entry's host reaches ssh's argv (review 2026-09-04)
+ 
+     @field_validator("id", "facility_key")
+     @classmethod
+diff --git a/tests/test_catalog_entry.py b/tests/test_catalog_entry.py
+index a9ad5bd..7d731e2 100644
+--- a/tests/test_catalog_entry.py
++++ b/tests/test_catalog_entry.py
+@@ -105,6 +105,17 @@ def test_entry_without_reach_rejected():
+         CatalogEntry.model_validate(_entry(ssh_host=None))
+ 
+ 
++def test_ssh_host_single_trailing_dot_stripped():
++    # a fully-qualified host with its root dot is the same host — normalized to the bare form
++    assert CatalogEntry.model_validate(_entry(ssh_host="host.example.org.")).ssh_host == "host.example.org"
++    assert CatalogEntry.model_validate(_entry(ssh_host="host.example.org")).ssh_host == "host.example.org"
++    # only ONE dot is stripped; the existing checks still run on what's left
++    assert CatalogEntry.model_validate(_entry(ssh_host="host.example.org..")).ssh_host == "host.example.org."
++    for bad in (".", "-oProxyCommand=x."):
++        with pytest.raises(ValidationError, match="invalid login host"):
++            CatalogEntry.model_validate(_entry(ssh_host=bad))
++
++
+ def test_init_blocks_defaults_zero_and_overridable():
+     assert CatalogEntry.model_validate(_entry()).defaults.init_blocks == 0
+     e = CatalogEntry.model_validate(_entry(defaults={"partition": "main", "init_blocks": 1}))

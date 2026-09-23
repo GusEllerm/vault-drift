@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 32470,
+ "stop_reason": "end_turn",
+ "session_id": "aaa9e6c2-3a2f-470f-8757-75e5d2a4c266",
+ "total_cost_usd": 0.4219498,
+ "usage": {
+  "input_tokens": 18,
+  "cache_creation_input_tokens": 35242,
+  "cache_read_input_tokens": 348609,
+  "output_tokens": 3511,
+  "output_tokens_details": {
+   "thinking_tokens": 413
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 35242,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 663,
+    "cache_read_input_tokens": 47745,
+    "cache_creation_input_tokens": 974,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 974
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 3511,
+   "cacheReadInputTokens": 348609,
+   "cacheCreationInputTokens": 35242,
+   "webSearchRequests": 0,
+   "costUSD": 0.4219498,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 413,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 13,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "`CatalogEntry._safe_host` now removes one trailing dot from the host before its existing checks, so `host.example.org.` becomes `host.example.org`. I committed it on `1b/t6-internals-1790182496` and did not push. The unit tests (553 passed, 2 skipped), ruff and mypy all pass.\n\n- **Code** (`src/hpc_bridge/catalog/entry.py`): `None` still passes through unchanged. The host is also trimmed of surrounding whitespace before the dot is removed, so `\"host. \"` gets normalized too. Only one dot is removed, and the result still goes through `validate_host`. That means `\".\"` and option-style hosts like `-oProxyCommand=x.` are still rejected.\n- **Test** (`tests/test_catalog_entry.py`): `test_ssh_host_single_trailing_dot_stripped` checks that the dotted form is normalized, the plain form is unchanged, `..` loses only one dot, and bad hosts are still rejected.\n- **Docs gate:** 22 vault notes mention this file, but none of them describe host validation, so the pre-commit hook approved them automatically. It added its `drift.lock` and `stamps.jsonl` updates to the same commit.\n\nThe change is only in the catalog validator. `FacilityDetails._safe_host` in `models.py` also calls `validate_host`, and a host with a trailing dot supplied through that route is still kept as is. If you want the same behavior everywhere, the fix could move into `validate_host` itself.\n\nA few MCP servers need attention, though none were needed for this task:\n- **Need authorizing:** Booking.com, Kiwi.com, Tripadvisor and lastminute.com (through your claude.ai connector settings), and the Cloudflare plugin servers (through `/mcp`).\n- **Failed to connect:** `endpoint` and `local-websearch`.",
+ "ttft_ms": 1516,
+ "type": "result",
+ "duration_ms": 68779,
+ "uuid": "5caf0209-d0b9-4d8d-901e-9948015e2109",
+ "ttft_stream_ms": 957,
+ "time_to_request_ms": 241,
+ "first_content_frame_ms": 957,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

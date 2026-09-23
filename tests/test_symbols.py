@@ -11,7 +11,7 @@ def test_index_only_src_and_kinds(mini_repo):
     idx = sy.index(mini_repo)
     assert "tests/test_x.py" not in idx.files
     kinds = {s.qualname: s.kind for s in idx.symbols if s.path == "src/pkg/a.py"}
-    assert kinds == {"CONST": sy.CONSTANT, "baz": sy.FUNCTION, "Foo": sy.CLASS, "Foo.level": sy.ATTRIBUTE,
+    assert kinds == {"CONST": sy.CONSTANT, "TEMPLATE": sy.CONSTANT, "baz": sy.FUNCTION, "Foo": sy.CLASS, "Foo.level": sy.ATTRIBUTE,
                      "Foo.bar": sy.METHOD, "Foo.shared": sy.METHOD, "Foo.unmentioned": sy.METHOD}
     foo = idx.by_qualname("Foo")[0]
     assert foo.decorators == ("dataclass",)
