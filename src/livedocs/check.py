@@ -65,10 +65,17 @@ def _note_lines(text: str, raws: list[list]) -> list[int]:
 
 
 def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None = None,
-          text: str | None = None, all_stamps: list[st.Stamp] | None = None, idx=None) -> Report:
+          text: str | None = None, all_stamps: list[st.Stamp] | None = None, idx=None,
+          refine: bool = False, git_repo: str | Path | None = None) -> Report:
     """`text` overrides the note's on-disk content (the replay harness passes the pre-edit text
-    to ask whether the old note was wrong about the new code)."""
+    to ask whether the old note was wrong about the new code).
+    `refine=True` suppresses a drift flag when none of the mentioned members changed (run-2 mode:
+    −40% flags, −25% real catches). Default is annotation: the flag stands, the findings say which
+    mentioned members changed, or that the change is elsewhere in the class (D13).
+    `git_repo` points at the repository for git operations when `repo` is a snapshot without .git
+    (the pre-commit index snapshot)."""
     repo = Path(repo)
+    git_repo = Path(git_repo) if git_repo else repo
     vault = repo / vault_rel
     doc = _doc_path(vault_rel, note)
     note_path = vault / note
@@ -132,14 +139,15 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             continue
         deco_now = astdiff.decorator_hash(current_text or "", target.split("#", 1)[1]) if "#" in target and current_text else ""
         if a["result"] != "fresh" or deco_now != binding.deco:
-            # drift says the top-level symbol changed. Refine: did anything the note *mentions* change?
+            # drift says the top-level symbol changed. Did anything the note *mentions* change?
             if binding.members and current_text is not None:
                 changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q) != h]
                 if not changed_members:
                     refined.append(target)
-                    continue
+                    if refine:
+                        continue
             state = _worse(state, CHANGED)
-            findings.extend(_findings_for(repo, doc, target, binding, text, stamp, current_text))
+            findings.extend(_findings_for(repo, doc, target, binding, text, stamp, current_text, git_repo))
     warnings = [f"mentions `{d}`, which does not exist in src" for d in stamp.dangling]
     return Report(note, state, reasons, findings, stamp, warnings, refined)
 
@@ -162,15 +170,30 @@ def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
     return None
 
 
+MECHANICAL_KINDS = frozenset({astdiff.UNCHANGED, astdiff.COMMENT_ONLY, "moved"})
+
+
+def mechanically_benign(r: Report) -> bool:
+    """True when every finding is provably benign to the mentioned members: comment/docstring-only
+    edits, verified pure moves, or 'the class changed elsewhere'. Such a report can be acked
+    mechanically with a recorded reason; it must never be treated as fresh silently."""
+    return r.state == CHANGED and bool(r.findings) and all(f.kind in MECHANICAL_KINDS for f in r.findings)
+
+
 def _worse(a: str, b: str) -> str:
     order = {FRESH: 0, UNKNOWN: 1, CHANGED: 2, BROKEN: 3}
     return a if order[a] >= order[b] else b
 
 
-def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: str, stamp: st.Stamp, now_src: str | None) -> list[Finding]:
+def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: str, stamp: st.Stamp,
+                  now_src: str | None, git_repo: Path | None = None) -> list[Finding]:
+    git_repo = git_repo or repo
     path = target.split("#", 1)[0]
-    base = gitx.diff_base(repo, doc, target, binding.sig)
-    was_src = gitx.blob_at(repo, base, path) if base else None
+    try:
+        base = gitx.diff_base(git_repo, doc, target, binding.sig)
+    except gitx.GitError:
+        base = None
+    was_src = gitx.blob_at(git_repo, base, path) if base else None
     lines = _note_lines(text, stamp.mentions.get(target, []))
     quals = binding.qualnames or ([target.split("#", 1)[1]] if "#" in target else [])
     out: list[Finding] = []

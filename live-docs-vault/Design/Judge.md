@@ -2,7 +2,7 @@
 type: design
 status: draft
 authority: specifies
-summary: "Step C of D12: an LLM judge between the hash and the agent. The hash keeps its recall; the judge decides whether a flagged change contradicts the note. Draft; to be finalised after run 2."
+summary: "Optional automation (superseded as core by D13): an LLM judge between the hash and the agent for changes made without an agent in the loop. The committing agent is the judge in the core design."
 created: 2026-09-23
 updated: 2026-09-23
 reviewed: 2026-09-23
@@ -11,7 +11,7 @@ tags: [live-docs, design, judge]
 
 # Judge
 
-> **Status: draft, 2026-09-23.** Written while run 2 (the D fixes) is in progress; the numbers that size the judge come from [[1a Run 1]] and will be revised with run 2. Not yet reviewed by the user.
+> **Status: optional automation, not core (D13, 2026-09-23).** The user's reframing: the hash mismatch is a deterministic signal ("note unedited, code it mentions changed"), and the agent that made the change is the judge, at commit. A model judge would re-derive context that agent already has. This note is kept as a design for automating reconciliation later (e.g. for changes made by tools or humans without an agent in the loop). The draft below predates D13.
 
 ## Why
 

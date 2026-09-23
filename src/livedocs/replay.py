@@ -94,7 +94,7 @@ def _has_mentions(text: str) -> bool:
 
 
 def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | Path, *,
-        limit: int | None = None, file_anchors: bool = False, log=print) -> Summary:
+        limit: int | None = None, file_anchors: bool = False, refine: bool = False, log=print) -> Summary:
     repo = Path(repo).resolve()
     out_dir = Path(out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -149,7 +149,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 if prev is None:
                     continue
                 phase, text = "pre_edit", prev
-            rep = ck.check(wt, vault_rel, note, drift_json=drift_json, text=text, all_stamps=all_stamps, idx=idx)
+            rep = ck.check(wt, vault_rel, note, drift_json=drift_json, text=text, all_stamps=all_stamps, idx=idx, refine=refine)
             bound = sorted({t.split("#", 1)[0] for t in (rep.stamp.bindings if rep.stamp else {})} & changed)
             row = Row(c, seq, note, phase, rep.state, rep.reasons + [f"refined:{t}" for t in rep.refined],
                       [f.__dict__ | {"was": None, "now": None} for f in rep.findings],  # sources are recoverable from git; keep rows small

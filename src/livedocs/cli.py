@@ -109,7 +109,25 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--out", required=True)
     s.add_argument("--limit", type=int)
     s.add_argument("--file-anchors", action="store_true")
+    s.add_argument("--refine", action="store_true", help="suppress flags when mentioned members are unchanged (run-2 mode)")
     s.set_defaults(fn=cmd_replay)
+
+    s = sub.add_parser("affected", help="notes bound to files changed in the working tree (or --cached: the index)")
+    _common(s)
+    s.add_argument("--cached", action="store_true")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_affected)
+
+    s = sub.add_parser("coverage", help="which of each note's code mentions are anchored; dangling names")
+    _common(s)
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_coverage)
+
+    s = sub.add_parser("install-hooks", help="write Claude Code hooks, the git pre-commit gate, and .livedocs/config.json")
+    _common(s)
+    s.add_argument("--no-claude", action="store_true")
+    s.add_argument("--no-git", action="store_true")
+    s.set_defaults(fn=cmd_install)
 
     s = sub.add_parser("grade", help="export grading items from a replay run, or summarise verdicts")
     s.add_argument("action", choices=["export", "pregrade", "reuse", "split", "summarize"])
@@ -144,8 +162,37 @@ def cmd_grade(args: argparse.Namespace) -> int:
 
 def cmd_replay(args: argparse.Namespace) -> int:
     from . import replay
-    summ = replay.run(Path(args.repo), args.vault, args.start, args.end, args.out, limit=args.limit, file_anchors=args.file_anchors)
+    summ = replay.run(Path(args.repo), args.vault, args.start, args.end, args.out, limit=args.limit,
+                      file_anchors=args.file_anchors, refine=args.refine)
     print(json.dumps(summ.__dict__, indent=1))
+    return 0
+
+
+def cmd_affected(args: argparse.Namespace) -> int:
+    from . import affected as af, render
+    reports = af.affected(Path(args.repo), args.vault, cached=args.cached)
+    if args.json:
+        print(json.dumps([r.to_dict() for r in reports], indent=1))
+    else:
+        lines = af.summary_lines(reports)
+        print("\n".join(lines) if lines else "no affected notes")
+    return 0
+
+
+def cmd_coverage(args: argparse.Namespace) -> int:
+    from . import coverage as cov
+    print(cov.report(cov.coverage(Path(args.repo), args.vault), as_json=args.json))
+    return 0
+
+
+def cmd_install(args: argparse.Namespace) -> int:
+    from . import install
+    repo = Path(args.repo).resolve()
+    print("wrote", install.install_config(repo, args.vault))
+    if not args.no_claude:
+        print("wrote", install.install_claude(repo))
+    if not args.no_git:
+        print("wrote", install.install_git(repo))
     return 0
 
 
