@@ -64,6 +64,18 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
 - Plan revised to **v0.2**. Biggest changes: the 1a harness (first-parent, check-before-stamp, grade all at-risk rows, flag episodes), the ambiguity superset policy for mentions, decorator hashing, the block-pickaxe diff base, and fail-closed shell wrappers for hooks. M4 (the 1a number) now comes before hooks and pre-commit.
 - Useful numbers from the reviewer: the first-parent window is 141 commits; 1,435 backtick spans in the 27 `Modules/` notes; 86 note-edit events, 44 coinciding with a change to the note's own module.
 
+## M1 built: mentions and symbols
+
+- Package `livedocs` (uv, stdlib only, hatchling) with `mentions.py`, `symbols.py`, a `survey` CLI, and 12 tests on a mini git fixture.
+- **Survey of all 70 hpc-bridge notes at HEAD:** 6,779 backtick mentions; 2,832 resolved, 352 superset, 111 constant-only, 3,484 unresolved; 670 symbols in 37 files. **Modules/ only:** 1,003 mentions → 660 resolved, 60 superset, 31 constant, 252 unresolved, 405 distinct drift targets.
+- Hand-check: every sampled `name:top-level` and `dotted` binding was correct; all supersets were legitimate over-binding (e.g. `manager_online` → the four facility classes). No false anchor found.
+- Changes made during the check:
+  - Dropped the "identifier shorter than 4 chars" noise rule to "shorter than 3"; the index rejects the rest.
+  - Indexed class attributes / dataclass fields (`phase`, `session_id`), which lifted Modules resolution from 549 to 660.
+  - Bare module names (`server`, `login`) resolve to the whole file (rule `name:module`, 12 bindings). Whole-file anchors are noisy; the stamp step should make them optional.
+  - `Class.member` where the class part is an alias (`app.teardown_task`) resolves by member name.
+- Caveat for grading: short attribute names (`profile`, `compute`, `tasks`) bind to whichever class has that field; wrong guesses over-flag, never false-fresh. Cause tag `attribute-guess`.
+
 ## Repo published
 
 - Initial commit `46c102f`, then pushed to **https://github.com/GusEllerm/vault-drift** (private). The user chose the name `vault-drift`. The local directory remains `~/Projects/live-docs`.

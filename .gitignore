@@ -12,3 +12,9 @@ live-docs-vault/.trash/
 
 # Phase 1 testbench: detached clone of a real project, never committed here
 testbench/
+
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/

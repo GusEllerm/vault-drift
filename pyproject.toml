@@ -1,0 +1,22 @@
+[project]
+name = "livedocs"
+version = "0.0.1"
+description = "Hash-anchored live docs: a thin wrapper over drift that tells agents when a note is out of date."
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+livedocs = "livedocs.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/livedocs"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
