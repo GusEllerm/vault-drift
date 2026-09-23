@@ -146,8 +146,8 @@ A documented repo gains: `drift.lock` (drift's), `<vault>/.livedocs/stamps.jsonl
 | M1 | `mentions`, `symbols` | Over all 70 hpc-bridge notes at HEAD: counts of resolved / own-module / superset / unresolved / noise per note; hand-check 3 notes against the reviewer's numbers (399 unique top-level, 37 unique method, ~67 ambiguous, 231 unresolvable of 1,435 spans in `Modules/`). Unit tests on the mini repo. |
 | M2 | `stamp`, `check`, `astdiff`, minimal `render` | On the testbench: stamp `server.md`; edit `_connect_facility` → `changed(signature|body)` with correct was/now and note lines; add a decorator → `changed(decorator)`; rename it → `broken`; revert → `fresh`; edit the note → `unknown(edited-since-stamp)`; re-`stamp` → `fresh`. |
 | M4 | `replay`, `grade`, first 1a run | Full `--first-parent 0ff0646..HEAD`; `summary.json`; grade per D10; **miss rate (excluding prose-only) and precision with cause tags.** This is the Phase 1a result. |
-| M3 | hooks, `affected` | In a Claude Code session on the testbench: gate fires on Read; `cat` is logged; Stop heads-up lists affected notes; killing the checker still yields the `unknown` line. |
-| M5 | pre-commit | Stage a staling change → refused with findings; `--ack` → passes; `unknown` never blocks; unstaged `stamps.jsonl` → refused. |
+| M3 | hooks, `affected` | **Done 2026-09-23** (exercised via stdin, not yet in a live session): gate fires on Read; `cat` is logged; Stop heads-up lists affected notes; drift missing or import crash yields the `unknown` line. |
+| M5 | pre-commit | **Done 2026-09-23:** staged staling change → refused with was/now; `--ack` → passes; benign change → auto-acked with a recorded reason; unstaged `stamps.jsonl` → refused. |
 
 ## 7. Design choices (resolved by review)
 

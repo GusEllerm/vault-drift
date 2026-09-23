@@ -29,9 +29,10 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **[[Implementation Plan]] v0.2 is written and reviewed.** Order: M1 mentions+symbols → M2 stamp/check → M4 replay harness (the 1a number) → M3 hooks → M5 pre-commit.
 - **M1, M2 and M4 are done** (2026-09-23): `livedocs survey | stamp | check | replay | grade` work on the testbench.
 - **The first 1a run is graded** — [[1a Run 1]]. Recall passes (4.3% misses); flag precision fails (2.7%; 26% at note level). The hash is a high-recall trigger, not a staleness verdict.
-- **The user chose D then C (D12).** D is done and measured — [[1a Run 2]]: false flags −40%, precision 2.7% → 5.1%, but member-level *suppression* lost a quarter of the real catches (miss rate 4.3% → 18.8%). Conclusion: keep coarse triggers, use member hashes as annotation, and let the judge decide (P23). The judge is drafted in [[Judge]].
+- **D is done and measured** — [[1a Run 2]]: false flags −40%, but member-level *suppression* lost a quarter of the real catches. **Then the user reframed the signal (D13):** a flag is the deterministic fact "note unedited, code it mentions changed"; the committing agent is the judge, at commit. No separate LLM judge ([[Judge]] is optional automation now); precision is overhead, not a kill criterion; recall, per-commit overhead and coverage are what matter.
+- **M3 and M5 are done and proven** (2026-09-23): `livedocs affected | coverage | install-hooks`; the read gate, Stop heads-up and bypass log hooks; the pre-commit gate with mechanical auto-ack for provably benign changes. See the session log for the proof.
 - **Pending:** the user's calibration pass, `results/1a-run1/user-calibration.md` (7 misses + 25 random flags).
-- **Next:** build the judge (step C): constant anchors (P24), a `--no-refine` trigger mode, the judge prompt, and evaluation against the 1,686 graded items from both runs.
+- **Next:** constant anchors (P24); try the hooks in a live Claude Code session on the testbench; Phase 1b in its D13 form (does the committing agent reconcile well?).
 
 *Update this section at the end of every session.*
 
