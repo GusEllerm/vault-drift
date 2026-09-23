@@ -197,10 +197,10 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
     lines = _note_lines(text, stamp.mentions.get(target, []))
     quals = binding.qualnames or ([target.split("#", 1)[1]] if "#" in target else [])
     out: list[Finding] = []
-    if not quals:  # whole-file anchor
+    if not quals:  # whole-file anchor with nothing specific mentioned
         out.append(Finding(target, path, "", "file", None, None, lines, base, "file changed"))
         return out
-    top = target.split("#", 1)[1]
+    top = target.split("#", 1)[1] if "#" in target else path.rsplit("/", 1)[-1]
     for q in quals:
         if was_src is not None:
             ch = astdiff.classify(was_src, now_src, q)
@@ -214,6 +214,8 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
         if ch.kind == astdiff.UNCHANGED:
             if was_src is None:
                 detail = f"{q} unchanged (comments/formatting or elsewhere in {top}; no committed base yet)"
+            elif "#" not in target:
+                detail = f"{top} changed elsewhere; {q} unchanged"
             elif q != top:
                 top_ch = astdiff.classify(was_src, now_src, top)
                 detail = f"{top} changed elsewhere ({top_ch.kind}); {q} unchanged"

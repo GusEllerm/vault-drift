@@ -24,6 +24,9 @@ class Foo:
 
     def shared(self):
         return 1
+
+    def unmentioned(self):
+        return 0
 ''',
     "src/pkg/sub/__init__.py": "",
     "src/pkg/sub/b.py": '''\

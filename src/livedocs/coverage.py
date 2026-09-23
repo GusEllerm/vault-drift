@@ -42,7 +42,7 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
         ms = mn.mentions(text)
         res = sy.resolve_note(f"{vault_rel}/{note}", text, idx, ms)
         anchored = sum(1 for r in res if r.status in (sy.RESOLVED, sy.SUPERSET) and r.targets)
-        unresolved = [r for r in res if r.status in (sy.UNRESOLVED, sy.CONSTANT_ONLY)]
+        unresolved = [r for r in res if r.status == sy.UNRESOLVED]
         dangling = sorted({r.mention.raw for r in unresolved if stp._code_like(r.mention)})
         latest = st.latest(st.for_note(all_stamps, note))
         out.append(NoteCoverage(note, len(ms), anchored, dangling, len(unresolved) - len(dangling),

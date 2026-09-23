@@ -11,7 +11,8 @@ def test_index_only_src_and_kinds(mini_repo):
     idx = sy.index(mini_repo)
     assert "tests/test_x.py" not in idx.files
     kinds = {s.qualname: s.kind for s in idx.symbols if s.path == "src/pkg/a.py"}
-    assert kinds == {"CONST": sy.CONSTANT, "baz": sy.FUNCTION, "Foo": sy.CLASS, "Foo.level": sy.ATTRIBUTE, "Foo.bar": sy.METHOD, "Foo.shared": sy.METHOD}
+    assert kinds == {"CONST": sy.CONSTANT, "baz": sy.FUNCTION, "Foo": sy.CLASS, "Foo.level": sy.ATTRIBUTE,
+                     "Foo.bar": sy.METHOD, "Foo.shared": sy.METHOD, "Foo.unmentioned": sy.METHOD}
     foo = idx.by_qualname("Foo")[0]
     assert foo.decorators == ("dataclass",)
     assert idx.by_qualname("Foo.bar")[0].drift_target == "src/pkg/a.py#Foo"
@@ -73,5 +74,5 @@ def test_paths_and_constants(mini_repo):
     r = _res(idx, "`src/pkg/a.py#Foo.bar`")
     assert r.targets == ["src/pkg/a.py#Foo"]
     r = _res(idx, "`CONST`")
-    assert r.status == sy.CONSTANT_ONLY and r.targets == []
+    assert r.status == sy.CONSTANT_ONLY and r.targets == ["src/pkg/a.py"]  # constants bind the file (P24)
     assert _res(idx, "`nothing_here`").status == sy.UNRESOLVED

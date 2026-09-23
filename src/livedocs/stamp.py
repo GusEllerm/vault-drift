@@ -77,14 +77,13 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
     raws: dict[str, list[list]] = defaultdict(list)
     unresolved: list[str] = []
     for r in resolutions:
-        if r.status in (sy.UNRESOLVED, sy.CONSTANT_ONLY):
+        if r.status == sy.UNRESOLVED:
             unresolved.append(r.mention.raw)
             continue
         for c in r.candidates:
-            if c.kind == sy.CONSTANT:
-                continue
             # Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in;
             # explicit paths to non-Python files (`pyproject.toml`) are cheap and catch config claims.
+            # Constants bind the file too (drift can't hash them) but carry their own member hash.
             if c.kind == sy.FILE and not file_anchors and (r.mention.kind != mn.PATH or c.path.endswith(".py")):
                 continue
             t = c.drift_target
@@ -102,10 +101,11 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             continue
         deco = ""
         members: dict[str, str] = {}
-        if "#" in target:
-            path, top = target.split("#", 1)
+        path = target.split("#", 1)[0]
+        if path.endswith(".py") and (repo / path).exists():
             src = (repo / path).read_text(encoding="utf-8", errors="replace")
-            deco = astdiff.decorator_hash(src, top)
+            if "#" in target:
+                deco = astdiff.decorator_hash(src, target.split("#", 1)[1])
             for q in quals.get(target, []):
                 h = astdiff.member_hash(src, q)
                 if h:

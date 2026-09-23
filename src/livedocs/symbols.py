@@ -53,7 +53,9 @@ class Symbol:
 
     @property
     def drift_target(self) -> str:
-        if self.kind == FILE:
+        # drift binds top-level functions/classes; constants can't be fingerprinted by it, so a
+        # constant binds the whole file and livedocs hashes the assignment itself (P24).
+        if self.kind in (FILE, CONSTANT):
             return self.path
         return f"{self.path}#{self.top_level_name}"
 
@@ -206,7 +208,7 @@ class Resolution:
 
     @property
     def targets(self) -> list[str]:
-        return sorted({c.drift_target for c in self.candidates if c.kind != CONSTANT})
+        return sorted({c.drift_target for c in self.candidates})
 
 
 def _prefer_module(cands: list[Symbol], hints: list[str]) -> list[Symbol]:
