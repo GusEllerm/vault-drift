@@ -2,7 +2,7 @@
 type: results
 status: active
 authority: log
-summary: "Phase 1b (D13 form): six headless Opus sessions made real changes on the testbench against the commit gate. Every reconciliation was honest and substantive; no gaming; two mechanism bugs found and fixed; overhead is set by how many notes mention a symbol."
+summary: "Phase 1b (D13 form): six headless Opus sessions made real changes on the testbench against the commit gate. Every reconciliation was honest and substantive; no gaming; two mechanism bugs found and fixed; overhead is set by how many notes mention a symbol, and declaring dated notes as snapshots (P25) removed 44% of bindings and most hand acks."
 created: 2026-09-23
 updated: 2026-09-23
 reviewed: 2026-09-23
@@ -43,6 +43,17 @@ Overhead is set by **how many notes mention the symbol**, not by the size of the
 - **The same reason repeated** across several notes for one change; an `--ack-all` for a change is a small UX win.
 
 Mechanical acks (comment-only, verified moves, members-unchanged) absorbed 44 of 78 reconciliations without the agent's involvement.
+
+## Run 2: with snapshot notes declared (P25)
+
+The 18 dated review/report notes were declared snapshots (`snapshot_globs` in `.livedocs/config.json`); the vault's bindings fell from 1,519 to 850 — 44% of all bindings had come from dated notes. t1 and t3 rerun on that baseline (`results/1b/run2/`):
+
+| Task | Hand acks | Mechanical | Turns | Cost | Gate runs |
+|---|---|---|---|---|---|
+| t1 (before → after) | 4 → **0** | 12 → 8 | 17 → **9** | $0.47 → **$0.30** | 2 → 1 |
+| t3 (before → after) | 8 → **5** | 1 → 0 | 16 → 18 | $0.43 → $0.45 | 1 → 1 |
+
+t1's gate passed on the first commit: the agent ran `livedocs affected`, updated `server.md` (old name out, new name in) and let the mechanical acks cover the rest. t3's remaining five acks are the five live notes that mention `_apply_partition` — the true cost of a widely mentioned symbol, and the number a note-hygiene pass would target next.
 
 ## Mechanism bugs found (both fixed, `c0a47cb`, `a4bffd5`)
 

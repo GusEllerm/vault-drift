@@ -1,0 +1,68 @@
+diff --git a/src/hpc_bridge/warmth.py b/src/hpc_bridge/warmth.py
+index 63fa556..316ebcd 100644
+--- a/src/hpc_bridge/warmth.py
++++ b/src/hpc_bridge/warmth.py
+@@ -220,11 +220,14 @@ async def _provision(
+ _VALID_PARTITION = re.compile(r"^[A-Za-z0-9_.:-]{1,64}$")
+ _VALID_ACCOUNT = re.compile(r"^[A-Za-z0-9_.:-]{1,64}$")
+ 
+-def _apply_partition(app: AppCtx, shape: str, rt: ShapeRuntime, partition: str | None) -> str | None:
++def _apply_partition(
++    app: AppCtx, shape: str, rt: ShapeRuntime, partition: str | None, *, strict: bool = False
++) -> str | None:
+     """Point this shape's next provision at `partition`, invalidating a stale runner. Returns a
+     rejection notice (and applies nothing) when a task is still running on the shape: the change would
+     mark the runner stale, and the next _runner_for would close its Executor and cancel that task — so
+-    make the caller poll_task/stop_endpoint first. Otherwise returns None.
++    make the caller poll_task/stop_endpoint first. With `strict=True` that rejection is raised as a
++    ValueError (carrying the same notice) instead of returned. Otherwise returns None.
+ 
+     No-op when `partition` is None (keep the facility/profile default) or unchanged, or for the
+     login shape, which has no partition. A real change means a different scheduler block,
+@@ -238,8 +241,11 @@ def _apply_partition(app: AppCtx, shape: str, rt: ShapeRuntime, partition: str |
+         return None
+     live = _live_task_handles(app, shape)
+     if live:
+-        return (f"can't change partition to {partition!r}: a task is still running "
+-                f"(task_id={live[0][0]!r}) on shape {shape!r}. poll_task it or stop_endpoint first.")
++        notice = (f"can't change partition to {partition!r}: a task is still running "
++                  f"(task_id={live[0][0]!r}) on shape {shape!r}. poll_task it or stop_endpoint first.")
++        if strict:
++            raise ValueError(notice)
++        return notice
+     rt.user_endpoint_config["partition"] = partition
+     rt.runner_stale = True
+     rt.warm_confirmed_at = None
+diff --git a/tests/test_server.py b/tests/test_server.py
+index 1885e0c..1924260 100644
+--- a/tests/test_server.py
++++ b/tests/test_server.py
+@@ -1543,6 +1543,28 @@ async def test_partition_change_rejected_while_task_running():
+     assert app.shapes["compute"].user_endpoint_config.get("partition") != "gpu"
+ 
+ 
++async def test_apply_partition_strict_raises_while_task_running():
++    # strict=True turns the live-task rejection into a ValueError carrying the same notice; the
++    # default keeps returning it. Either way nothing is applied.
++    import pytest
++
++    from hpc_bridge.server import _apply_partition
++
++    f = FakeFacility()
++    f.workers = 1
++    app = AppCtx(facility=f, profile=Profile())
++    runner = _FakeRunner("fake-eid", _Res(0, "", ""), pending=True)
++    app.runner_factory = lambda eid, user_endpoint_config=None, **_kw: runner
++    _confirm_slurm(app)
++    assert (await _run_shell(app, "sleep 999")).phase == "running"
++    rt = app.shapes["compute"]
++    notice = _apply_partition(app, "compute", rt, "gpu")
++    assert notice is not None and "still running" in notice
++    with pytest.raises(ValueError, match="still running"):
++        _apply_partition(app, "compute", rt, "gpu", strict=True)
++    assert rt.user_endpoint_config.get("partition") != "gpu" and not rt.runner_stale
++
++
+ async def test_stop_endpoint_drains_task_registry(monkeypatch):
+     # A close site (stop_endpoint here) drops the released block's poll handles so no dead future is
+     # polled; poll_task then reports the task ended.

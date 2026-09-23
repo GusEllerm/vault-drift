@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 23177,
+ "stop_reason": "end_turn",
+ "session_id": "c80cd8fb-4572-415f-888e-c2bcbd5d325c",
+ "total_cost_usd": 0.298614,
+ "usage": {
+  "input_tokens": 18,
+  "cache_creation_input_tokens": 25017,
+  "cache_read_input_tokens": 277230,
+  "output_tokens": 2148,
+  "output_tokens_details": {
+   "thinking_tokens": 268
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 25017,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 351,
+    "cache_read_input_tokens": 36259,
+    "cache_creation_input_tokens": 554,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 554
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 18,
+   "outputTokens": 2148,
+   "cacheReadInputTokens": 277230,
+   "cacheCreationInputTokens": 25017,
+   "webSearchRequests": 0,
+   "costUSD": 0.298614,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 268,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 9,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I renamed `_parse_hhmmss` to `_parse_walltime` and committed it on `1b/t1-rename-1790200585` as `9b056cc`. I haven't pushed. Unit tests pass (552 passed, 2 skipped) and ruff is clean.\n\n- **`src/`:** the definition and its one caller in `_task_ceiling_s` in `config.py`, plus the import in `server.py`. There were no other callers in `src/`.\n- **Tests (beyond what you asked):** `tests/test_server.py` and `tests/test_review_bugs.py` import the function by name, so I renamed it there too. Without that, both test files would fail to import.\n- **Docs:** `Modules/server.md` used the old name, and the pre-commit gate flagged it as broken. I updated the name in the note and re-stamped it. The gate automatically approved eight other notes as unaffected.\n\nI left the old name in the dated review notes under `Reference/Review \u2026 2026-09-03`. The repo treats those as fixed snapshots, so they still use the name the code had then.",
+ "ttft_ms": 2114,
+ "type": "result",
+ "duration_ms": 56965,
+ "uuid": "9b71753f-f505-4d50-baf2-b99ef611558c",
+ "ttft_stream_ms": 1173,
+ "time_to_request_ms": 233,
+ "first_content_frame_ms": 1173,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

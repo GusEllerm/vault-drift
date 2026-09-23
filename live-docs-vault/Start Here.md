@@ -37,7 +37,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **Constant anchors (P24) done.** A constant binds its file with drift and carries its own member hash; `shapes.md` flags on a value change and stays benign on unrelated edits.
 - **Live hook test done:** in headless Claude Code sessions the read gate, Stop heads-up and bypass log all reached (or bypassed) the model as designed; **subagents are covered** by the read gate.
 - **Phase 1b run 1 done** — [[1b Run 1]]: six Opus sessions made real changes against the gate; every update and ack was correct and specific, no gaming; two mechanism bugs found and fixed. Overhead is set by how many notes mention a symbol; dated review notes dominate the acks (P25).
-- **Next:** P25 (snapshot notes), then packaging (`uv tool install`) and a CI job.
+- **P25 done (snapshot notes):** dated records bind nothing; on hpc-bridge that removed 44% of bindings and took a rename task from 4 hand acks to 0.
+- **Next:** packaging (`uv tool install` from a published package, README) and a CI job for `--no-verify`.
 
 *Update this section at the end of every session.*
 

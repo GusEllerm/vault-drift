@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 49596,
+ "stop_reason": "end_turn",
+ "session_id": "478fee23-4b2f-4f51-8cff-985548b3e4e7",
+ "total_cost_usd": 0.44845779999999996,
+ "usage": {
+  "input_tokens": 30,
+  "cache_creation_input_tokens": 29106,
+  "cache_read_input_tokens": 527949,
+  "output_tokens": 5495,
+  "output_tokens_details": {
+   "thinking_tokens": 592
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 29106,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 743,
+    "cache_read_input_tokens": 42164,
+    "cache_creation_input_tokens": 419,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 419
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 30,
+   "outputTokens": 5495,
+   "cacheReadInputTokens": 527949,
+   "cacheCreationInputTokens": 29106,
+   "webSearchRequests": 0,
+   "costUSD": 0.44845779999999996,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 592,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 18,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I added the `strict` flag to `_apply_partition` and committed it on `1b/t3-optional-param-1790200646` as `ccd9540`. Nothing was pushed.\n\n**How I read \"fails validation\":** `_apply_partition` only returns a notice in one case: when a task is still running on the shape, so the partition can't be changed. The name check (`_VALID_PARTITION`) happens earlier, in `server.py`, not in this function. So with `strict=True`, it's that running-task case that now raises `ValueError` (with the same message). If you meant the function to also check the partition name itself, that would be a separate change.\n\n**Changes:**\n- **`src/hpc_bridge/warmth.py`:** added `*, strict: bool = False` to the signature and updated the docstring. With the default, behaviour is unchanged and nothing calls it with `strict=True` yet.\n- **`tests/test_server.py`:** added `test_apply_partition_strict_raises_while_task_running`. It checks that the default returns the notice, that `strict=True` raises, and that the partition isn't changed in either case.\n- **Livedocs:** five vault notes mention `_apply_partition`, which triggered the pre-commit gate. None of them describe the rejection in enough detail to become wrong, so I marked them as still correct (`--ack`) rather than editing them, and staged `drift.lock` and `stamps.jsonl` with the commit.\n\n**Checks:** 553 tests pass (2 skipped), and ruff and mypy are clean. The bare `python -m pytest` in CLAUDE.md fails here because the conda Python doesn't have pytest installed, so I ran the tests with `uv run python -m pytest`.\n\nSeveral connectors aren't usable in this session. Booking.com, Kiwi.com, Tripadvisor, lastminute.com and the Cloudflare plugin servers need authorizing (in your claude.ai connector settings or via `/mcp`), and the `endpoint` and `local-websearch` servers failed to connect. None of them were needed for this task.",
+ "ttft_ms": 1881,
+ "type": "result",
+ "duration_ms": 78218,
+ "uuid": "35451a17-1fa1-479c-afb0-d849631f38e8",
+ "ttft_stream_ms": 996,
+ "time_to_request_ms": 230,
+ "first_content_frame_ms": 996,
+ "queued_turn_count": 0,
+ "result_index": 0
+}

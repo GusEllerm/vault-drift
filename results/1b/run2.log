@@ -1,0 +1,130 @@
+== t1-rename
+{
+ "task": "t1-rename",
+ "expect": "update (the note names the old function)",
+ "branch": "1b/t1-rename-1790200585",
+ "model": "opus",
+ "seconds": 60,
+ "turns": 9,
+ "cost_usd": 0.298614,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Modules/server.md",
+   "verdict": "update",
+   "by": "human",
+   "reason": "",
+   "stamped": "2026-09-23T21:57:06Z"
+  },
+  {
+   "note": "Concepts/Warmth, the canary & cold-start.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Modules/config.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Modules/scheduler_ops.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Agentic testing - Plan B (runtime sandbox).md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Cross-harness portability.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Endpoint reuse and MEP integration.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  },
+  {
+   "note": "Planned/V1 release.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  },
+  {
+   "note": "Reference/Plugin packaging.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  }
+ ],
+ "uncommitted": false,
+ "result_tail": "ers in `src/`.\n- **Tests (beyond what you asked):** `tests/test_server.py` and `tests/test_review_bugs.py` import the function by name, so I renamed it there too. Without that, both test files would fail to import.\n- **Docs:** `Modules/server.md` used the old name, and the pre-commit gate flagged it as broken. I updated the name in the note and re-stamped it. The gate automatically approved eight other notes as unaffected.\n\nI left the old name in the dated review notes under `Reference/Review \u2026 2026-09-03`. The repo treats those as fixed snapshots, so they still use the name the code had then."
+}
+== t3-optional-param
+{
+ "task": "t3-optional-param",
+ "expect": "ack (benign addition; claims hold)",
+ "branch": "1b/t3-optional-param-1790200646",
+ "model": "opus",
+ "seconds": 81,
+ "turns": 18,
+ "cost_usd": 0.44845779999999996,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Concepts/Resource shapes & the spend floor.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained keyword-only strict=False (raise instead of return the live-task notice); default behaviour unchanged, note still accurate",
+   "stamped": "2026-09-23T21:58:29Z"
+  },
+  {
+   "note": "Modules/facility-mep.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained keyword-only strict=False (raise instead of return the live-task notice); default behaviour unchanged, note still accurate",
+   "stamped": "2026-09-23T21:58:30Z"
+  },
+  {
+   "note": "Modules/profile.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained keyword-only strict=False (raise instead of return the live-task notice); default behaviour unchanged, note still accurate",
+   "stamped": "2026-09-23T21:58:30Z"
+  },
+  {
+   "note": "Modules/server.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained keyword-only strict=False (raise instead of return the live-task notice); default behaviour unchanged, note still accurate",
+   "stamped": "2026-09-23T21:58:31Z"
+  },
+  {
+   "note": "Modules/warmth.md",
+   "verdict": "ack",
+   "by": "human",
+   "reason": "_apply_partition gained keyword-only strict=False (raise instead of return the live-task notice); default behaviour unchanged, note still accurate",
+   "stamped": "2026-09-23T21:58:31Z"
+  }
+ ],
+ "uncommitted": false,
+ "result_tail": " staged `drift.lock` and `stamps.jsonl` with the commit.\n\n**Checks:** 553 tests pass (2 skipped), and ruff and mypy are clean. The bare `python -m pytest` in CLAUDE.md fails here because the conda Python doesn't have pytest installed, so I ran the tests with `uv run python -m pytest`.\n\nSeveral connectors aren't usable in this session. Booking.com, Kiwi.com, Tripadvisor, lastminute.com and the Cloudflare plugin servers need authorizing (in your claude.ai connector settings or via `/mcp`), and the `endpoint` and `local-websearch` servers failed to connect. None of them were needed for this task."
+}

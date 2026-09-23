@@ -1,0 +1,78 @@
+{
+ "task": "t1-rename",
+ "expect": "update (the note names the old function)",
+ "branch": "1b/t1-rename-1790200585",
+ "model": "opus",
+ "seconds": 60,
+ "turns": 9,
+ "cost_usd": 0.298614,
+ "commits": 1,
+ "gate_runs": 1,
+ "new_stamps": [
+  {
+   "note": "Modules/server.md",
+   "verdict": "update",
+   "by": "human",
+   "reason": "",
+   "stamped": "2026-09-23T21:57:06Z"
+  },
+  {
+   "note": "Concepts/Warmth, the canary & cold-start.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Modules/config.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Modules/scheduler_ops.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Agentic testing - Plan B (runtime sandbox).md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Cross-harness portability.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:19Z"
+  },
+  {
+   "note": "Planned/Endpoint reuse and MEP integration.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  },
+  {
+   "note": "Planned/V1 release.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  },
+  {
+   "note": "Reference/Plugin packaging.md",
+   "verdict": "ack",
+   "by": "pre-commit",
+   "reason": "mechanical: unchanged",
+   "stamped": "2026-09-23T21:57:20Z"
+  }
+ ],
+ "uncommitted": false,
+ "result_tail": "ers in `src/`.\n- **Tests (beyond what you asked):** `tests/test_server.py` and `tests/test_review_bugs.py` import the function by name, so I renamed it there too. Without that, both test files would fail to import.\n- **Docs:** `Modules/server.md` used the old name, and the pre-commit gate flagged it as broken. I updated the name in the note and re-stamped it. The gate automatically approved eight other notes as unaffected.\n\nI left the old name in the dated review notes under `Reference/Review \u2026 2026-09-03`. The repo treats those as fixed snapshots, so they still use the name the code had then."
+}
