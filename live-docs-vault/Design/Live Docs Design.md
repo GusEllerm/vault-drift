@@ -99,9 +99,11 @@ The short version is below; the research notes have the details.
   livedocs (thin wrapper over drift; checks never write)
     stamp · check · affected
 
+  git hooks
+    pre-commit                          → block on changed/broken notes in the index (§6.6)
   Claude Code hooks
     PostToolUse on Read of vault paths  → read-time gate (§6.7)
-    Stop                                → notes affected by this task (§6.6)
+    Stop                                → non-blocking heads-up: notes affected by this task (§6.6)
     logging of Grep/Bash reads of vault paths → bypass rate
 ```
 
@@ -176,7 +178,7 @@ Everything else is deferred (§11): CI gating, an MCP gateway, reports, Bases vi
 
 - **Order, worst first:** `broken` > `changed` > `unknown` > `fresh`. A note takes the worst state across its anchors.
 - **Fail closed:** anything short of positive verification is `unknown`, never `fresh`. A false `fresh` is the one failure that makes the system worse than having none, because agents trust a checked note more than an unchecked one.
-- **Which tree is checked:** at read time, the working tree. In the Stop hook, the working tree against `HEAD`. In CI (deferred), the commit.
+- **Which tree is checked:** at read time, the working tree. In the Stop hook, the working tree against `HEAD`. In pre-commit, the index. In CI, the commit.
 
 ### 6.6 Where checks run, and the coverage of the guarantee
 
@@ -192,12 +194,15 @@ Everything else is deferred (§11): CI gating, an MCP gateway, reports, Bases vi
   3. an MCP gateway as the only sanctioned way into the vault (portable, but agents can still go around it unless Bash is restricted).
 - [[Start Here]] currently tells agents to grep summaries. Accept that for Phase 1 and measure it; summaries are frontmatter, not code claims.
 
-**Write time.** One `Stop` hook runs at the end of the agent's task. One hook per edit would give a 20-edit refactor 20 interruptions.
-- It runs `livedocs affected` on `git diff --name-only` and lists the notes whose anchors changed.
-- It also catches changes made by `sed -i`, formatters and `git pull`, which an `Edit|Write` matcher misses.
-- Whether it blocks (`decision: block`) until the agent reconciles the notes, or only lists them, is §9 question 3.
+**Write time: block at commit (D11).** The commit is the collection point.
+- **Pre-commit hook.** Compares the *staged* blobs, not the working tree: a note fixed but unstaged doesn't count as fixed, and an unstaged code change doesn't flag. Every `changed` or `broken` note in the staged tree must be updated or acked (§6.8) before the commit goes through. `unknown` never blocks, or every new note would block its own first commit.
+- **Why commit:** it's harness-agnostic (fires for any agent or human); acks land in the diff next to the code change, so rubber-stamping is visible in review; batching is natural; and in this workflow the human is the one who says "commit", so they're present for the reconciliation.
+- **The invariant it buys:** every commit's notes are vouched for against that commit's code. The diff base for a note is therefore always the last commit that touched its stamp, always resolvable, and a read-time `changed` means exactly "the working tree has moved since the last commit that vouched for this note".
+- **Stop hook: non-blocking heads-up.** At the end of the agent's task it runs `livedocs affected` on `git diff --name-only` and lists the notes whose anchors changed, so nothing is a surprise at commit time. It also catches `sed -i`, formatters and `git pull`, which an `Edit|Write` matcher misses. One hook per edit would give a 20-edit refactor 20 interruptions.
+- **CI backstop.** `livedocs check` runs in CI to catch `--no-verify`, merge commits and rebases, which pre-commit doesn't cover. (In Phase 1 the testbench has no CI; the replay harness plays that role.)
+- **Debt in uncommitted sessions** is a debt problem, not a safety problem: the read gate still delivers corrections against the working tree.
 
-**CI: deferred.** Don't fail CI on `changed` notes until Phase 1a has measured flag precision.
+**Phase 1 exception.** 1a is list-only, so it measures what agents do unprompted. 1b includes commit tasks and measures reconciliation under block-at-commit: update vs. ack vs. `--no-verify`, with ack reasons graded from the testbench history.
 
 ### 6.7 What the agent sees
 
@@ -322,10 +327,9 @@ Work through §11, in the order that Phase 1's cause tags and logs show matters 
 ## 9. Open questions
 
 **For the user:**
-1. **Mid-task, may an agent queue note fixes, or must every session leave the vault fresh?** This decides whether the Stop hook blocks.
-2. **Would you rather contribute to drift or own a tool,** if Phase 1 passes?
+1. **Would you rather contribute to drift or own a tool,** if Phase 1 passes?
 
-**Resolved 2026-09-22:** testbench = hpc-bridge, detached clone (D9). Grading: agent by rubric, user grades every miss + 25 calibration flags (D10).
+**Resolved 2026-09-22:** testbench = hpc-bridge, detached clone (D9). Grading: agent by rubric, user grades every miss + 25 calibration flags (D10). Write-time posture: block at commit; Stop hook is a non-blocking heads-up (D11).
 
 **Technical** (agents can settle these later):
 - The merge strategy for `stamps.jsonl` across branches.

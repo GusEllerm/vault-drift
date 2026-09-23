@@ -51,7 +51,11 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
 - Inspect the 3 stale / 3 broken items drift found on the clean repo.
 - Write the livedocs wrapper: `stamp` (derive anchors from mentions), `check` (read-only, was/now output), `affected`.
 - Build the replay harness for 1a over `0ff0646..HEAD`.
-- Whether the Stop hook should block (§9 Q1).
+## Write-time posture decided (D11)
+
+- Discussed the postures for what happens when an agent changes code that notes depend on: list-don't-block, block at Stop, block once with a deferral queue, block at commit, graded, queue + separate reconciler, auto-reconcile.
+- **The user chose block at commit.** Recorded as D11 and written into design §6.6. Key properties: index-based check; `unknown` never blocks; CI backstop; Stop hook stays a non-blocking heads-up; every commit's notes are vouched for against that commit's code, which makes the diff base always resolvable.
+- Phase 1a stays list-only for clean measurement; 1b tests block-at-commit.
 
 ## Repo published
 
