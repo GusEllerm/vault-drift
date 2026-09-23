@@ -26,9 +26,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **Phase 1 measures whether the guarantee holds** with strict kill criteria ([[Live Docs Design#8. Plan]]). **Testbench: hpc-bridge**, a detached clone at `testbench/hpc-bridge` (gitignored). Its vault was created 249 commits before tip, so the replay window is vault-creation → tip.
 - **drift v0.10.1 is installed and smoke-tested** on the clone: it binds notes to Python symbols, flags body edits, ignores whitespace. Details in [[2026-09-22 Resolving the Review]].
 - **No livedocs code yet.** The repo is `GusEllerm/vault-drift` on GitHub (private); the local folder is still named `live-docs`.
-- **Next:**
-  1. Write the livedocs wrapper (`stamp`, `check`, `affected`) over drift.
-  2. Build the 1a replay harness over the testbench's history.
+- **[[Implementation Plan]] v0.2 is written and reviewed.** Order: M1 mentions+symbols → M2 stamp/check → M4 replay harness (the 1a number) → M3 hooks → M5 pre-commit.
+- **Next:** start M1.
 
 *Update this section at the end of every session.*
 
@@ -50,9 +49,11 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
 ## Map
 
 - **Design:**
-  - [[Live Docs Design]] (v0.2): summary, components, freshness states, what the agent sees, the Phase 1 experiment, open questions, and the deferred backlog.
+  - [[Live Docs Design]] (v0.3): summary, components, freshness states, what the agent sees, the Phase 1 experiment, open questions, and the deferred backlog.
+  - [[Implementation Plan]] (v0.2): the Phase 1 code — package layout, verified drift facts, components, the 1a replay harness, milestones.
 - **Reviews:**
   - [[2026-09-21 Design Review]]: three critics, two rounds, and what changed as a result.
+  - [[2026-09-22 Implementation Plan Review]]: eleven issues against plan v0.1, most verified on the testbench.
 - **Research** (authority `reference`; re-check anything older than a few months):
   - [[Evidence - Agents and Stale Context]]: why the problem matters, and the corrected Meetless reading.
   - [[Prior Art - Code-Coupled Documentation]]: Fiberplane drift, Swimm, detection research, fingerprinting.

@@ -57,6 +57,13 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
 - **The user chose block at commit.** Recorded as D11 and written into design §6.6. Key properties: index-based check; `unknown` never blocks; CI backstop; Stop hook stays a non-blocking heads-up; every commit's notes are vouched for against that commit's code, which makes the diff base always resolvable.
 - Phase 1a stays list-only for clean measurement; 1b tests block-at-commit.
 
+## Implementation plan and its review
+
+- Wrote [[Implementation Plan]] v0.1 (package layout, components, CLI, milestones, seven flagged choices), after probing drift: it binds top-level symbols only (`Class.method` fails), `drift refs` takes a target, and the Stop hook supports non-blocking `additionalContext`.
+- One reviewer subagent, with read access to the testbench, found eleven issues ([[2026-09-22 Implementation Plan Review]]). The orchestrating agent re-verified the two with the largest code impact: drift refuses to re-link an existing binding (use `--doc-is-still-accurate`), and a renamed symbol is `stale` + `symbol_not_found`, not `broken`.
+- Plan revised to **v0.2**. Biggest changes: the 1a harness (first-parent, check-before-stamp, grade all at-risk rows, flag episodes), the ambiguity superset policy for mentions, decorator hashing, the block-pickaxe diff base, and fail-closed shell wrappers for hooks. M4 (the 1a number) now comes before hooks and pre-commit.
+- Useful numbers from the reviewer: the first-parent window is 141 commits; 1,435 backtick spans in the 27 `Modules/` notes; 86 note-edit events, 44 coinciding with a change to the note's own module.
+
 ## Repo published
 
 - Initial commit `46c102f`, then pushed to **https://github.com/GusEllerm/vault-drift** (private). The user chose the name `vault-drift`. The local directory remains `~/Projects/live-docs`.
