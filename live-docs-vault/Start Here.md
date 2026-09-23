@@ -34,7 +34,9 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **Pending:** the user's calibration pass, `results/1a-run1/user-calibration.md` (7 misses + 25 random flags).
 - **D14 (2026-09-23):** the guarantee is a mechanism of the development framework, not the agent: versioned git gate + CI always; Stop heads-up recommended; read gate opt-in; bypass log measurement-only. `livedocs init` sets this up.
 - **D15:** "aligned" = stamped against the current code (`update` or `ack --reason`); the gate as built implements it.
-- **Next:** constant anchors (P24); hooks in a live Claude Code session; Phase 1b in its D13 form; packaging (`uv tool install`), a CI job, and verifying whether hooks cover subagents.
+- **Constant anchors (P24) done.** A constant binds its file with drift and carries its own member hash; `shapes.md` flags on a value change and stays benign on unrelated edits.
+- **Live hook test done:** in headless Claude Code sessions the read gate, Stop heads-up and bypass log all reached (or bypassed) the model as designed; **subagents are covered** by the read gate.
+- **Next, one by one:** Phase 1b in its D13 form (agents performing real changes against the gate; inspect their stamps); packaging (`uv tool install`) and a CI job.
 
 *Update this section at the end of every session.*
 

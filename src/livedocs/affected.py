@@ -44,7 +44,10 @@ def summary_lines(reports: list[ck.Report]) -> list[str]:
     for r in reports:
         if r.state == ck.FRESH:
             continue
-        kinds = sorted({f.kind for f in r.findings})
-        extra = f" ({', '.join(kinds)})" if kinds else (f" ({'; '.join(r.reasons)})" if r.reasons else "")
+        if ck.mechanically_benign(r):
+            extra = " (benign: the members it mentions are unchanged — will be auto-acked at commit)"
+        else:
+            kinds = sorted({f.kind for f in r.findings} - {"unchanged"})
+            extra = f" ({', '.join(kinds)})" if kinds else (f" ({'; '.join(r.reasons)})" if r.reasons else "")
         out.append(f"{r.state.upper():8} {r.note}{extra}")
     return out
