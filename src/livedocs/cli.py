@@ -102,8 +102,43 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--json", action="store_true")
     s.set_defaults(fn=cmd_check)
 
+    s = sub.add_parser("replay", help="1a harness: replay history, stamping and checking notes")
+    _common(s)
+    s.add_argument("--from", dest="start", required=True)
+    s.add_argument("--to", dest="end", default="HEAD")
+    s.add_argument("--out", required=True)
+    s.add_argument("--limit", type=int)
+    s.add_argument("--file-anchors", action="store_true")
+    s.set_defaults(fn=cmd_replay)
+
+    s = sub.add_parser("grade", help="export grading items from a replay run, or summarise verdicts")
+    s.add_argument("action", choices=["export", "summarize"])
+    s.add_argument("--repo")
+    s.add_argument("--vault")
+    s.add_argument("--out", required=True, help="the replay output directory")
+    s.set_defaults(fn=cmd_grade)
+
     args = ap.parse_args(argv)
     return args.fn(args)
+
+
+def cmd_grade(args: argparse.Namespace) -> int:
+    from . import grade
+    if args.action == "export":
+        if not (args.repo and args.vault):
+            print("grade export needs --repo and --vault", file=sys.stderr)
+            return 2
+        grade.export(Path(args.repo), args.vault, args.out)
+    else:
+        grade.summarize(args.out)
+    return 0
+
+
+def cmd_replay(args: argparse.Namespace) -> int:
+    from . import replay
+    summ = replay.run(Path(args.repo), args.vault, args.start, args.end, args.out, limit=args.limit, file_anchors=args.file_anchors)
+    print(json.dumps(summ.__dict__, indent=1))
+    return 0
 
 
 if __name__ == "__main__":

@@ -61,17 +61,21 @@ def _note_lines(text: str, raws: list[list]) -> list[int]:
     return sorted(out)
 
 
-def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None = None) -> Report:
+def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None = None,
+          text: str | None = None, all_stamps: list[st.Stamp] | None = None) -> Report:
+    """`text` overrides the note's on-disk content (the replay harness passes the pre-edit text
+    to ask whether the old note was wrong about the new code)."""
     repo = Path(repo)
     vault = repo / vault_rel
     doc = _doc_path(vault_rel, note)
     note_path = vault / note
-    if not note_path.exists():
-        return Report(note, UNKNOWN, ["note-missing"])
-    text = note_path.read_text(encoding="utf-8")
+    if text is None:
+        if not note_path.exists():
+            return Report(note, UNKNOWN, ["note-missing"])
+        text = note_path.read_text(encoding="utf-8")
     current = st.note_hash(text)
 
-    note_stamps = st.for_note(st.load(vault), note)
+    note_stamps = st.for_note(all_stamps if all_stamps is not None else st.load(vault), note)
     if not note_stamps:
         return Report(note, UNKNOWN, ["never-stamped"])
     lock = drift_io.lock(repo)

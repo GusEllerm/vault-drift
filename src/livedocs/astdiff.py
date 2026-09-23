@@ -96,7 +96,8 @@ def _dump(node: ast.AST) -> str:
 
 def _sig_dump(node: ast.AST) -> str:
     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-        return node.name + _dump(node.args) + (_dump(node.returns) if node.returns else "")
+        # sync→async is a signature change: callers must await it
+        return type(node).__name__ + node.name + _dump(node.args) + (_dump(node.returns) if node.returns else "")
     if isinstance(node, ast.ClassDef):
         return node.name + "".join(_dump(b) for b in node.bases) + "".join(_dump(k) for k in node.keywords)
     return ""

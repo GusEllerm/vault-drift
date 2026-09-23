@@ -34,6 +34,7 @@ def _mut(s: str, old: str, new: str) -> str:
 def test_classify_kinds():
     assert astdiff.classify(OLD, OLD, "f").kind == astdiff.UNCHANGED
     assert astdiff.classify(OLD, _mut(OLD, "def f(a, b=1)", "def f(a, b=2)"), "f").kind == astdiff.SIGNATURE
+    assert astdiff.classify(OLD, _mut(OLD, "def f(a, b=1)", "async def f(a, b=1)"), "f").kind == astdiff.SIGNATURE
     assert astdiff.classify(OLD, _mut(OLD, "@deco", "@other"), "f").kind == astdiff.DECORATOR
     assert astdiff.classify(OLD, _mut(OLD, "# comment", "# changed"), "f").kind == astdiff.COMMENT_ONLY
     assert astdiff.classify(OLD, _mut(OLD, '"""doc"""', '"""new doc"""'), "f").kind == astdiff.COMMENT_ONLY
