@@ -25,7 +25,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **[[Live Docs Design]] is at v0.3.** The product is a **guarantee**: an agent reading a note about code is told if that code is technically out of date. Scope is documentation of code only; Obsidian is the interface, not a dependency.
 - **Phase 1 measures whether the guarantee holds** with strict kill criteria ([[Live Docs Design#8. Plan]]). **Testbench: hpc-bridge**, a detached clone at `testbench/hpc-bridge` (gitignored). Its vault was created 249 commits before tip, so the replay window is vault-creation → tip.
 - **drift v0.10.1 is installed and smoke-tested** on the clone: it binds notes to Python symbols, flags body edits, ignores whitespace. Details in [[2026-09-22 Resolving the Review]].
-- **No livedocs code yet.** The project is a git repo (branch `main`, no commits yet).
+- **No livedocs code yet.** The repo is `GusEllerm/vault-drift` on GitHub (private); the local folder is still named `live-docs`.
 - **Next:**
   1. Write the livedocs wrapper (`stamp`, `check`, `affected`) over drift.
   2. Build the 1a replay harness over the testbench's history.

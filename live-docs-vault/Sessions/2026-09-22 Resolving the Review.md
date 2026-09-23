@@ -52,7 +52,10 @@ Apply the user's answers to the questions left open by [[2026-09-21 Design Revie
 - Write the livedocs wrapper: `stamp` (derive anchors from mentions), `check` (read-only, was/now output), `affected`.
 - Build the replay harness for 1a over `0ff0646..HEAD`.
 - Whether the Stop hook should block (§9 Q1).
-- Still no commits in the live-docs repo.
+
+## Repo published
+
+- Initial commit `46c102f`, then pushed to **https://github.com/GusEllerm/vault-drift** (private). The user chose the name `vault-drift`. The local directory remains `~/Projects/live-docs`.
 
 ## Notes for the next agent
 
