@@ -62,7 +62,8 @@ class Symbol:
 class SymbolIndex:
     ref: str
     symbols: list[Symbol] = field(default_factory=list)
-    files: set[str] = field(default_factory=set)
+    files: set[str] = field(default_factory=set)  # indexed .py files under the roots
+    all_files: set[str] = field(default_factory=set)  # every tracked file (for path mentions like pyproject.toml)
     _by_qualname: dict[str, list[Symbol]] = field(default_factory=lambda: defaultdict(list))
     _by_name: dict[str, list[Symbol]] = field(default_factory=lambda: defaultdict(list))
 
@@ -80,7 +81,12 @@ class SymbolIndex:
 
     def files_matching(self, suffix: str) -> list[str]:
         suffix = suffix.lstrip("./")
-        return sorted(f for f in self.files if f == suffix or f.endswith("/" + suffix))
+        pool = self.files if suffix.endswith(".py") else (self.all_files or self.files)
+        hits = sorted(f for f in pool if f == suffix or f.endswith("/" + suffix))
+        if len(hits) > 1 and suffix.endswith(".py"):  # prefer src/ over tests/ or docs copies
+            src = [h for h in hits if h.startswith("src/")]
+            hits = src or hits
+        return hits
 
 
 # --- building the index ------------------------------------------------------
@@ -131,8 +137,10 @@ def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] = ("src/",
     idx = SymbolIndex(ref=ref)
     if ref == "WORKTREE":
         listing = _git(repo, "ls-files", "--", *roots)
+        idx.all_files = {l for l in _git(repo, "ls-files").split("\n") if l}
     else:
         listing = _git(repo, "ls-tree", "-r", "--name-only", ref, "--", *roots)
+        idx.all_files = {l for l in _git(repo, "ls-tree", "-r", "--name-only", ref).split("\n") if l}
     for path in listing.split("\n"):
         if not path.endswith(".py"):
             continue
@@ -247,6 +255,13 @@ def resolve(m: Mention, idx: SymbolIndex, hints: list[str] = ()) -> Resolution:
     if not cands:
         cands = [s for s in idx.by_name(m.text) if s.kind in (METHOD, ATTRIBUTE)]
         rule = "name:member"
+        # A bare, short attribute name (`compute`, `status`) binds to whichever class happens to have
+        # that field — the run-1 `attribute-guess` false flags. Require the note's own module for those.
+        if cands and all(c.kind == ATTRIBUTE for c in cands) and not m.raw.endswith(")") \
+                and "_" not in m.text and len(m.text) < 8:
+            own = _prefer_module(cands, hints)
+            cands = own if own is not cands else []
+            rule = "name:member:weak"
     if not cands:  # a bare module name: `server`, `login` → the whole file
         files = idx.files_matching(m.text + ".py")
         cands = [Symbol(f, "", FILE) for f in files]

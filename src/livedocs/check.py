@@ -33,12 +33,15 @@ class Report:
     reasons: list[str] = field(default_factory=list)
     findings: list[Finding] = field(default_factory=list)
     stamp: st.Stamp | None = None
+    warnings: list[str] = field(default_factory=list)  # state-independent: dangling mentions etc.
+    refined: list[str] = field(default_factory=list)  # anchors drift flagged but the mentioned members are unchanged
 
     def to_dict(self) -> dict:
         return {
             "note": self.note, "state": self.state, "reasons": self.reasons,
             "findings": [f.__dict__ for f in self.findings],
             "stamped": self.stamp.stamped if self.stamp else None,
+            "warnings": self.warnings, "refined": self.refined,
         }
 
 
@@ -62,7 +65,7 @@ def _note_lines(text: str, raws: list[list]) -> list[int]:
 
 
 def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None = None,
-          text: str | None = None, all_stamps: list[st.Stamp] | None = None) -> Report:
+          text: str | None = None, all_stamps: list[st.Stamp] | None = None, idx=None) -> Report:
     """`text` overrides the note's on-disk content (the replay harness passes the pre-edit text
     to ask whether the old note was wrong about the new code)."""
     repo = Path(repo)
@@ -99,6 +102,7 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
     state = FRESH
     reasons: list[str] = []
     findings: list[Finding] = []
+    refined: list[str] = []
     for target, binding in stamp.bindings.items():
         a = by_target.get(target)
         path = target.split("#", 1)[0]
@@ -107,10 +111,17 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             reasons.append(f"anchor-not-in-drift-output: {target}")
             continue
         code = (a.get("reason") or {}).get("code")
+        lines = _note_lines(text, stamp.mentions.get(target, []))
         if a["result"] != "fresh" and code in drift_io.BROKEN_CODES:
-            state = _worse(state, BROKEN)
-            findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target, "anchor-missing",
-                                    None, None, _note_lines(text, stamp.mentions.get(target, [])), None, code))
+            moved = _find_move(repo, target, binding, idx) if binding.members else None
+            if moved:
+                state = _worse(state, CHANGED)
+                findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target,
+                                        "moved", None, None, lines, None, f"now in {moved}"))
+            else:
+                state = _worse(state, BROKEN)
+                findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target,
+                                        "anchor-missing", None, None, lines, None, code))
             continue
         current_text = (repo / path).read_text(encoding="utf-8") if (repo / path).exists() else None
         if current_text is not None and path.endswith(".py") and not astdiff.parses(current_text):
@@ -121,9 +132,34 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             continue
         deco_now = astdiff.decorator_hash(current_text or "", target.split("#", 1)[1]) if "#" in target and current_text else ""
         if a["result"] != "fresh" or deco_now != binding.deco:
+            # drift says the top-level symbol changed. Refine: did anything the note *mentions* change?
+            if binding.members and current_text is not None:
+                changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q) != h]
+                if not changed_members:
+                    refined.append(target)
+                    continue
             state = _worse(state, CHANGED)
             findings.extend(_findings_for(repo, doc, target, binding, text, stamp, current_text))
-    return Report(note, state, reasons, findings, stamp)
+    warnings = [f"mentions `{d}`, which does not exist in src" for d in stamp.dangling]
+    return Report(note, state, reasons, findings, stamp, warnings, refined)
+
+
+def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
+    """A symbol drift can't find any more: is there one with the same name elsewhere in src whose
+    mentioned members hash identically? Then it moved (the run-1 'split server.py' case)."""
+    if "#" not in target:
+        return None
+    from . import symbols as sy
+    if idx is None:
+        idx = sy.index(repo, "WORKTREE")
+    old_path, top = target.split("#", 1)
+    for cand in idx.by_qualname(top):
+        if cand.path == old_path:
+            continue
+        src = (repo / cand.path).read_text(encoding="utf-8", errors="replace")
+        if all(astdiff.member_hash(src, q) == h for q, h in binding.members.items()):
+            return cand.path
+    return None
 
 
 def _worse(a: str, b: str) -> str:

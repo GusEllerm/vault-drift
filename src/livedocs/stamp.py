@@ -13,6 +13,17 @@ class StampError(RuntimeError):
     pass
 
 
+def _code_like(m: mn.Mention) -> bool:
+    """A mention that reads as a Python identifier the author expected to exist: snake_case with an
+    underscore, CamelCase, a call, or a dotted name. Bare words like `compute` don't count."""
+    t = m.text
+    if m.kind == mn.DOTTED or m.raw.endswith(")"):
+        return True
+    if m.kind == mn.NAME:
+        return ("_" in t and t.islower()) or (t[0].isupper() and any(c.islower() for c in t) and "_" not in t)
+    return False
+
+
 @dataclass
 class StampResult:
     stamp: st.Stamp
@@ -56,7 +67,9 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
         for c in r.candidates:
             if c.kind == sy.CONSTANT:
                 continue
-            if c.kind == sy.FILE and not file_anchors:
+            # Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in;
+            # explicit paths to non-Python files (`pyproject.toml`) are cheap and catch config claims.
+            if c.kind == sy.FILE and not file_anchors and (r.mention.kind != mn.PATH or c.path.endswith(".py")):
                 continue
             t = c.drift_target
             if c.qualname and c.qualname not in quals[t]:
@@ -72,14 +85,21 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             failed.append(f"{target}: {e}")
             continue
         deco = ""
+        members: dict[str, str] = {}
         if "#" in target:
             path, top = target.split("#", 1)
             src = (repo / path).read_text(encoding="utf-8", errors="replace")
             deco = astdiff.decorator_hash(src, top)
-        bindings[target] = st.Binding(sig=sig, deco=deco, qualnames=quals.get(target, []))
+            for q in quals.get(target, []):
+                h = astdiff.member_hash(src, q)
+                if h:
+                    members[q] = h
+        bindings[target] = st.Binding(sig=sig, deco=deco, qualnames=quals.get(target, []), members=members)
 
+    unresolved_set = set(unresolved)
     s = st.Stamp(note=note, note_hash=current, bindings=bindings,
-                 mentions={t: raws[t] for t in bindings}, unresolved=sorted(set(unresolved)),
-                 stamped=st.now_iso(), by=by, verdict=verdict, reason=reason)
+                 mentions={t: raws[t] for t in bindings}, unresolved=sorted(unresolved_set),
+                 stamped=st.now_iso(), by=by, verdict=verdict, reason=reason,
+                 dangling=sorted({m.raw for m in ms if m.raw in unresolved_set and _code_like(m)}))
     st.append(vault, s)
     return StampResult(s, len(bindings), failed)

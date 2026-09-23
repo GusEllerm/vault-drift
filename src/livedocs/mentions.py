@@ -21,7 +21,7 @@ _RE_PATH = re.compile(r"^[A-Za-z0-9_./-]+$")
 _RE_LINE_HINT = re.compile(r":\d+$")
 _RE_CALL = re.compile(r"\((.*)\)$")
 _RE_HASH_SYMBOL = re.compile(rf"^(?P<path>[^#]+)#(?P<sym>{_IDENT}(\.{_IDENT})*)$")
-_CODE_EXTS = (".py",)
+_CODE_EXTS = (".py", ".toml", ".json", ".yaml", ".yml", ".sh", ".cfg", ".ini")
 
 # Kinds. `noise` never leaves this module.
 PATH, DOTTED, NAME, CAPS = "path", "dotted", "name", "caps"

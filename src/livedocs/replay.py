@@ -136,6 +136,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
         # 2. check every stamped note (edited ones with their pre-edit text)
         all_stamps = st.load(vault)
         drift_json = None
+        idx = sy.index(wt, "WORKTREE")  # one symbol index per commit, shared by check (moves) and stamp
         if stamped_notes:
             try:
                 drift_json = drift_io.check_json(wt)
@@ -148,9 +149,9 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 if prev is None:
                     continue
                 phase, text = "pre_edit", prev
-            rep = ck.check(wt, vault_rel, note, drift_json=drift_json, text=text, all_stamps=all_stamps)
+            rep = ck.check(wt, vault_rel, note, drift_json=drift_json, text=text, all_stamps=all_stamps, idx=idx)
             bound = sorted({t.split("#", 1)[0] for t in (rep.stamp.bindings if rep.stamp else {})} & changed)
-            row = Row(c, seq, note, phase, rep.state, rep.reasons,
+            row = Row(c, seq, note, phase, rep.state, rep.reasons + [f"refined:{t}" for t in rep.refined],
                       [f.__dict__ | {"was": None, "now": None} for f in rep.findings],  # sources are recoverable from git; keep rows small
                       f"{rep.stamp.stamped}|{rep.stamp.note_hash[:12]}" if rep.stamp else None,
                       bound, rep.state == ck.FRESH and phase == "check" and bool(bound))
@@ -177,7 +178,6 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
         # 4. added / edited notes: stamp them as the author's re-verification
         to_stamp = sorted((set(ev["A"]) | edited) - gone)
         if to_stamp:
-            idx = sy.index(wt, "WORKTREE")
             for note in to_stamp:
                 p = vault / note
                 if not p.exists() or not _has_mentions(p.read_text(encoding="utf-8")):

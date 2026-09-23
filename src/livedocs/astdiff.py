@@ -133,6 +133,48 @@ def classify(old_source: str | None, new_source: str | None, qualname: str) -> C
     return Change(BODY, old, new)
 
 
+def member_hash(source: str | None, qualname: str) -> str | None:
+    """Content hash of what a note mentions, insensitive to comments, docstrings and formatting.
+
+    function/method: the whole node (args, returns, decorators, body) with docstrings stripped.
+    class: its shell — bases, keywords, decorators, member names, and field/attribute definitions —
+           but not method bodies (a note that mentions the class, not the method, doesn't depend on them).
+    attribute/constant: the assignment node.
+    None if the source doesn't parse or the symbol isn't there.
+    """
+    if source is None:
+        return None
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return None
+    node = _find(tree, qualname)
+    if node is None:
+        return None
+    import copy
+    node = copy.deepcopy(node)
+    if isinstance(node, ast.ClassDef):
+        parts = [
+            "class", node.name,
+            *(ast.unparse(b) for b in node.bases), *(ast.unparse(k) for k in node.keywords),
+            *(ast.unparse(d) for d in node.decorator_list),
+        ]
+        for n in node.body:
+            if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                parts.append(f"def {n.name}")
+            elif isinstance(n, ast.ClassDef):
+                parts.append(f"class {n.name}")
+            elif isinstance(n, (ast.Assign, ast.AnnAssign)):
+                parts.append(_dump(n))
+        payload = "\n".join(parts)
+    else:
+        payload = _dump(_strip_docstrings(node))
+        decos = getattr(node, "decorator_list", ())
+        if decos:
+            payload += "\n" + "\n".join(ast.unparse(d) for d in decos)
+    return hashlib.sha256(payload.encode()).hexdigest()[:16]
+
+
 def first_line(src: str | None) -> str:
     """The def/class line (after decorators), for compact was/now output."""
     if not src:

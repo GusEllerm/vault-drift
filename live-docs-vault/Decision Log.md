@@ -33,6 +33,7 @@ For a decision that needs more than one row, write a note from the [[Decision]] 
 | D8 | 2026-09-22 | The Phase 1 testbench is a clone of one of the user's existing projects plus its Obsidian vault, disconnected from the remote or on a never-pushed branch. | user | [[2026-09-22 Resolving the Review]] |
 | D9 | 2026-09-22 | Testbench project: **hpc-bridge** (324 commits, 189 Python files, 70-note vault at `docs/hpc-bridge-vault/` with a `Modules/` folder naming real symbols). Detached clone at `live-docs/testbench/hpc-bridge` (origin removed, gitignored). The user delegated the choice; the agent chose because it was the only project meeting all three criteria. | user (delegated) | [[2026-09-22 Resolving the Review]] |
 | D10 | 2026-09-22 | 1a grading split: agent grades everything by rubric; user grades every miss plus 25 calibration flags, 25 more if agreement < 85%. (Accepts P19.) | user | [[2026-09-22 Resolving the Review]] |
+| D12 | 2026-09-23 | **1a verdict: D then C.** Fix the tooling noise (member-level fingerprints, comment-insensitive hashing, move detection, attribute resolution, dangling-mention warning, file anchors for config files), re-run 1a, then add an LLM judge between the hash and the agent. (Resolves C5.) | user | [[1a Run 1]] |
 | D11 | 2026-09-22 | **Write-time posture: block at commit.** A pre-commit hook compares *staged* blobs; `changed` and `broken` notes in the staged tree must be updated or acked before the commit; `unknown` never blocks. CI runs the same check as the backstop for `--no-verify`, merges and rebases. The Stop hook stays non-blocking (a heads-up). Consequence: every commit's notes are vouched for against that commit's code, so the diff base is always the last commit that touched the stamp. Phase 1a stays list-only; 1b tests block-at-commit directly (update / ack / `--no-verify` behaviour). | user | [[2026-09-22 Resolving the Review]] |
 
 ## Proposed: design v0.2 (awaiting user review)
@@ -61,13 +62,11 @@ These came out of [[2026-09-21 Design Review]]. All three critics agreed on them
 | P21 | 2026-09-22 | 1a is primary and tests the guarantee; 1b is secondary and gates Phase 2 investment only | §8 |
 | P22 | 2026-09-22 | Replay window is vault-creation → tip (~249 commits), not tip−200. A real edit to a note in history counts as a re-stamp by its author; the check runs against the note as last stamped. | §8 |
 
-## Needs the user (2026-09-23)
+## Contested: resolved
 
-| ID | Question | Context |
+| ID | Question | Resolution |
 |---|---|---|
-| C5 | **1a verdict.** Recall passed (4.3% misses) but flag precision failed (2.7%) against the pre-registered rules. Stop (A), redefine `CHANGED` as a fact rather than a verdict (B), add an LLM judge between the hash and the agent (C), or fix the tooling noise and re-run first (D)? The agent recommends D then C. | [[1a Run 1]] |
-
-## Contested: resolved 2026-09-22
+| C5 | 1a verdict: recall passed, flag precision failed. Stop / redefine / judge / fix-and-rerun? | D then C (D12, 2026-09-23). |
 
 | ID | Question | Resolution |
 |---|---|---|

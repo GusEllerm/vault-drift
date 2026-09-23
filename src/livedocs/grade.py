@@ -129,10 +129,13 @@ def pregrade(out_dir: str | Path) -> int:
             if i["kind"] != "episode":
                 continue
             mix = _finding_mix(i)
+            ks = {f["kind"] for f in i["findings"]}
             if mix == "all-unchanged":
                 f.write(json.dumps({"id": i["id"], "verdict": "still-right", "cause": "class-granularity", "by": "auto"}) + "\n"); n += 1
             elif mix == "comment-only":
                 f.write(json.dumps({"id": i["id"], "verdict": "still-right", "cause": "comment-only", "by": "auto"}) + "\n"); n += 1
+            elif ks <= {"moved", astdiff.UNCHANGED}:  # verified pure move: mentioned members hash identically elsewhere
+                f.write(json.dumps({"id": i["id"], "verdict": "still-right", "cause": "moved", "by": "auto"}) + "\n"); n += 1
     print(f"pregraded {n} episodes mechanically → {out_dir / 'verdicts' / 'auto.jsonl'}")
     return n
 
@@ -145,6 +148,9 @@ def split(out_dir: str | Path, batch_size: int = 80) -> list[Path]:
     p = out_dir / "verdicts" / "auto.jsonl"
     if p.exists():
         auto = {json.loads(l)["id"] for l in p.read_text().splitlines() if l.strip()}
+    p = out_dir / "verdicts" / "reused.jsonl"
+    if p.exists():
+        auto |= {json.loads(l)["id"] for l in p.read_text().splitlines() if l.strip()}
     todo = [i for i in items if i["id"] not in auto]
     bdir = out_dir / "batches"
     bdir.mkdir(exist_ok=True)
@@ -164,11 +170,45 @@ def _write_item_md(f, i: dict) -> None:
     f.write(f"**Q:** {i['question']}\n\n")
     for fd in i.get("findings", []):
         f.write(f"- `{fd['target']}` {fd['qualname']} — **{fd['kind']}** {fd['detail']} (note lines {fd['note_lines']})\n")
-        if fd.get("was") or fd.get("now"):
-            f.write(f"  ```\n  was: {(fd['was'] or '').strip()[:600]}\n  ---\n  now: {(fd['now'] or '').strip()[:600]}\n  ```\n")
+        was, now = (fd.get("was") or "").strip(), (fd.get("now") or "").strip()
+        if was or now:
+            if was and now and was != now:
+                import difflib
+                d = list(difflib.unified_diff(was.splitlines(), now.splitlines(), "was", "now", lineterm="", n=2))
+                if len(d) > 80:
+                    d = d[:80] + [f"… ({len(d) - 80} more lines)"]
+                f.write("  ```diff\n  " + "\n  ".join(d) + "\n  ```\n")
+            else:
+                f.write(f"  ```\n  was: {was[:600]}\n  ---\n  now: {now[:600]}\n  ```\n")
     if i.get("code_diff"):
         f.write(f"\n```diff\n{i['code_diff']}\n```\n")
     f.write(f"\n<details><summary>note</summary>\n\n```\n{i['note_excerpt']}\n```\n</details>\n")
+
+
+def _reuse_key(i: dict) -> tuple:
+    """What makes two items across runs 'the same question': same note text, commit and target."""
+    if i["kind"] == "episode":
+        parts = i["id"][3:].split("|")  # note | stamped | hash12 | target
+        return ("episode", parts[0], parts[2], i["commit"], "|".join(parts[3:]))
+    return (i["kind"], i["note"], i["commit"])
+
+
+def reuse(old_dir: str | Path, new_dir: str | Path) -> int:
+    """Carry verdicts over from an earlier run for items that pose the same question."""
+    old_dir, new_dir = Path(old_dir), Path(new_dir)
+    old_items = {json.loads(l)["id"]: json.loads(l) for l in (old_dir / "items.jsonl").read_text().splitlines()}
+    old_v = {v["id"]: v for v in _load_verdicts(old_dir) if v.get("by") != "auto"}
+    by_key = {_reuse_key(old_items[i]): v for i, v in old_v.items() if i in old_items}
+    n = 0
+    (new_dir / "verdicts").mkdir(exist_ok=True)
+    with (new_dir / "verdicts" / "reused.jsonl").open("w") as f:
+        for l in (new_dir / "items.jsonl").read_text().splitlines():
+            it = json.loads(l)
+            v = by_key.get(_reuse_key(it))
+            if v:
+                f.write(json.dumps(v | {"id": it["id"], "reused_from": str(old_dir)}) + "\n"); n += 1
+    print(f"reused {n} verdicts from {old_dir}")
+    return n
 
 
 def _load_verdicts(out_dir: Path) -> list[dict]:

@@ -10,10 +10,11 @@ RULE = "The code decides what the system does; where this note disagrees about t
 
 def render(r: Report, max_chars: int = 1500) -> str:
     name = r.note.rsplit("/", 1)[-1].removesuffix(".md")
+    warn = ("\n" + "\n".join(f"Warning: {w}." for w in r.warnings)) if r.warnings else ""
     if r.state == FRESH:
-        return f'LIVE-DOCS: "{name}" is FRESH (verified {r.stamp.stamped[:10] if r.stamp else "?"}).'
+        return f'LIVE-DOCS: "{name}" is FRESH (verified {r.stamp.stamped[:10] if r.stamp else "?"}).' + warn
     if r.state == UNKNOWN:
-        return f'LIVE-DOCS: "{name}" is UNVERIFIED ({"; ".join(r.reasons)}). Treat it as possibly out of date.'
+        return f'LIVE-DOCS: "{name}" is UNVERIFIED ({"; ".join(r.reasons)}). Treat it as possibly out of date.' + warn
     head = f'LIVE-DOCS: "{name}" is {r.state.upper()} since last verified ({r.stamp.stamped[:10] if r.stamp else "?"}).\n{RULE}'
     body: list[str] = []
     for f in r.findings:
@@ -24,6 +25,8 @@ def render(r: Report, max_chars: int = 1500) -> str:
             body.append(f"{f.path}: file changed since {f.base_commit[:7] if f.base_commit else '?'}. {loc}")
         elif f.kind == astdiff.UNCHANGED:
             body.append(f"{f.path}#{f.qualname}: {f.detail or 'unchanged'}. {loc}")
+        elif f.kind == "moved":
+            body.append(f"{f.path}#{f.qualname}: {f.detail} (unchanged there). {loc}")
         elif f.kind == astdiff.REMOVED:
             body.append(f"{f.path}#{f.qualname}: no longer defined in the file. {loc}")
         elif f.kind == astdiff.ADDED:
@@ -36,7 +39,7 @@ def render(r: Report, max_chars: int = 1500) -> str:
             if f.kind == astdiff.SIGNATURE or was != now:
                 line += f"\n  was: {was}\n  now: {now}"
             body.append(line + f"\n{loc}")
-    out = head + "\n" + "\n".join(body)
+    out = head + "\n" + "\n".join(body) + warn
     if len(out) > max_chars:
         out = out[: max_chars - 20].rstrip() + "\n… (truncated)"
     return out

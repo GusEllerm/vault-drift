@@ -20,6 +20,7 @@ class Binding:
     sig: str  # drift's fingerprint of the top-level target
     deco: str = ""  # our hash of the target's decorators (drift misses decorator changes)
     qualnames: list[str] = field(default_factory=list)  # what the note actually mentioned under this target
+    members: dict[str, str] = field(default_factory=dict)  # qualname → member_hash at stamp time
 
 
 @dataclass
@@ -33,6 +34,7 @@ class Stamp:
     by: str
     verdict: str
     reason: str = ""
+    dangling: list[str] = field(default_factory=list)  # code-like mentions that resolve to nothing in src
 
     def to_json(self) -> str:
         d = asdict(self)

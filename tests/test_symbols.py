@@ -56,7 +56,11 @@ def test_dotted_forms(mini_repo):
 def test_attributes_and_module_names(mini_repo):
     idx = sy.index(mini_repo)
     r = _res(idx, "`level`", note="vault/Concepts/idea.md", body="# An idea\n")
-    assert r.status == sy.RESOLVED and r.targets == ["src/pkg/a.py#Foo"] and r.rule == "name:member"
+    assert r.status == sy.UNRESOLVED  # short bare field name, no own-module: don't guess
+    r = _res(idx, "`level`")  # note is about a.py → its own field
+    assert r.status == sy.RESOLVED and r.targets == ["src/pkg/a.py#Foo"]
+    r = _res(idx, "`only_here`", note="vault/Concepts/idea.md", body="# An idea\n")
+    assert r.status == sy.RESOLVED  # underscore names are specific enough
     r = _res(idx, "`thing`", note="vault/Concepts/idea.md", body="# An idea\n")
     assert r.status == sy.RESOLVED and r.targets == ["src/pkg/thing.py"] and r.rule == "name:module"
     assert r.candidates[0].kind == sy.FILE
