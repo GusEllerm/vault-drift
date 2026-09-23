@@ -194,6 +194,8 @@ Everything else is deferred (§11): CI gating, an MCP gateway, reports, Bases vi
   3. an MCP gateway as the only sanctioned way into the vault (portable, but agents can still go around it unless Bash is restricted).
 - [[Start Here]] currently tells agents to grep summaries. Accept that for Phase 1 and measure it; summaries are frontmatter, not code claims.
 
+**Tiers (D14, 2026-09-23).** The guarantee is a mechanism of the development framework: Tier 0 is the versioned git gate plus CI, always; Tier 1 is the harness's end-of-turn heads-up, recommended; Tier 2 is the read gate, opt-in; Tier 3 is measurement only. Under block-at-commit a committed note is always vouched for, so the read gate only ever has work on uncommitted changes and unstamped vaults. The failed commit's own output is the channel every harness has.
+
 **Write time: block at commit (D11).** The commit is the collection point.
 - **Pre-commit hook.** Compares the *staged* blobs, not the working tree: a note fixed but unstaged doesn't count as fixed, and an unstaged code change doesn't flag. Every `changed` or `broken` note in the staged tree must be updated or acked (§6.8) before the commit goes through. `unknown` never blocks, or every new note would block its own first commit.
 - **Why commit:** it's harness-agnostic (fires for any agent or human); acks land in the diff next to the code change, so rubber-stamping is visible in review; batching is natural; and in this workflow the human is the one who says "commit", so they're present for the reconciliation.

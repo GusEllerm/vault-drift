@@ -32,7 +32,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **D is done and measured** — [[1a Run 2]]: false flags −40%, but member-level *suppression* lost a quarter of the real catches. **Then the user reframed the signal (D13):** a flag is the deterministic fact "note unedited, code it mentions changed"; the committing agent is the judge, at commit. No separate LLM judge ([[Judge]] is optional automation now); precision is overhead, not a kill criterion; recall, per-commit overhead and coverage are what matter.
 - **M3 and M5 are done and proven** (2026-09-23): `livedocs affected | coverage | install-hooks`; the read gate, Stop heads-up and bypass log hooks; the pre-commit gate with mechanical auto-ack for provably benign changes. See the session log for the proof.
 - **Pending:** the user's calibration pass, `results/1a-run1/user-calibration.md` (7 misses + 25 random flags).
-- **Next:** constant anchors (P24); try the hooks in a live Claude Code session on the testbench; Phase 1b in its D13 form (does the committing agent reconcile well?).
+- **D14 (2026-09-23):** the guarantee is a mechanism of the development framework, not the agent: versioned git gate + CI always; Stop heads-up recommended; read gate opt-in; bypass log measurement-only. `livedocs init` sets this up.
+- **Next:** the user's call on ack policy (must a substantive change force an `update`?); constant anchors (P24); hooks in a live Claude Code session; Phase 1b in its D13 form; packaging (`uv tool install`), a CI job, and verifying whether hooks cover subagents.
 
 *Update this section at the end of every session.*
 
