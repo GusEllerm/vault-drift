@@ -104,26 +104,93 @@ def export(repo: str | Path, vault_rel: str, out_dir: str | Path) -> Path:
                           "question": "These anchored files changed but the note read FRESH. Did the change make any claim in the note wrong?"})
 
     (out_dir / "items.jsonl").write_text("\n".join(json.dumps(i, separators=(",", ":")) for i in items) + "\n")
-    with (out_dir / "items.md").open("w") as f:
-        for i in items:
-            f.write(f"\n---\n## {i['id']}\n**{i['kind']}** · note `{i['note']}` · seq {i['seq']} · commit {i['commit']} · state {i['state']}\n\n")
-            f.write(f"**Q:** {i['question']}\n\n")
-            for fd in i.get("findings", []):
-                f.write(f"- `{fd['target']}` {fd['qualname']} — **{fd['kind']}** {fd['detail']} (note lines {fd['note_lines']})\n")
-                if fd.get("was") or fd.get("now"):
-                    f.write(f"  ```\n  was: {(fd['was'] or '').strip()[:600]}\n  ---\n  now: {(fd['now'] or '').strip()[:600]}\n  ```\n")
-            if i.get("code_diff"):
-                f.write(f"\n```diff\n{i['code_diff']}\n```\n")
-            f.write(f"\n<details><summary>note</summary>\n\n```\n{i['note_excerpt']}\n```\n</details>\n")
     counts = Counter(i["kind"] for i in items)
-    print(f"exported {len(items)} items: {dict(counts)} → {out_dir / 'items.jsonl'}, {out_dir / 'items.md'}")
+    print(f"exported {len(items)} items: {dict(counts)} → {out_dir / 'items.jsonl'}")
     return out_dir / "items.jsonl"
+
+
+def _finding_mix(e: dict) -> str:
+    ks = {f["kind"] for f in e["findings"]}
+    if ks <= {astdiff.UNCHANGED}:
+        return "all-unchanged"
+    if ks <= {astdiff.UNCHANGED, astdiff.COMMENT_ONLY}:
+        return "comment-only"
+    return "needs-reader"
+
+
+def pregrade(out_dir: str | Path) -> int:
+    """Mechanical verdicts: episodes where nothing the note mentioned changed are false flags by construction."""
+    out_dir = Path(out_dir)
+    items = [json.loads(l) for l in (out_dir / "items.jsonl").read_text().splitlines()]
+    (out_dir / "verdicts").mkdir(exist_ok=True)
+    n = 0
+    with (out_dir / "verdicts" / "auto.jsonl").open("w") as f:
+        for i in items:
+            if i["kind"] != "episode":
+                continue
+            mix = _finding_mix(i)
+            if mix == "all-unchanged":
+                f.write(json.dumps({"id": i["id"], "verdict": "still-right", "cause": "class-granularity", "by": "auto"}) + "\n"); n += 1
+            elif mix == "comment-only":
+                f.write(json.dumps({"id": i["id"], "verdict": "still-right", "cause": "comment-only", "by": "auto"}) + "\n"); n += 1
+    print(f"pregraded {n} episodes mechanically → {out_dir / 'verdicts' / 'auto.jsonl'}")
+    return n
+
+
+def split(out_dir: str | Path, batch_size: int = 80) -> list[Path]:
+    """Write the items that need a reader into batch files (markdown, one item per section)."""
+    out_dir = Path(out_dir)
+    items = [json.loads(l) for l in (out_dir / "items.jsonl").read_text().splitlines()]
+    auto = set()
+    p = out_dir / "verdicts" / "auto.jsonl"
+    if p.exists():
+        auto = {json.loads(l)["id"] for l in p.read_text().splitlines() if l.strip()}
+    todo = [i for i in items if i["id"] not in auto]
+    bdir = out_dir / "batches"
+    bdir.mkdir(exist_ok=True)
+    paths = []
+    for b in range(0, len(todo), batch_size):
+        path = bdir / f"batch-{b // batch_size:02d}.md"
+        with path.open("w") as f:
+            for i in todo[b:b + batch_size]:
+                _write_item_md(f, i)
+        paths.append(path)
+    print(f"{len(todo)} items need a reader → {len(paths)} batches of ≤{batch_size} in {bdir}")
+    return paths
+
+
+def _write_item_md(f, i: dict) -> None:
+    f.write(f"\n---\n## {i['id']}\n**{i['kind']}** · note `{i['note']}` · seq {i['seq']} · commit {i['commit']} · state {i['state']}\n\n")
+    f.write(f"**Q:** {i['question']}\n\n")
+    for fd in i.get("findings", []):
+        f.write(f"- `{fd['target']}` {fd['qualname']} — **{fd['kind']}** {fd['detail']} (note lines {fd['note_lines']})\n")
+        if fd.get("was") or fd.get("now"):
+            f.write(f"  ```\n  was: {(fd['was'] or '').strip()[:600]}\n  ---\n  now: {(fd['now'] or '').strip()[:600]}\n  ```\n")
+    if i.get("code_diff"):
+        f.write(f"\n```diff\n{i['code_diff']}\n```\n")
+    f.write(f"\n<details><summary>note</summary>\n\n```\n{i['note_excerpt']}\n```\n</details>\n")
+
+
+def _load_verdicts(out_dir: Path) -> list[dict]:
+    files = sorted((out_dir / "verdicts").glob("*.jsonl")) if (out_dir / "verdicts").exists() else []
+    if (out_dir / "verdicts.jsonl").exists():
+        files.append(out_dir / "verdicts.jsonl")
+    vs: dict[str, dict] = {}
+    rank = {"auto": 0, "agent": 1, "user": 2}
+    for p in files:
+        for l in p.read_text().splitlines():
+            if not l.strip():
+                continue
+            v = json.loads(l)
+            if v["id"] not in vs or rank.get(v.get("by", "agent"), 1) >= rank.get(vs[v["id"]].get("by", "agent"), 1):
+                vs[v["id"]] = v
+    return list(vs.values())
 
 
 def summarize(out_dir: str | Path, exclude_prose_only: bool = True) -> dict:
     out_dir = Path(out_dir)
     items = {json.loads(l)["id"]: json.loads(l) for l in (out_dir / "items.jsonl").read_text().splitlines()}
-    verdicts = [json.loads(l) for l in (out_dir / "verdicts.jsonl").read_text().splitlines() if l.strip()]
+    verdicts = _load_verdicts(out_dir)
     hits = false_flags = misses = at_risk_ok = 0
     causes: Counter = Counter()
     for v in verdicts:

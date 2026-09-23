@@ -112,10 +112,11 @@ def main(argv: list[str] | None = None) -> int:
     s.set_defaults(fn=cmd_replay)
 
     s = sub.add_parser("grade", help="export grading items from a replay run, or summarise verdicts")
-    s.add_argument("action", choices=["export", "summarize"])
+    s.add_argument("action", choices=["export", "pregrade", "split", "summarize"])
     s.add_argument("--repo")
     s.add_argument("--vault")
     s.add_argument("--out", required=True, help="the replay output directory")
+    s.add_argument("--batch-size", type=int, default=80)
     s.set_defaults(fn=cmd_grade)
 
     args = ap.parse_args(argv)
@@ -129,6 +130,10 @@ def cmd_grade(args: argparse.Namespace) -> int:
             print("grade export needs --repo and --vault", file=sys.stderr)
             return 2
         grade.export(Path(args.repo), args.vault, args.out)
+    elif args.action == "pregrade":
+        grade.pregrade(args.out)
+    elif args.action == "split":
+        grade.split(args.out, args.batch_size)
     else:
         grade.summarize(args.out)
     return 0

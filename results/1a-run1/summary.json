@@ -1,0 +1,22 @@
+{
+ "commits": 141,
+ "rows": 7744,
+ "pre_edit_rows": 232,
+ "stamps": 302,
+ "stamp_failures": 0,
+ "states": {
+  "fresh": 1384,
+  "changed": 3345,
+  "unknown": 305,
+  "broken": 2478
+ },
+ "pre_edit_states": {
+  "changed": 141,
+  "fresh": 59,
+  "broken": 23,
+  "unknown": 9
+ },
+ "episodes": 830,
+ "at_risk": 377,
+ "seconds": 1683.7
+}

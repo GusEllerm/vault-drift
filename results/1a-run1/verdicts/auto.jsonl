@@ -1,0 +1,403 @@
+{"id": "ep:Demos.md|2026-09-23T00:56:03Z|sha256:d8eab|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T00:56:03Z|sha256:fe0ee|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Plugin packaging.md|2026-09-23T00:56:03Z|sha256:7a6f6|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Credential seeding.md|2026-09-23T00:56:03Z|sha256:a0dd1|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:56:03Z|sha256:26ed3|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:56:03Z|sha256:be272|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:56:03Z|sha256:be272|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T00:56:03Z|sha256:9f6da|src/hpc_bridge/runner.py#GlobusRunner", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T00:56:03Z|sha256:9f6da|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T00:56:03Z|sha256:9f6da|src/hpc_bridge/facility/local.py#LocalFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/cost.md|2026-09-23T00:56:03Z|sha256:dc50c|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/credentials.md|2026-09-23T00:56:03Z|sha256:ba076|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T00:56:03Z|sha256:cda6b|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T00:56:03Z|sha256:cda6b|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-local.md|2026-09-23T00:56:03Z|sha256:2332e|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/lifecycle.md|2026-09-23T00:56:03Z|sha256:4fcd2|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/lifecycle.md|2026-09-23T00:56:03Z|sha256:4fcd2|src/hpc_bridge/facility/local.py#LocalFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T00:56:03Z|sha256:94d7e|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T00:56:03Z|sha256:94d7e|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:09Z|sha256:c581e|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:09Z|sha256:c581e|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:09Z|sha256:c581e|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:09Z|sha256:c581e|src/hpc_bridge/catalog/entry.py#CatalogSummary", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:56:09Z|sha256:0ff44|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:56:10Z|sha256:37643|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:14Z|sha256:6361b|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:14Z|sha256:6361b|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Demos.md|2026-09-23T00:56:14Z|sha256:5ec74|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:56:15Z|sha256:9a2c9|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:56:15Z|sha256:9a2c9|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Plugin packaging.md|2026-09-23T00:56:23Z|sha256:ce589|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:56:19Z|sha256:a2fba|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan C (human-in-the-loop).md|2026-09-23T00:56:25Z|sha256:00fe0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:27Z|sha256:0ec69|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T00:56:19Z|sha256:795f8|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/lifecycle.py#EndpointState", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/facility/base.py#EndpointHandle", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:56:15Z|sha256:9a2c9|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/state.py#LoginNodeStore", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:56:31Z|sha256:7c5fd|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:56:31Z|sha256:7c5fd|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:56:19Z|sha256:1970a|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:56:20Z|sha256:6359c|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/lifecycle.md|2026-09-23T00:56:31Z|sha256:65bd4|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/lifecycle.md|2026-09-23T00:56:31Z|sha256:65bd4|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/models.md|2026-09-23T00:56:31Z|sha256:b8e90|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan A (cluster cost accounting).md|2026-09-23T00:56:25Z|sha256:af109|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/facility/remote.py#SshTarget", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:56:32Z|sha256:edd63|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:56:32Z|sha256:edd63|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:27Z|sha256:0ec69|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:27Z|sha256:0ec69|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:27Z|sha256:0ec69|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:56:27Z|sha256:0ec69|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Credential seeding.md|2026-09-23T00:56:19Z|sha256:14efd|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:19Z|sha256:1b862|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:19Z|sha256:1b862|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:19Z|sha256:1b862|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:19Z|sha256:1b862|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:56:19Z|sha256:1b862|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:56:19Z|sha256:a2fba|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:56:19Z|sha256:a2fba|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:56:19Z|sha256:a2fba|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:56:31Z|sha256:7c5fd|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T00:56:19Z|sha256:63b50|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T00:56:19Z|sha256:63b50|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Demos.md|2026-09-23T00:56:14Z|sha256:5ec74|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:56:19Z|sha256:1970a|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T00:56:37Z|sha256:b15be|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:56:20Z|sha256:6359c|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:56:20Z|sha256:6359c|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:56:20Z|sha256:6359c|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:56:20Z|sha256:6359c|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-local.md|2026-09-23T00:56:20Z|sha256:bc54f|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T00:56:20Z|sha256:f363d|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/models.md|2026-09-23T00:56:31Z|sha256:b8e90|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/models.md|2026-09-23T00:56:31Z|sha256:b8e90|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/models.md|2026-09-23T00:56:31Z|sha256:b8e90|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/models.md|2026-09-23T00:56:31Z|sha256:b8e90|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:56:14Z|sha256:2668d|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:56:20Z|sha256:edd15|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T00:56:03Z|sha256:dabfb|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T00:56:20Z|sha256:1c038|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:56:32Z|sha256:f9881|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:56:15Z|sha256:9a2c9|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:56:32Z|sha256:edd63|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:56:32Z|sha256:edd63|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:56:32Z|sha256:edd63|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/server.py#_facility_from_entry", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T00:56:37Z|sha256:0567d|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T00:56:37Z|sha256:0567d|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:56:37Z|sha256:1d025|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:56:37Z|sha256:1d025|src/hpc_bridge/server.py#connect_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:56:37Z|sha256:1d025|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:56:37Z|sha256:1d025|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/server.py#stop_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/facility/remote.py#MachineProfile", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/server.py#login_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:56:28Z|sha256:083a7|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:56:19Z|sha256:d09d4|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:57:06Z|sha256:a6e65|src/hpc_bridge/server.py#run_shell", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:56:15Z|sha256:9a2c9|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:56:21Z|sha256:eec54|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:57:06Z|sha256:97970|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:57:43Z|sha256:8e351|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T00:57:07Z|sha256:d98a8|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:58:05Z|sha256:e1789|src/hpc_bridge/runner.py#GlobusRunner", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:58:05Z|sha256:e1789|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:58:05Z|sha256:e1789|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:57:06Z|sha256:97970|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:58:05Z|sha256:c2e07|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:58:05Z|sha256:c2e07|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T00:57:43Z|sha256:9224a|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:57:14Z|sha256:029d6|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:57:43Z|sha256:8e351|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:58:06Z|sha256:a6ba7|src/hpc_bridge/runner.py#GlobusRunner", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:58:06Z|sha256:a6ba7|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T00:57:07Z|sha256:8eed4|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T00:57:07Z|sha256:8eed4|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:58:06Z|sha256:c05f5|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T00:58:06Z|sha256:8a3dd|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/New-user testing (clean-session).md|2026-09-23T00:58:06Z|sha256:54ee7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:57:06Z|sha256:97970|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:57:06Z|sha256:a6e65|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:57:06Z|sha256:a6e65|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:57:43Z|sha256:65b2a|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:58:22Z|sha256:b7447|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T00:57:07Z|sha256:d98a8|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:57:44Z|sha256:c3837|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Vault style guide.md|2026-09-23T00:57:07Z|sha256:50309|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T00:58:05Z|sha256:e1789|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:58:22Z|sha256:7f8d0|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:58:06Z|sha256:c05f5|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:58:31Z|sha256:d603f|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:58:31Z|sha256:2f428|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:57:43Z|sha256:65b2a|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T00:58:05Z|sha256:4e841|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:58:22Z|sha256:b7447|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T00:58:06Z|sha256:a6ba7|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T00:59:19Z|sha256:66f51|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:59:20Z|sha256:3334d|src/hpc_bridge/server.py#list_facilities", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:57:06Z|sha256:97970|src/hpc_bridge/catalog/entry.py#CatalogSummary", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:58:31Z|sha256:d603f|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:59:29Z|sha256:4236d|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T00:59:30Z|sha256:ba12a|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:59:29Z|sha256:4236d|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:59:29Z|sha256:00919|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T00:59:30Z|sha256:9c330|src/hpc_bridge/server.py#ShapeRuntime", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T00:56:19Z|sha256:5e014|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T00:59:28Z|sha256:a700b|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T00:57:06Z|sha256:97970|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T00:57:06Z|sha256:a6e65|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T00:58:22Z|sha256:7f8d0|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T00:57:43Z|sha256:65b2a|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T00:57:14Z|sha256:029d6|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T00:58:22Z|sha256:b7447|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T00:57:07Z|sha256:d98a8|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T00:58:06Z|sha256:c05f5|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T00:58:31Z|sha256:d603f|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:59:29Z|sha256:4236d|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T00:59:29Z|sha256:4236d|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T00:59:29Z|sha256:00919|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T00:59:19Z|sha256:66f51|src/hpc_bridge/login.py#LoginFlow", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T00:59:49Z|sha256:6eca2|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T00:59:30Z|sha256:9c330|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Model sweep 2026-09-03.md|2026-09-23T00:59:49Z|sha256:b41e0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:59:39Z|sha256:01bcb|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:59:39Z|sha256:01bcb|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T00:59:39Z|sha256:01bcb|src/hpc_bridge/login.py#LoginFlow", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/catalog/search.py#SearchCatalog", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T01:00:34Z|sha256:ccebe|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T01:00:34Z|sha256:f607d|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T01:00:34Z|sha256:1a1c2|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T01:00:34Z|sha256:228d9|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:00:38Z|sha256:a4027|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/catalog/search.py#SearchCatalog", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/catalog/search.py#SearchCatalog", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/New-user testing (clean-session).md|2026-09-23T01:00:40Z|sha256:00b81|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T01:00:40Z|sha256:d1f46|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T00:59:30Z|sha256:9c330|src/hpc_bridge/facility/mep.py#MEPFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/login.md|2026-09-23T01:00:36Z|sha256:8c6eb|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:00:38Z|sha256:a4027|src/hpc_bridge/server.py#_slurm_facility", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:00:38Z|sha256:a4027|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/server.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T01:00:34Z|sha256:f607d|src/hpc_bridge/facility/remote.py#ssh_exec", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T01:00:35Z|sha256:38370|src/hpc_bridge/facility/remote.py#ssh_exec", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T01:00:35Z|sha256:6a4d3|src/hpc_bridge/facility/remote.py#ssh_exec", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Vault style guide.md|2026-09-23T00:57:07Z|sha256:50309|src/hpc_bridge/facility/remote.py#ssh_exec", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Credential seeding.md|2026-09-23T01:00:33Z|sha256:61fab|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Credential seeding.md|2026-09-23T01:00:33Z|sha256:61fab|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:00:33Z|sha256:d8f12|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T01:00:34Z|sha256:ccebe|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T01:00:34Z|sha256:ccebe|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T01:00:34Z|sha256:ccebe|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T01:00:34Z|sha256:f607d|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Two-channel architecture.md|2026-09-23T01:00:34Z|sha256:f607d|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Warmth, the canary & cold-start.md|2026-09-23T01:00:34Z|sha256:1a1c2|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T01:00:34Z|sha256:e7bc0|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T01:02:09Z|sha256:6afef|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/config.md|2026-09-23T01:02:10Z|sha256:6794e|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/credentials.md|2026-09-23T01:00:35Z|sha256:0997e|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/credentials.md|2026-09-23T01:00:35Z|sha256:0997e|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T01:00:35Z|sha256:38370|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T01:00:35Z|sha256:38370|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/state.py#EndpointRecord", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/scheduler_ops.md|2026-09-23T01:01:45Z|sha256:028ea|src/hpc_bridge/scheduler_ops.py#_augment_provisioning_notice", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/scheduler_ops.py#_augment_provisioning_notice", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/scheduler_ops.py#_pilot_status_over_login", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/server.py#_teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T01:00:59Z|sha256:ac703|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T01:00:59Z|sha256:ac703|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T01:00:59Z|sha256:ac703|src/hpc_bridge/state.py#FacilityStore", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/state.md|2026-09-23T01:00:59Z|sha256:ac703|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/state.py#EndpointRecord", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/endpoint.py#EndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:00:40Z|sha256:087ba|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T01:01:19Z|sha256:f9152|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T00:59:30Z|sha256:9c330|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T01:00:41Z|sha256:3ec17|src/hpc_bridge/catalog/entry.py#Defaults", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T01:00:41Z|sha256:3ec17|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Demos.md|2026-09-23T01:00:34Z|sha256:87829|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T01:00:34Z|sha256:e7bc0|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T01:00:35Z|sha256:38370|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/shapes.md|2026-09-23T00:57:07Z|sha256:d98a8|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/facility/remote.py#SshTarget", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T01:01:40Z|sha256:8c6d4|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T00:59:30Z|sha256:9c330|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T01:00:41Z|sha256:3ec17|src/hpc_bridge/models.py#FacilityDetails", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/warmth.md|2026-09-23T01:01:52Z|sha256:c39ae|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:03:29Z|sha256:331b2|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:03:29Z|sha256:331b2|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/MEP & templated endpoints.md|2026-09-23T01:00:33Z|sha256:29293|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Demos.md|2026-09-23T01:00:34Z|sha256:87829|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T01:00:34Z|sha256:e7bc0|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/discovery.md|2026-09-23T01:00:35Z|sha256:38370|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-base.md|2026-09-23T01:00:35Z|sha256:92c62|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T01:04:48Z|sha256:8817f|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T01:04:59Z|sha256:1b996|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:04:37Z|sha256:7bb71|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T01:00:41Z|sha256:3ec17|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Standing up the endpoint.md|2026-09-23T01:00:34Z|sha256:ccebe|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T01:00:34Z|sha256:e7bc0|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/connect.md|2026-09-23T01:04:02Z|sha256:7edcf|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/connect.md|2026-09-23T01:04:02Z|sha256:7edcf|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:02:11Z|sha256:1fd3e|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Agentic testing - Plan B (runtime sandbox).md|2026-09-23T01:00:38Z|sha256:cbce0|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:04:37Z|sha256:7bb71|src/hpc_bridge/models.py#ConnectFacilityResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:04:37Z|sha256:7bb71|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:05:38Z|sha256:821d9|src/hpc_bridge/facility/remote.py#SshTarget", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Discovery today.md|2026-09-23T01:03:09Z|sha256:87acb|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Concepts/Facility catalog.md|2026-09-23T01:00:33Z|sha256:e558d|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Resource shapes & the spend floor.md|2026-09-23T01:00:33Z|sha256:51d85|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-mep.md|2026-09-23T01:00:35Z|sha256:a804a|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T01:04:14Z|sha256:8f769|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/runner.md|2026-09-23T01:00:36Z|sha256:4697a|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Aurora (PBS + bastion) bring-up.md|2026-09-23T00:58:06Z|sha256:bfaad|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Discovery channel model.md|2026-09-23T01:00:38Z|sha256:9b949|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/Endpoint reuse and MEP integration.md|2026-09-23T01:00:39Z|sha256:eb6ce|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Planned/Globus index discovery channel.md|2026-09-23T01:00:39Z|sha256:753cb|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/models.py#EndpointStatus", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:06:34Z|sha256:3de22|src/hpc_bridge/context.py#AppCtx", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:06:34Z|sha256:3de22|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Security review 2026-09-04.md|2026-09-23T01:04:37Z|sha256:7bb71|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Reference/The MCP tools.md|2026-09-23T01:00:41Z|sha256:3ec17|src/hpc_bridge/server.py#teardown_endpoint", "verdict": "still-right", "cause": "comment-only", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:06:50Z|sha256:21fcf|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:10:08Z|sha256:cf57a|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:10:08Z|sha256:cf57a|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:07:47Z|sha256:c9688|src/hpc_bridge/facility/remote.py#SlurmFacility", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:07:47Z|sha256:c9688|src/hpc_bridge/facility/remote.py#RemoteEndpointCLI", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Cost control.md|2026-09-23T01:00:32Z|sha256:0fa6c|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Happy path.md|2026-09-23T01:00:34Z|sha256:e7bc0|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-09-23T01:16:01Z|sha256:91765|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/facility-remote.md|2026-09-23T01:07:46Z|sha256:b06c9|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:10:08Z|sha256:cf57a|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/In-terminal Globus login.md|2026-09-23T01:00:40Z|sha256:a519f|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/MFA and interactive SSH auth.md|2026-09-23T01:07:47Z|sha256:c9688|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Agentic framework review 2026-09-05.md|2026-09-23T01:07:31Z|sha256:d86f8|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Configuration.md|2026-09-23T01:01:19Z|sha256:f9152|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T01:07:04Z|sha256:0adf7|src/hpc_bridge/catalog/entry.py#CatalogEntry", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Plugin review 2026-09-05.md|2026-09-23T01:07:17Z|sha256:47235|src/hpc_bridge/models.py#ShellOutcome", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/server.md|2026-09-23T01:10:08Z|sha256:cf57a|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Planned/V1 release.md|2026-09-23T01:13:36Z|sha256:224dc|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Cross-harness benchmark - sonnet-4.6 core pair 2026-09-09.md|2026-09-23T01:22:41Z|sha256:2a211|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/MEP facilities survey.md|2026-09-23T01:07:04Z|sha256:0adf7|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Plugin review 2026-09-05.md|2026-09-23T01:07:17Z|sha256:47235|src/hpc_bridge/catalog/entry.py#Compute", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}

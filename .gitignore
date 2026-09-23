@@ -18,3 +18,9 @@ testbench/
 __pycache__/
 *.egg-info/
 .pytest_cache/
+
+# 1a run artefacts: keep the compressed copies, regenerate the rest
+results/*/rows.jsonl
+results/*/items.jsonl
+results/*/batches/
+results/*.log
