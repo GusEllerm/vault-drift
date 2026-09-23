@@ -33,7 +33,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **M3 and M5 are done and proven** (2026-09-23): `livedocs affected | coverage | install-hooks`; the read gate, Stop heads-up and bypass log hooks; the pre-commit gate with mechanical auto-ack for provably benign changes. See the session log for the proof.
 - **Pending:** the user's calibration pass, `results/1a-run1/user-calibration.md` (7 misses + 25 random flags).
 - **D14 (2026-09-23):** the guarantee is a mechanism of the development framework, not the agent: versioned git gate + CI always; Stop heads-up recommended; read gate opt-in; bypass log measurement-only. `livedocs init` sets this up.
-- **Next:** the user's call on ack policy (must a substantive change force an `update`?); constant anchors (P24); hooks in a live Claude Code session; Phase 1b in its D13 form; packaging (`uv tool install`), a CI job, and verifying whether hooks cover subagents.
+- **D15:** "aligned" = stamped against the current code (`update` or `ack --reason`); the gate as built implements it.
+- **Next:** constant anchors (P24); hooks in a live Claude Code session; Phase 1b in its D13 form; packaging (`uv tool install`), a CI job, and verifying whether hooks cover subagents.
 
 *Update this section at the end of every session.*
 
