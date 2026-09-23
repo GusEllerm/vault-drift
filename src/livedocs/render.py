@@ -23,7 +23,11 @@ def render(r: Report, max_chars: int = 1500, show_warnings: bool = True, max_war
         return f'LIVE-DOCS: "{name}" is UNVERIFIED ({"; ".join(r.reasons)}). Treat it as possibly out of date.' + warn
     head = f'LIVE-DOCS: "{name}" is {r.state.upper()} since last verified ({r.stamp.stamped[:10] if r.stamp else "?"}).\n{RULE}'
     body: list[str] = []
-    for f in r.findings:
+    findings = r.findings
+    if any(f.kind != astdiff.UNCHANGED for f in findings):
+        # Real changes first; benign "changed elsewhere" annotations only when they are all there is.
+        findings = [f for f in findings if f.kind != astdiff.UNCHANGED]
+    for f in findings:
         loc = f"Note lines mentioning it: {', '.join(map(str, f.note_lines)) or '?'}."
         if f.kind == "anchor-missing":
             body.append(f"{f.target}: no longer found ({f.detail}). {loc}")

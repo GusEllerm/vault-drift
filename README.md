@@ -32,22 +32,25 @@ Then, in the repository that holds the vault:
 ```sh
 livedocs init --vault docs/vault           # git gate (.githooks + core.hooksPath), .livedocs/config.json,
                                            # Claude Code Stop heads-up (settings.local.json), AGENTS.md block
-livedocs stamp "Modules/server.md"         # bind one note's mentions; repeat for each note (or loop)
-git add drift.lock docs/vault/.livedocs/stamps.jsonl && git commit -m "livedocs baseline"
 ```
 
+That is the whole setup. Notes are stamped by the commit that adds or edits them: write a note, commit
+it, and the gate binds its code mentions and records the stamp in the same commit. For an existing vault,
+`git add` the notes and commit once (or run `livedocs stamp <note>` per note to see what each binds).
 Each clone activates the versioned hook with `git config core.hooksPath .githooks` (`init` does it).
+`--repo` defaults to the current git repository and `--vault` to the configured one, so inside the repo
+the commands need no arguments.
 
 ## The commit flow
 
 ```
 edit code ──► git commit
               │  gate: notes that mention the changed code, not yet reconciled?
-              ├─ none / benign ────────────────────────────────► commit passes (benign ones auto-acked)
+              ├─ none / benign ────────────────────────────────► commit passes (benign ones auto-acked;
+              │                                                   new or edited notes stamped)
               └─ some ──► "CHANGED: <note> … was: … now: … note lines 13, 30"
-                          edit the note, then   livedocs stamp <note>                 (update)
-                          or, still correct:    livedocs stamp <note> --ack --reason "…"
-                          git add drift.lock <vault>/.livedocs/stamps.jsonl ; commit again
+                          edit the note and commit again          (the commit stamps it)
+                          or, still correct:  livedocs stamp <note> --ack --reason "…"; git add -A; commit
 ```
 
 `livedocs affected` lists the notes your uncommitted changes touch before you get there.

@@ -3,6 +3,8 @@ name = "livedocs"
 version = "0.1.0"
 description = "Notes that know when the code moved on: hash-anchored live docs with a git commit gate, over Fiberplane drift."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12"
 dependencies = []
 keywords = ["documentation", "drift", "agents", "obsidian", "git-hooks"]

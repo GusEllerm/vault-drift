@@ -51,12 +51,14 @@ def _normalise(span: str) -> tuple[str, str | None] | None:
     s = span.strip()
     if not s:
         return None
-    # Obvious non-code: quoted strings, shell, assignments, prose with spaces.
-    if s[0] in "\"'-<>$" or any(ch in s for ch in " \t$=<>{}|,;\"'"):
-        return None
+    # A call with arguments — `total(items, tax_rate=0.15)` — is the most informative mention there
+    # is; strip the argument list before the noise rules can reject the spaces and `=` inside it.
     s = _RE_LINE_HINT.sub("", s)  # credentials.py:78 -> credentials.py
     s = _RE_CALL.sub("", s)  # wait(timeout_s) -> wait
     if not s:
+        return None
+    # Obvious non-code: quoted strings, shell, assignments, prose with spaces.
+    if s[0] in "\"'-<>$" or any(ch in s for ch in " \t$=<>{}|,;\"'"):
         return None
     if "#" in s:
         m = _RE_HASH_SYMBOL.match(s)

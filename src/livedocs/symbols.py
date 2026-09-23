@@ -137,7 +137,12 @@ def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] = ("src/",
     """Index every tracked *.py under `roots` at `ref`, or the working tree if ref is "WORKTREE"."""
     repo = Path(repo)
     idx = SymbolIndex(ref=ref)
-    if ref == "WORKTREE":
+    if ref == "WORKTREE" and not (repo / ".git").exists():
+        # A checkout-index snapshot (the pre-commit gate) has no .git: walk the files instead.
+        all_files = {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
+        idx.all_files = all_files
+        listing = "\n".join(sorted(f for f in all_files if any(f.startswith(r) for r in roots)))
+    elif ref == "WORKTREE":
         listing = _git(repo, "ls-files", "--", *roots)
         idx.all_files = {l for l in _git(repo, "ls-files").split("\n") if l}
     else:

@@ -32,6 +32,11 @@ def test_kinds_and_normalisation():
     assert hashed.symbol == "Foo.bar"
 
 
+def test_calls_with_arguments_are_mentions():
+    ms = mn.mentions("`total(items, tax_rate=0.15)` and `Foo.bar(x=1)` but not `x = 1` or `a b`")
+    assert [(m.text, m.kind) for m in ms] == [("total", mn.NAME), ("Foo.bar", mn.DOTTED)]
+
+
 def test_fence_lines_are_not_spans_but_inline_spans_inside_fences_are():
     text = "```python\nx = `inner_name`\n```\n"
     assert spans(text) == {("inner_name", mn.NAME)}

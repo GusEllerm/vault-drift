@@ -71,9 +71,26 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 0 if rep.state == ck.FRESH else 1
 
 
-def _common(p: argparse.ArgumentParser) -> None:
-    p.add_argument("--repo", required=True)
-    p.add_argument("--vault", required=True, help="vault path relative to the repo")
+def _repo_default() -> str:
+    import subprocess
+    p = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    return p.stdout.strip() if p.returncode == 0 else "."
+
+
+def _common(p: argparse.ArgumentParser, vault_required: bool = False) -> None:
+    p.add_argument("--repo", default=None, help="repository root (default: the current git repo)")
+    p.add_argument("--vault", default=None, required=vault_required,
+                   help="vault path relative to the repo (default: from .livedocs/config.json)")
+
+
+def _resolve(args: argparse.Namespace) -> None:
+    """Fill --repo/--vault defaults: the current git root and the configured vault."""
+    from . import config
+    args.repo = args.repo or _repo_default()
+    if not args.vault:
+        args.vault = config.load(args.repo).get("vault")
+        if not args.vault:
+            raise SystemExit("livedocs: --vault is required (or run `livedocs init --vault <path>` first)")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -130,7 +147,7 @@ def main(argv: list[str] | None = None) -> int:
 
     s = sub.add_parser("init", aliases=["install-hooks"],
                        help="set up the git gate (.githooks + core.hooksPath), .livedocs/config.json, and the Claude Code Stop heads-up")
-    _common(s)
+    _common(s, vault_required=True)
     s.add_argument("--no-claude", action="store_true", help="skip the Claude Code adapter")
     s.add_argument("--shared", action="store_true", help="write .claude/settings.json (project) instead of settings.local.json")
     s.add_argument("--read-gate", action="store_true", help="also install the read-time gate (Tier 2, opt-in)")
@@ -152,6 +169,8 @@ def main(argv: list[str] | None = None) -> int:
     s.set_defaults(fn=cmd_grade)
 
     args = ap.parse_args(argv)
+    if hasattr(args, "vault"):
+        _resolve(args)
     return args.fn(args)
 
 
