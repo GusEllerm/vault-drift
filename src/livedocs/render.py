@@ -8,9 +8,13 @@ from .check import BROKEN, CHANGED, FRESH, UNKNOWN, Report
 RULE = "The code decides what the system does; where this note disagrees about that, the code is right."
 
 
-def render(r: Report, max_chars: int = 1500) -> str:
+def render(r: Report, max_chars: int = 1500, show_warnings: bool = True, max_warnings: int = 3) -> str:
     name = r.note.rsplit("/", 1)[-1].removesuffix(".md")
-    warn = ("\n" + "\n".join(f"Warning: {w}." for w in r.warnings)) if r.warnings else ""
+    warn = ""
+    if show_warnings and r.warnings:
+        shown = r.warnings[:max_warnings]
+        more = f"\n(+{len(r.warnings) - max_warnings} more possibly stale names)" if len(r.warnings) > max_warnings else ""
+        warn = "\n" + "\n".join(f"Warning: {w}." for w in shown) + more
     if r.state == FRESH:
         return f'LIVE-DOCS: "{name}" is FRESH (verified {r.stamp.stamped[:10] if r.stamp else "?"}).' + warn
     if r.state == UNKNOWN:

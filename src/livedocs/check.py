@@ -202,10 +202,22 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
         return out
     top = target.split("#", 1)[1]
     for q in quals:
-        ch = astdiff.classify(was_src, now_src, q) if was_src is not None else astdiff.Change("unknown-base", None, astdiff.symbol_source(now_src or "", q))
+        if was_src is not None:
+            ch = astdiff.classify(was_src, now_src, q)
+        elif binding.members.get(q) and astdiff.member_hash(now_src, q) == binding.members[q]:
+            # No committed diff base (the stamp is uncommitted) but the mentioned member's hash is
+            # unchanged: the change is comments/formatting or elsewhere in the symbol — benign by construction.
+            ch = astdiff.Change(astdiff.UNCHANGED, None, astdiff.symbol_source(now_src or "", q))
+        else:
+            ch = astdiff.Change("unknown-base", None, astdiff.symbol_source(now_src or "", q))
         detail = ""
-        if ch.kind == astdiff.UNCHANGED and q != top:
-            top_ch = astdiff.classify(was_src, now_src, top)
-            detail = f"{top} changed elsewhere ({top_ch.kind}); {q} unchanged"
+        if ch.kind == astdiff.UNCHANGED:
+            if was_src is None:
+                detail = f"{q} unchanged (comments/formatting or elsewhere in {top}; no committed base yet)"
+            elif q != top:
+                top_ch = astdiff.classify(was_src, now_src, top)
+                detail = f"{top} changed elsewhere ({top_ch.kind}); {q} unchanged"
+            else:
+                detail = f"{q} unchanged in substance (comments/formatting only)"
         out.append(Finding(target, path, q, ch.kind, ch.was, ch.now, lines, base, detail))
     return out

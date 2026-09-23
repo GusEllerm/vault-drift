@@ -59,7 +59,7 @@ def main() -> int:
             from .. import render
             print("livedocs: commit blocked — these notes mention code this commit changes and have not been reconciled:\n")
             for r in blocking:
-                print(render.render(r, max_chars=1200))
+                print(render.render(r, max_chars=1200, show_warnings=False))
                 print()
             print("Reconcile each, then commit again:")
             print("  edit the note, then:  livedocs stamp <note>            (update)")

@@ -14,14 +14,30 @@ class StampError(RuntimeError):
 
 
 def _code_like(m: mn.Mention) -> bool:
-    """A mention that reads as a Python identifier the author expected to exist: snake_case with an
-    underscore, CamelCase, a call, or a dotted name. Bare words like `compute` don't count."""
+    """A mention that reads as a Python identifier the author expected to exist in this codebase:
+    snake_case with an underscore, or a call. Bare CamelCase is excluded — it is usually an external
+    name (an SSH option, a library class) and produced noise in the first gate run."""
     t = m.text
-    if m.kind == mn.DOTTED or m.raw.endswith(")"):
+    if m.raw.endswith(")"):
         return True
+    if m.kind == mn.DOTTED:
+        return "_" in t
     if m.kind == mn.NAME:
-        return ("_" in t and t.islower()) or (t[0].isupper() and any(c.islower() for c in t) and "_" not in t)
+        return "_" in t and t.islower()
     return False
+
+
+def _dangling(ms: list[mn.Mention], unresolved: set[str], previous: st.Stamp | None) -> list[str]:
+    """Stale names: mentions that resolve to nothing now but either look like local Python identifiers
+    or resolved in the note's previous stamp (the strongest signal: it existed, and doesn't)."""
+    previously_resolved = {raw for raws in previous.mentions.values() for raw, _ in raws} if previous else set()
+    out = set()
+    for m in ms:
+        if m.raw not in unresolved:
+            continue
+        if m.raw in previously_resolved or _code_like(m):
+            out.add(m.raw)
+    return sorted(out)
 
 
 @dataclass
@@ -100,6 +116,6 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
     s = st.Stamp(note=note, note_hash=current, bindings=bindings,
                  mentions={t: raws[t] for t in bindings}, unresolved=sorted(unresolved_set),
                  stamped=st.now_iso(), by=by, verdict=verdict, reason=reason,
-                 dangling=sorted({m.raw for m in ms if m.raw in unresolved_set and _code_like(m)}))
+                 dangling=_dangling(ms, unresolved_set, previous))
     st.append(vault, s)
     return StampResult(s, len(bindings), failed)
