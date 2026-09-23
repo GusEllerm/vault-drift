@@ -36,7 +36,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **D15:** "aligned" = stamped against the current code (`update` or `ack --reason`); the gate as built implements it.
 - **Constant anchors (P24) done.** A constant binds its file with drift and carries its own member hash; `shapes.md` flags on a value change and stays benign on unrelated edits.
 - **Live hook test done:** in headless Claude Code sessions the read gate, Stop heads-up and bypass log all reached (or bypassed) the model as designed; **subagents are covered** by the read gate.
-- **Next, one by one:** Phase 1b in its D13 form (agents performing real changes against the gate; inspect their stamps); packaging (`uv tool install`) and a CI job.
+- **Phase 1b run 1 done** — [[1b Run 1]]: six Opus sessions made real changes against the gate; every update and ack was correct and specific, no gaming; two mechanism bugs found and fixed. Overhead is set by how many notes mention a symbol; dated review notes dominate the acks (P25).
+- **Next:** P25 (snapshot notes), then packaging (`uv tool install`) and a CI job.
 
 *Update this section at the end of every session.*
 
@@ -64,6 +65,7 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
 - **Results:**
   - [[1a Run 1]]: the first replay run on hpc-bridge — numbers, causes, and the options they leave open.
   - [[1a Run 2]]: the same history with the D fixes — what improved, and the precision/recall trade-off that shapes the judge.
+  - [[1b Run 1]]: six agent sessions reconciling notes at the commit gate — honest, substantive, two bugs found.
 - **Reviews:**
   - [[2026-09-21 Design Review]]: three critics, two rounds, and what changed as a result.
   - [[2026-09-22 Implementation Plan Review]]: eleven issues against plan v0.1, most verified on the testbench.

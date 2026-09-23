@@ -1,0 +1,97 @@
+{
+ "duration_api_ms": 26441,
+ "stop_reason": "end_turn",
+ "session_id": "4ea6f883-80b7-47fa-ae7a-d6f14b6120b7",
+ "total_cost_usd": 0.28703839999999997,
+ "usage": {
+  "input_tokens": 22,
+  "cache_creation_input_tokens": 21222,
+  "cache_read_input_tokens": 329872,
+  "output_tokens": 2560,
+  "output_tokens_details": {
+   "thinking_tokens": 196
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 21222,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 512,
+    "cache_read_input_tokens": 34429,
+    "cache_creation_input_tokens": 270,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 270
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard"
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 22,
+   "outputTokens": 2560,
+   "cacheReadInputTokens": 329872,
+   "cacheCreationInputTokens": 21222,
+   "webSearchRequests": 0,
+   "costUSD": 0.28703839999999997,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 196,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 12,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "I added `label: hpc-bridge` under `engine:` in `_SLURM_TEMPLATE` (`src/hpc_bridge/facility/remote.py:726`), just above the `type:` line, and committed it on `1b/t5-constant-1790182678` as `13baad2`. Nothing was pushed.\n\n- **Tests:** the unit tests pass (552 passed, 2 skipped).\n- **Docs:** three vault notes mention this code: `Concepts/MEP & templated endpoints.md`, `Modules/facility-remote.md` and `Modules/shapes.md`. They only describe how a template is chosen for each scheduler, not the fields inside it, so they're still correct. I marked them as still accurate (`livedocs stamp --ack` with a reason) and included the updated `stamps.jsonl` in the commit.\n- **Commit trailer:** I used `Co-Authored-By: Claude Opus 4.8`, as the repo's CLAUDE.md asks, rather than the 5.5 line from the default instructions.\n- **Not changed:** `_PBS_TEMPLATE` still has no `label:`, since you only asked about the Slurm one.\n- **Stale line numbers:** the line references in `Modules/facility-remote.md` were already out of date before this change (for example, it cites `:545` for `_SLURM_TEMPLATE`, which is at line 724). I left them as they were.",
+ "ttft_ms": 2292,
+ "type": "result",
+ "duration_ms": 58829,
+ "uuid": "eb3bc6c0-e0f7-41f8-8108-40818e90a67f",
+ "ttft_stream_ms": 950,
+ "time_to_request_ms": 250,
+ "first_content_frame_ms": 950,
+ "queued_turn_count": 0,
+ "result_index": 0
+}
