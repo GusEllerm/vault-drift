@@ -155,6 +155,13 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--no-agents-block", action="store_true", help="don't append the instruction block to AGENTS.md/CLAUDE.md")
     s.set_defaults(fn=cmd_install)
 
+    s = sub.add_parser("new-vault", help="scaffold an Obsidian vault for this project and wire livedocs in (folders, Home, templates, gate, AGENTS.md)")
+    s.add_argument("vault", help="vault path relative to the repo, e.g. docs/vault")
+    s.add_argument("--repo", default=None)
+    s.add_argument("--name", help="vault title (default: '<project> vault')")
+    s.add_argument("--scaffold-modules", action="store_true", help="seed one empty note per source module under src/")
+    s.set_defaults(fn=cmd_new_vault)
+
     s = sub.add_parser("hook", help="hook entry points (called by git and by the harness adapters)")
     s.add_argument("name", choices=["pre-commit", "stop", "read-gate", "bypass-log"])
     s.set_defaults(fn=cmd_hook)
@@ -169,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
     s.set_defaults(fn=cmd_grade)
 
     args = ap.parse_args(argv)
-    if hasattr(args, "vault"):
+    if hasattr(args, "vault") and args.cmd != "new-vault":
         _resolve(args)
     return args.fn(args)
 
@@ -246,6 +253,18 @@ def cmd_install(args: argparse.Namespace) -> int:
     if not install.check_drift():
         print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift  (or curl -fsSL https://drift.fp.dev/install.sh | sh)")
     print("done. CI: run `livedocs affected --cached` or `livedocs check` in a job to catch --no-verify commits.")
+    return 0
+
+
+def cmd_new_vault(args: argparse.Namespace) -> int:
+    from . import install, scaffold
+    repo = Path(args.repo or _repo_default()).resolve()
+    written = scaffold.new_vault(repo, args.vault.strip("/"), name=args.name, scaffold_modules=args.scaffold_modules)
+    for w in written:
+        print("wrote", w)
+    if not install.check_drift():
+        print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift")
+    print(f"done. Open {repo / args.vault} in Obsidian (Open folder as vault). Commit, then write notes; each commit stamps them.")
     return 0
 
 

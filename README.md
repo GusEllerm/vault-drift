@@ -59,7 +59,8 @@ edit code ──► git commit
 
 | Command | Does |
 |---|---|
-| `livedocs init --vault <path> [--read-gate] [--shared]` | install the gate, config and harness adapter |
+| `livedocs new-vault <path> [--scaffold-modules]` | scaffold an Obsidian vault and wire everything in |
+| `livedocs init --vault <path> [--read-gate] [--shared]` | install the gate, config and harness adapter for an existing vault |
 | `livedocs stamp <note> [--ack --reason R]` | bind a note's mentions with drift and record a stamp |
 | `livedocs check <note> [--json]` | one note's state: `fresh`, `changed`, `broken`, `unknown`, `snapshot` |
 | `livedocs affected [--cached]` | notes bound to files changed in the working tree (or the index) |

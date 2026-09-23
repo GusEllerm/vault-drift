@@ -105,10 +105,12 @@ def install_config(repo: Path, vault_rel: str) -> Path:
 AGENTS_BLOCK = """
 ## Live documentation (livedocs)
 
-Notes under `{vault}/` are bound to the code they mention. A pre-commit gate blocks any commit that
-changes code a note mentions until that note is reconciled: edit it and run `livedocs stamp <note>`, or
-if it is still correct run `livedocs stamp <note> --ack --reason "<why>"`, then stage `drift.lock` and
-`{vault}/.livedocs/stamps.jsonl`. `livedocs affected` lists the notes your uncommitted changes touch.
+Notes under `{vault}/` are bound to the code they mention (names in backticks). A pre-commit gate blocks
+any commit that changes code a note mentions until the note is reconciled: edit the note and commit
+again (the commit stamps it), or if the note is still correct run
+`livedocs stamp <note> --ack --reason "<why>"`, `git add -A`, and commit. New and edited notes are stamped
+by the commit that contains them; nothing else to run. `livedocs affected` lists the notes your
+uncommitted changes touch; `livedocs coverage` shows which claims are anchored.
 """
 
 
