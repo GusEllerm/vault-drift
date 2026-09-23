@@ -23,6 +23,21 @@ def snapshot_index(repo: Path) -> Path:
     return tmp
 
 
+def _audit(repo: Path, vault_rel: str, staged: list[str], reports) -> None:
+    """Untracked audit line per gate run (.livedocs/cache/precommit.jsonl): a commit that has no
+    matching line was made with --no-verify. Used by experiments; harmless in production."""
+    import json
+    import time
+    try:
+        p = repo / vault_rel / ".livedocs" / "cache" / "precommit.jsonl"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("a") as f:
+            f.write(json.dumps({"ts": int(time.time()), "staged": staged,
+                                "notes": {r.note: r.state for r in reports}}) + "\n")
+    except OSError:
+        pass
+
+
 def main() -> int:
     try:
         repo = repo_root(None)
@@ -40,6 +55,7 @@ def main() -> int:
         snap = snapshot_index(repo)
         try:
             reports = af.affected(repo, vault_rel, changed=staged, snapshot=snap)
+            _audit(repo, vault_rel, staged, reports)
             blocking: list[ck.Report] = []
             acked: list[str] = []
             for r in reports:

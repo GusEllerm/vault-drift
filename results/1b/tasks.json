@@ -1,0 +1,32 @@
+[
+  {
+    "id": "t1-rename",
+    "expect": "update (the note names the old function)",
+    "prompt": "In src/hpc_bridge/config.py, rename the function `_parse_hhmmss` to `_parse_walltime` (same behaviour), and update every caller in src/ accordingly. Then commit your work on the current branch with a clear commit message. Do not push."
+  },
+  {
+    "id": "t2-format-change",
+    "expect": "update (server.md states the hpc-bridge-<slug> format)",
+    "prompt": "In src/hpc_bridge/binding.py, change `_session_endpoint_name` so the generated endpoint name uses the prefix `hpcb-` instead of `hpc-bridge-` (keep the rest of the slug logic identical). Update any tests in tests/ that assert on the old prefix. Then commit your work on the current branch with a clear commit message. Do not push."
+  },
+  {
+    "id": "t3-optional-param",
+    "expect": "ack (benign addition; claims hold)",
+    "prompt": "In src/hpc_bridge/warmth.py, add an optional keyword-only parameter `strict: bool = False` to `_apply_partition`. When `strict` is True and the partition fails validation, raise ValueError instead of returning the notice; when False, behaviour is unchanged. Then commit your work on the current branch with a clear commit message. Do not push."
+  },
+  {
+    "id": "t4-move",
+    "expect": "auto-ack (verified pure move) or ack",
+    "prompt": "Move the function `_task_ceiling_s` (and only that function) out of src/hpc_bridge/config.py into a new module src/hpc_bridge/ceilings.py, unchanged. Keep `from .ceilings import _task_ceiling_s` in config.py so existing imports keep working. Then commit your work on the current branch with a clear commit message. Do not push."
+  },
+  {
+    "id": "t5-constant",
+    "expect": "ack or update depending on what shapes.md claims about the template",
+    "prompt": "In src/hpc_bridge/facility/remote.py, add the line `#SBATCH --comment=hpc-bridge` to the `_SLURM_TEMPLATE` batch script header, after the existing #SBATCH lines. Then commit your work on the current branch with a clear commit message. Do not push."
+  },
+  {
+    "id": "t6-internals",
+    "expect": "silent pass (no note mentions _safe_host)",
+    "prompt": "In src/hpc_bridge/catalog/entry.py, make `CatalogEntry._safe_host` also strip a single trailing dot from the host (e.g. `host.example.org.` -> `host.example.org`) before its existing checks. Add a unit test for it in tests/. Then commit your work on the current branch with a clear commit message. Do not push."
+  }
+]
