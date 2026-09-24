@@ -33,5 +33,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/livedocs"]
 
+[tool.hatch.build.targets.sdist]
+# The package is the tool; the vault, results and testbench stay in the repository.
+only-include = ["src", "tests", "README.md", "LICENSE", "pyproject.toml", ".pre-commit-hooks.yaml"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

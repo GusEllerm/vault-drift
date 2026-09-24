@@ -41,7 +41,8 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **Packaging done** (2026-09-23): README, `livedocs verify` for CI, GitHub workflows, pre-commit-framework hook, 0.1.0. Installable with `uv tool install git+https://github.com/GusEllerm/vault-drift`.
 - **MIT licence added.** Notes are now stamped by the commit that adds or edits them; `--repo`/`--vault` default sensibly. The whole flow is verified on a fresh empty-vault repo (session log).
 - **`livedocs new-vault`** scaffolds an Obsidian vault and wires everything in with one command.
-- **Open for the user:** whether to publish to PyPI. The run-1 calibration pass (`results/1a-run1/user-calibration.md`) is still pending.
+- **On PyPI (2026-09-24):** `uv tool install livedocs`. Future releases: bump the version, tag `v*`, push — after the user adds the trusted publisher on PyPI. The repo stays private.
+- **Open for the user:** the trusted-publisher setup on PyPI; the run-1 calibration pass (`results/1a-run1/user-calibration.md`).
 - **Candidate next steps:** note-hygiene guidance (widely mentioned symbols cost per mention); a second testbench repo (everything so far is one repo, one author); languages beyond Python; report drift's two gaps upstream (percent-encoded links; file fingerprints blind to lines inside module-level strings).
 
 *Update this section at the end of every session.*

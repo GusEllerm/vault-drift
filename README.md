@@ -37,15 +37,13 @@ folder in Obsidian as a vault. From there: write notes, commit, reconcile when t
 brew install fiberplane/tap/drift          # or: curl -fsSL https://drift.fp.dev/install.sh | sh
 ```
 
-Then `livedocs` itself (stdlib only, no Python dependencies). While this repository is private, install
-from a checkout or the built wheel; `git+https://…` needs GitHub credentials (`gh auth setup-git` makes
-git use your `gh` login):
+Then `livedocs` itself, from PyPI (stdlib only, no Python dependencies):
 
 ```sh
-uv tool install /path/to/vault-drift               # from a local checkout (add --editable to hack on it)
-uv tool install /path/to/livedocs-0.1.0-py3-none-any.whl   # from `uv build` output
-uv tool install git+https://github.com/GusEllerm/vault-drift   # with GitHub access
+uv tool install livedocs                   # or: pipx install livedocs
 ```
+
+To hack on it: `uv tool install --editable /path/to/vault-drift`.
 
 Then, in the repository that holds the vault:
 
@@ -114,7 +112,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: curl -fsSL https://drift.fp.dev/install.sh | sh && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - uses: astral-sh/setup-uv@v5
-      - run: uv tool install git+https://github.com/GusEllerm/vault-drift
+      - run: uv tool install livedocs
       - run: livedocs verify --repo . --vault docs/vault
 ```
 
