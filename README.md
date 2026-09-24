@@ -35,7 +35,16 @@ folder in Obsidian as a vault. From there: write notes, commit, reconcile when t
 
 ```sh
 brew install fiberplane/tap/drift          # or: curl -fsSL https://drift.fp.dev/install.sh | sh
-uv tool install git+https://github.com/GusEllerm/vault-drift   # puts `livedocs` on PATH
+```
+
+Then `livedocs` itself (stdlib only, no Python dependencies). While this repository is private, install
+from a checkout or the built wheel; `git+https://…` needs GitHub credentials (`gh auth setup-git` makes
+git use your `gh` login):
+
+```sh
+uv tool install /path/to/vault-drift               # from a local checkout (add --editable to hack on it)
+uv tool install /path/to/livedocs-0.1.0-py3-none-any.whl   # from `uv build` output
+uv tool install git+https://github.com/GusEllerm/vault-drift   # with GitHub access
 ```
 
 Then, in the repository that holds the vault:
