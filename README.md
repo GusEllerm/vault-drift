@@ -97,6 +97,18 @@ Dated records — reviews, session logs, reports — describe the code as it *wa
 
 They bind nothing, report `snapshot`, and never block.
 
+## Secret scanners
+
+`drift.lock` and `<vault>/.livedocs/stamps.jsonl` hold fingerprints — hashes of your own code's syntax
+trees. Anyone who can read them can read the code they were computed from; they grant access to
+nothing. Secret scanners can still misread a hash next to a name like `get_access_token` as a leaked
+token. Since 0.1.3, stamps tag every fingerprint (`drift:…`, `ast:…`) and store members as pairs so they
+don't have that shape, and `init` / `new-vault` add both files to `.gitguardian.yaml`'s
+`secret.ignored_paths`, which ggshield (pre-commit, CI) reads. If you use the GitGuardian dashboard's
+repository monitoring, add the same two paths as exclusions in its workspace settings, and mark any
+earlier alert on these files as a false positive. `drift.lock` itself is drift's format and still holds
+bare `sig = "<hex>"` values.
+
 ## CI
 
 Pre-commit is skipped by `--no-verify`, merges and rebases. Run the same check in CI:
