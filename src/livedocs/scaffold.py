@@ -177,6 +177,9 @@ def new_vault(repo: Path, vault_rel: str, *, name: str | None = None, scaffold_m
     written.append(".livedocs/config.json")
     install.install_config(repo, vault_rel)  # .livedocs/.gitignore for the cache
     written.append(str(install.install_git(repo).relative_to(repo)))
+    gg, changed = install.install_gitguardian(repo, vault_rel)
+    if changed:
+        written.append(str(gg.relative_to(repo)))
     written.append(str(install.install_claude(repo).relative_to(repo)))
 
     # AGENTS.md: append the block, creating the file if the project has none

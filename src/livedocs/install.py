@@ -83,6 +83,46 @@ def install_git(repo: Path) -> Path:
     return hook
 
 
+SCANNER_PATHS = ("drift.lock", "**/.livedocs/stamps.jsonl")
+_GG_COMMENT = ("# livedocs: drift.lock and stamps.jsonl hold fingerprints (hashes) of this repository's own code.\n"
+               "# They grant access to nothing; secret scanners misread them as high-entropy secrets.\n")
+
+
+def install_gitguardian(repo: Path, vault_rel: str, extra: tuple[str, ...] = ()) -> tuple[Path, bool]:
+    """Add livedocs' fingerprint files to .gitguardian.yaml's secret.ignored_paths (read by ggshield:
+    hooks and CI). Creates the file, or inserts into an existing one without a YAML dependency.
+    Returns (path, changed)."""
+    paths = [*SCANNER_PATHS, f"{vault_rel}/.livedocs/stamps.jsonl", *extra]
+    p = repo / ".gitguardian.yaml"
+    if not p.exists():
+        items = "".join(f"    - '{x}'\n" for x in paths)
+        p.write_text(f"{_GG_COMMENT}version: 2\nsecret:\n  ignored_paths:\n{items}")
+        return p, True
+    text = p.read_text()
+    missing = [x for x in paths if x not in text]
+    if not missing:
+        return p, False
+    lines = text.splitlines(keepends=True)
+    import re as _re
+    ip = next((i for i, l in enumerate(lines) if _re.match(r"^\s*ignored_paths:\s*$", l)), None)
+    if ip is not None:
+        ind = len(lines[ip]) - len(lines[ip].lstrip())
+        # match the indent of the first existing item if any, else two deeper than the key
+        item_ind = next((len(l) - len(l.lstrip()) for l in lines[ip + 1:] if l.strip().startswith("-")), ind + 2)
+        lines[ip + 1:ip + 1] = [" " * item_ind + f"- '{x}'\n" for x in missing]
+    else:
+        sp = next((i for i, l in enumerate(lines) if _re.match(r"^secret:\s*$", l)), None)
+        block = ["  ignored_paths:\n"] + [f"    - '{x}'\n" for x in missing]
+        if sp is not None:
+            lines[sp + 1:sp + 1] = block
+        else:
+            if lines and not lines[-1].endswith("\n"):
+                lines[-1] += "\n"
+            lines += ["secret:\n"] + block
+    p.write_text(_GG_COMMENT + "".join(lines) if "livedocs:" not in text else "".join(lines))
+    return p, True
+
+
 def install_config(repo: Path, vault_rel: str) -> Path:
     p = repo / ".livedocs" / "config.json"
     p.parent.mkdir(exist_ok=True)

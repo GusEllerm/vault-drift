@@ -38,14 +38,41 @@ class Stamp:
     snapshot: bool = False  # P25: a dated record; binds nothing, never blocks
 
     def to_json(self) -> str:
+        """Stamp format v2. Every fingerprint carries a type tag (`drift:`, `ast:`) and members are
+        stored as [qualname, fingerprint] pairs, never as a `"name": "<hex>"` mapping: a documented
+        function called `get_access_token` next to a bare hex value reads to secret scanners as an
+        access token (GitGuardian flagged exactly that on a user's repo, 2026-09-28)."""
         d = asdict(self)
-        return json.dumps(d, separators=(",", ":"))
+        d["bindings"] = {t: _binding_out(b) for t, b in self.bindings.items()}
+        return json.dumps({"v": 2, **d}, separators=(",", ":"))
 
     @classmethod
     def from_json(cls, line: str) -> "Stamp":
         d = json.loads(line)
-        d["bindings"] = {k: Binding(**v) for k, v in d["bindings"].items()}
+        d.pop("v", None)  # v1 lines have no version; both formats read the same way
+        d["bindings"] = {k: _binding_in(v) for k, v in d["bindings"].items()}
         return cls(**d)
+
+
+def _tag(prefix: str, h: str) -> str:
+    return f"{prefix}{h}" if h else ""
+
+
+def _untag(h: str) -> str:
+    return h.split(":", 1)[1] if ":" in h else h
+
+
+def _binding_out(b: Binding) -> dict:
+    return {"fp": _tag("drift:", b.sig), "deco": _tag("ast:", b.deco), "qualnames": b.qualnames,
+            "members": [[q, _tag("ast:", h)] for q, h in b.members.items()]}
+
+
+def _binding_in(v: dict) -> Binding:
+    sig = _untag(v.get("fp", "")) or v.get("sig", "")  # v2 "fp", v1 "sig"
+    members = v.get("members") or {}
+    if isinstance(members, list):
+        members = {q: _untag(h) for q, h in members}
+    return Binding(sig=sig, deco=_untag(v.get("deco", "")), qualnames=list(v.get("qualnames", [])), members=dict(members))
 
 
 def now_iso() -> str:

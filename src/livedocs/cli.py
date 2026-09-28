@@ -245,6 +245,9 @@ def cmd_install(args: argparse.Namespace) -> int:
     repo = Path(args.repo).resolve()
     print("wrote", install.install_config(repo, args.vault))
     print("wrote", install.install_git(repo), "(core.hooksPath = .githooks)")
+    gg, changed = install.install_gitguardian(repo, args.vault)
+    if changed:
+        print("wrote", gg, "(secret scanners: livedocs fingerprints are not secrets)")
     if not args.no_claude:
         print("wrote", install.install_claude(repo, shared=args.shared, read_gate=args.read_gate, bypass_log=args.bypass_log))
     if not args.no_agents_block:
