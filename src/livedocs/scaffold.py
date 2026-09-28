@@ -121,8 +121,7 @@ AGENTS_HEADER = """# Agent instructions
 """
 
 
-def new_vault(repo: Path, vault_rel: str, *, name: str | None = None, scaffold_modules: bool = False,
-              roots: tuple[str, ...] = ("src/",)) -> list[str]:
+def new_vault(repo: Path, vault_rel: str, *, name: str | None = None, scaffold_modules: bool = False) -> list[str]:
     repo = repo.resolve()
     vault = repo / vault_rel
     project = repo.name
@@ -146,15 +145,18 @@ def new_vault(repo: Path, vault_rel: str, *, name: str | None = None, scaffold_m
         w(vault / ".obsidian" / fname, json.dumps(data, indent=2) + "\n")
 
     if scaffold_modules:
-        for root in roots:
-            for py in sorted((repo / root).rglob("*.py")) if (repo / root).exists() else []:
-                rel = py.relative_to(repo / root)
-                if py.name == "__init__.py" or "test" in py.name or any(p.startswith(".") for p in rel.parts):
-                    continue
-                stem = "-".join(rel.with_suffix("").parts)
-                # H1 names the file so resolution prefers this module; no backticks, so nothing binds yet.
-                w(vault / "Modules" / f"{stem}.md",
-                  f"# {rel.as_posix()}\n\n> [!abstract] Role\n> (describe what this module is for)\n\n## What it does\n\n## How it works\n")
+        from . import symbols as sy
+        idx = sy.index(repo, "WORKTREE")  # same discovery as stamping: src/, benchmark/src/, flat packages…
+        for path in sorted(idx.files):
+            if path.endswith("__init__.py"):
+                continue
+            rel = Path(path)
+            m = __import__("re").search(r"(?:^|/)src/", path)
+            shown = path[m.end():] if m else path  # drop the leading …/src/ for the note name
+            stem = "-".join(Path(shown).with_suffix("").parts)
+            # H1 names the file so resolution prefers this module; no backticks, so nothing binds yet.
+            w(vault / "Modules" / f"{stem}.md",
+              f"# {rel.as_posix()}\n\n> [!abstract] Role\n> (describe what this module is for)\n\n## What it does\n\n## How it works\n")
 
     # .gitignore entries Obsidian needs
     gi = repo / ".gitignore"

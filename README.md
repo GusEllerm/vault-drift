@@ -134,6 +134,9 @@ Or with the [pre-commit](https://pre-commit.com) framework, add to `.pre-commit-
   callee changes. That is the residual miss class, measured at about 1 in 20 real changes on the
   reference history.
 - Python only, for now (symbol resolution uses `ast`; drift fingerprints six languages).
+- Code is discovered wherever it lives — `src/`, `benchmark/src/`, a flat package — excluding tests,
+  environments, build output and docs. To pin it, set `"code_roots": ["lib", "services/api"]` in
+  `.livedocs/config.json`.
 
 ## Background
 

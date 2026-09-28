@@ -44,11 +44,12 @@ class Symbol:
 
     @property
     def module(self) -> str:
-        """Module path without the src prefix and extension: facility/remote."""
+        """Module path without any leading `…/src/` and the extension: facility/remote.
+        Code may live at src/, benchmark/src/, packages/x/src/ — the src segment is not the root."""
         p = self.path
-        for prefix in ("src/",):
-            if p.startswith(prefix):
-                p = p[len(prefix):]
+        m = re.search(r"(?:^|/)src/", p)
+        if m:
+            p = p[m.end():]
         return re.sub(r"\.py$", "", p)
 
     @property
@@ -85,8 +86,8 @@ class SymbolIndex:
         suffix = suffix.lstrip("./")
         pool = self.files if suffix.endswith(".py") else (self.all_files or self.files)
         hits = sorted(f for f in pool if f == suffix or f.endswith("/" + suffix))
-        if len(hits) > 1 and suffix.endswith(".py"):  # prefer src/ over tests/ or docs copies
-            src = [h for h in hits if h.startswith("src/")]
+        if len(hits) > 1 and suffix.endswith(".py"):  # prefer real code over test or docs copies
+            src = [h for h in hits if not is_excluded(h)]
             hits = src or hits
         return hits
 
@@ -133,21 +134,52 @@ def _symbols_in_source(path: str, source: str) -> list[Symbol]:
     return out
 
 
-def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] = ("src/",)) -> SymbolIndex:
-    """Index every tracked *.py under `roots` at `ref`, or the working tree if ref is "WORKTREE"."""
+# Directories whose Python is not "the code": tests, environments, build output, vendored copies.
+EXCLUDED_SEGMENTS = frozenset({
+    "tests", "test", "testing", ".venv", "venv", "env", "node_modules", "build", "dist", "site-packages",
+    ".git", ".tox", ".nox", "__pycache__", ".eggs", "examples", "docs", "doc", "scripts",
+})
+
+
+def is_excluded(path: str) -> bool:
+    parts = path.split("/")
+    name = parts[-1]
+    if any(p in EXCLUDED_SEGMENTS or p.startswith(".") for p in parts[:-1]):
+        return True
+    return name.startswith("test_") or name.endswith("_test.py") or name == "conftest.py" or name == "setup.py"
+
+
+def code_roots(repo: str | Path) -> tuple[str, ...] | None:
+    """Explicit code roots from .livedocs/config.json (`code_roots`), else None = discover."""
+    from . import config
+    roots = config.load(repo).get("code_roots")
+    if roots:
+        return tuple(r.rstrip("/") + "/" for r in roots)
+    return None
+
+
+def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = None) -> SymbolIndex:
+    """Index the project's Python at `ref` (or the working tree if ref is "WORKTREE").
+
+    Which files count as code: `roots` if given, else `code_roots` from config, else every tracked
+    *.py outside tests, environments, build output and docs — wherever it lives (src/, benchmark/src/,
+    a flat package at the root). A note should never be silently unbound because of the layout."""
     repo = Path(repo)
     idx = SymbolIndex(ref=ref)
+    roots = roots or code_roots(repo)
     if ref == "WORKTREE" and not (repo / ".git").exists():
         # A checkout-index snapshot (the pre-commit gate) has no .git: walk the files instead.
         all_files = {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
-        idx.all_files = all_files
-        listing = "\n".join(sorted(f for f in all_files if any(f.startswith(r) for r in roots)))
     elif ref == "WORKTREE":
-        listing = _git(repo, "ls-files", "--", *roots)
-        idx.all_files = {l for l in _git(repo, "ls-files").split("\n") if l}
+        all_files = {l for l in _git(repo, "ls-files").split("\n") if l}
     else:
-        listing = _git(repo, "ls-tree", "-r", "--name-only", ref, "--", *roots)
-        idx.all_files = {l for l in _git(repo, "ls-tree", "-r", "--name-only", ref).split("\n") if l}
+        all_files = {l for l in _git(repo, "ls-tree", "-r", "--name-only", ref).split("\n") if l}
+    idx.all_files = all_files
+    if roots:
+        candidates = [f for f in all_files if any(f.startswith(r) for r in roots)]
+    else:
+        candidates = [f for f in all_files if not is_excluded(f)]
+    listing = "\n".join(sorted(candidates))
     for path in listing.split("\n"):
         if not path.endswith(".py"):
             continue
@@ -172,7 +204,8 @@ _H1 = re.compile(r"^#\s+(.+?)\s*$", re.M)
 def module_hints(note_path: str, note_text: str) -> list[str]:
     """Module suffixes a note is 'about', best first: from its H1, then its filename.
 
-    `# facility-remote.py — \\`facility/remote.py\\`` → ["facility/remote.py", "facility/remote.py"]
+    `# facility-remote.py — \\`facility/remote.py\\`` → ["facility/remote.py"]
+    `# benchmark/src/gateway.py` → ["benchmark/src/gateway.py"] (a path H1 matches by suffix)
     `# binding` → ["binding.py"];  facility-remote.md → ["facility/remote.py"]
     """
     hints: list[str] = []
