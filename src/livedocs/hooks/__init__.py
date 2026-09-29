@@ -2,7 +2,7 @@
 
 Every hook fails closed: any exception or timeout inside produces an explicit `unknown` line for
 the agent instead of silence. The shell wrapper installed by `livedocs install-hooks` adds a second
-layer (`… || printf '<unknown JSON>'`) for import errors and interpreter crashes.
+layer for a missing launcher, import errors and interpreter crashes (see install._cmd).
 """
 
 from __future__ import annotations

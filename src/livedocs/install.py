@@ -7,39 +7,62 @@ The guarantee is a mechanism of the development framework, not a capability of t
     (--shared writes the project settings.json). Non-blocking; injects note names and states only.
   - Tier 2 (opt-in, --read-gate): the read-time gate.
   - Tier 3 (measurement, --bypass-log): telemetry for experiments, never a default.
-Hook commands call `livedocs hook <name>` resolved on PATH, never an absolute interpreter path.
+Hook commands resolve `livedocs` on PATH first, never via an interpreter path. Sessions that are resumed
+or launched from a GUI often lack ~/.local/bin on PATH, so the command then tries the launcher found at
+init time (local settings only) and $HOME/.local/bin. The Stop fallback is a systemMessage (shown to the
+user): additionalContext on Stop starts a new turn, so a failing hook would loop.
 """
 
 from __future__ import annotations
 
 import json
+import shlex
 import shutil
 import stat
 import subprocess
+import sys
 from pathlib import Path
 
-UNVERIFIED = "LIVE-DOCS: freshness check crashed before it could run. Treat any vault note you read as UNVERIFIED."
+NOT_FOUND = ("LIVE-DOCS: `livedocs` was not found (not on PATH or in ~/.local/bin), so the freshness check did not run. "
+             "Install it (uv tool install livedocs) or re-run `livedocs init`.")
+CRASHED = "LIVE-DOCS: freshness check crashed before it could run."
+UNVERIFIED = " Treat any vault note you read as UNVERIFIED."
 
 
-def _fallback(event: str) -> str:
-    return json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": UNVERIFIED}})
+def _fallback(event: str, msg: str) -> str:
+    assert "'" not in msg  # the command wraps this JSON in single quotes
+    if event == "Stop":
+        return json.dumps({"systemMessage": msg})
+    return json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": msg + UNVERIFIED}})
 
 
-def _cmd(name: str, event: str | None = None) -> str:
-    """Fail closed: if livedocs is missing or crashes, the agent still gets an explicit line."""
-    base = f"livedocs hook {name}"
+def _launcher() -> str | None:
+    """The `livedocs` launcher running now: PATH's, else argv[0] if it is one. Not resolved through
+    symlinks, so a uv/pipx shim stays a shim and survives upgrades."""
+    found = shutil.which("livedocs")
+    if found:
+        return str(Path(found).absolute())
+    argv0 = Path(sys.argv[0])
+    return str(argv0.absolute()) if argv0.name == "livedocs" and argv0.exists() else None
+
+
+def _cmd(name: str, event: str | None = None, *, pinned: str | None = None) -> str:
+    """Fail closed: if livedocs is missing or crashes, the agent (or on Stop, the user) gets an explicit line."""
+    cands = ["livedocs"] + ([shlex.quote(pinned)] if pinned else []) + ['"$HOME/.local/bin/livedocs"']
+    find = "L=$(" + " || ".join(f"command -v {c}" for c in cands) + ")"
     if event is None:
-        return f"{base} || true"
-    return f"{base} || printf '%s' '{_fallback(event)}'"
+        return f'{find}; [ -z "$L" ] || "$L" hook {name} || true'
+    return (f'{find}; if [ -z "$L" ]; then printf \'%s\' \'{_fallback(event, NOT_FOUND)}\'; '
+            f'else "$L" hook {name} || printf \'%s\' \'{_fallback(event, CRASHED)}\'; fi')
 
 
-def claude_hooks(*, read_gate: bool, bypass_log: bool, timeout: int = 30) -> dict:
-    hooks: dict = {"Stop": [{"hooks": [{"type": "command", "command": _cmd("stop", "Stop"), "timeout": timeout}]}]}
+def claude_hooks(*, read_gate: bool, bypass_log: bool, timeout: int = 30, pinned: str | None = None) -> dict:
+    hooks: dict = {"Stop": [{"hooks": [{"type": "command", "command": _cmd("stop", "Stop", pinned=pinned), "timeout": timeout}]}]}
     post = []
     if read_gate:
-        post.append({"matcher": "Read", "hooks": [{"type": "command", "command": _cmd("read-gate", "PostToolUse"), "timeout": timeout}]})
+        post.append({"matcher": "Read", "hooks": [{"type": "command", "command": _cmd("read-gate", "PostToolUse", pinned=pinned), "timeout": timeout}]})
     if bypass_log:
-        post.append({"matcher": "Grep|Bash", "hooks": [{"type": "command", "command": _cmd("bypass-log"), "timeout": 10}]})
+        post.append({"matcher": "Grep|Bash", "hooks": [{"type": "command", "command": _cmd("bypass-log", pinned=pinned), "timeout": 10}]})
     if post:
         hooks["PostToolUse"] = post
     return hooks
@@ -55,7 +78,9 @@ def install_claude(repo: Path, *, shared: bool = False, read_gate: bool = False,
         hooks[event] = [e for e in hooks[event] if "livedocs" not in json.dumps(e)]
         if not hooks[event]:
             del hooks[event]
-    for event, entries in claude_hooks(read_gate=read_gate, bypass_log=bypass_log).items():
+    # a shared (committed) settings.json must not carry this machine's paths
+    pinned = None if shared else _launcher()
+    for event, entries in claude_hooks(read_gate=read_gate, bypass_log=bypass_log, pinned=pinned).items():
         hooks.setdefault(event, []).extend(entries)
     p.write_text(json.dumps(cfg, indent=2) + "\n")
     return p

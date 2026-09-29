@@ -4,7 +4,7 @@ status: active
 authority: describes
 summary: "Entry point to this vault: what the project is, where it stands, and what to read first."
 created: 2026-09-21
-updated: 2026-09-22
+updated: 2026-09-29
 reviewed: 2026-09-22
 tags: [live-docs, index]
 ---
@@ -19,7 +19,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 
 ## Current status
 
-*As of 2026-09-22.*
+*As of 2026-09-29.*
 
 - **Research and review are done.** Three critic agents reviewed design v0.1 ([[2026-09-21 Design Review]]); the user then resolved the contested points ([[2026-09-22 Resolving the Review]]).
 - **[[Live Docs Design]] is at v0.3.** The product is a **guarantee**: an agent reading a note about code is told if that code is technically out of date. Scope is documentation of code only; Obsidian is the interface, not a dependency.
@@ -42,6 +42,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **MIT licence added.** Notes are now stamped by the commit that adds or edits them; `--repo`/`--vault` default sensibly. The whole flow is verified on a fresh empty-vault repo (session log).
 - **`livedocs new-vault`** scaffolds an Obsidian vault and wires everything in with one command.
 - **On PyPI (2026-09-24):** `uv tool install livedocs`. Future releases: bump the version, tag `v*`, push — after the user adds the trusted publisher on PyPI. The repo stays private.
+- **Hook PATH fix (2026-09-29, released in 0.1.4):** Stop hooks looped in sessions without `livedocs` on PATH. The commands now fall back to the init-time launcher and `~/.local/bin`, and the Stop fallback is a user-facing `systemMessage`. See [[2026-09-29 Hook PATH Fix]]. Existing repos need `livedocs init` re-run after release.
 - **Open for the user:** the trusted-publisher setup on PyPI; the run-1 calibration pass (`results/1a-run1/user-calibration.md`).
 - **Candidate next steps:** note-hygiene guidance (widely mentioned symbols cost per mention); a second testbench repo (everything so far is one repo, one author); languages beyond Python; report drift's two gaps upstream (percent-encoded links; file fingerprints blind to lines inside module-level strings).
 
