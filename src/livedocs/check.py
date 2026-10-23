@@ -152,7 +152,8 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
         # left a file anchor `fresh` in 1b t5), so compare members whether or not drift flagged.
         changed_members: list[str] = []
         if binding.members and current_text is not None:
-            changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q, path=path) != h]
+            changed_members = [q for q, h in binding.members.items()
+                               if not astdiff.member_matches(h, current_text, q, path=path)]
         if a["result"] != "fresh" or deco_now != binding.deco or changed_members:
             if binding.members and not changed_members:
                 refined.append(target)
@@ -190,7 +191,7 @@ def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
             if cand.path == old_path or cand.qualname != top:
                 continue
             src = (repo / cand.path).read_text(encoding="utf-8", errors="replace")
-            if all(astdiff.member_hash(src, q, path=cand.path) == h for q, h in members.items()):
+            if all(astdiff.member_matches(h, src, q, path=cand.path) for q, h in members.items()):
                 hit = cand.path
                 break
         if hit is None:
@@ -232,7 +233,7 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
         return out
     top = target.split("#", 1)[1] if "#" in target else path.rsplit("/", 1)[-1]
     for q in quals:
-        member_same = bool(binding.members.get(q)) and astdiff.member_hash(now_src, q, path=path) == binding.members[q]
+        member_same = bool(binding.members.get(q)) and astdiff.member_matches(binding.members[q], now_src, q, path=path)
         if member_same:
             # The member hash is what a mention depends on (a class's shell, a function's substance):
             # if it is unchanged the change is benign by construction, whatever a full-AST diff says

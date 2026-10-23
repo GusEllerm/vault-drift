@@ -122,6 +122,18 @@ def _dump(node: ast.AST) -> str:
     return ast.dump(node, include_attributes=False)
 
 
+def _stable_dump(node) -> str:
+    """ast.dump without empty fields. ast.dump's own output differs across CPython minors (3.12 prints
+    `type_params=[]`, `posonlyargs=[]`; 3.13 omits them), so a member hash stamped on one Python read as
+    changed on another: scheduler-dojo re-stamped "under Python 3.12 so member hashes match CI"."""
+    if isinstance(node, ast.AST):
+        parts = [f"{k}={_stable_dump(v)}" for k, v in ast.iter_fields(node) if v is not None and v != []]
+        return f"{type(node).__name__}({', '.join(parts)})"
+    if isinstance(node, list):
+        return "[" + ", ".join(_stable_dump(x) for x in node) + "]"
+    return repr(node)
+
+
 def _sig_dump(node: ast.AST) -> str:
     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
         # sync→async is a signature change: callers must await it
@@ -189,7 +201,32 @@ def _classify_other(old_source: str | None, new_source: str | None, qualname: st
     return Change(BODY, old, new)
 
 
+# Member hash schemes. The tag is stored with the hash, so a stamp is always compared with the function
+# that made it: bare hex (stored `ast:`) is the 0.1 Python hash, which depends on the CPython minor.
+PY, TS, JSON = "py2:", "ts1:", "json1:"
+
+
 def member_hash(source: str | None, qualname: str, *, path: str | None = None) -> str | None:
+    """The current scheme's member hash, tagged: `py2:…` (Python), `ts1:…` (TS/JS/Astro), `json1:…`."""
+    lang = _lang(path)
+    if lang == "ts":
+        h = ts.member_hash(path, source, qualname)
+        return TS + h if h else None
+    if lang == "config":
+        h = configkeys.member_hash(source, qualname)
+        return JSON + h if h else None
+    h = _py_member_hash(source, qualname, _stable_dump)
+    return PY + h if h else None
+
+
+def member_matches(stored: str, source: str | None, qualname: str, *, path: str | None = None) -> bool:
+    """Whether the member is unchanged since `stored` was taken, using the scheme that took it."""
+    if ":" not in stored:  # 0.1 Python hash
+        return _py_member_hash(source, qualname, _dump) == stored
+    return member_hash(source, qualname, path=path) == stored
+
+
+def _py_member_hash(source: str | None, qualname: str, dump) -> str | None:
     """Content hash of what a note mentions, insensitive to comments, docstrings and formatting.
 
     function/method: the whole node (args, returns, decorators, body) with docstrings stripped.
@@ -197,13 +234,7 @@ def member_hash(source: str | None, qualname: str, *, path: str | None = None) -
            but not method bodies (a note that mentions the class, not the method, doesn't depend on them).
     attribute/constant: the assignment node.
     None if the source doesn't parse or the symbol isn't there.
-    TS/Astro and config keys: see `ts.member_hash` and `configkeys.member_hash`.
     """
-    lang = _lang(path)
-    if lang == "ts":
-        return ts.member_hash(path, source, qualname)
-    if lang == "config":
-        return configkeys.member_hash(source, qualname)
     if source is None:
         return None
     try:
@@ -227,10 +258,10 @@ def member_hash(source: str | None, qualname: str, *, path: str | None = None) -
             elif isinstance(n, ast.ClassDef):
                 parts.append(f"class {n.name}")
             elif isinstance(n, (ast.Assign, ast.AnnAssign)):
-                parts.append(_dump(n))
+                parts.append(dump(n))
         payload = "\n".join(parts)
     else:
-        payload = _dump(_strip_docstrings(node))
+        payload = dump(_strip_docstrings(node))
         decos = getattr(node, "decorator_list", ())
         if decos:
             payload += "\n" + "\n".join(ast.unparse(d) for d in decos)

@@ -8,7 +8,8 @@ license-files = ["LICENSE"]
 requires-python = ">=3.12"
 dependencies = [
     "tree-sitter>=0.23",
-    "tree-sitter-typescript>=0.23",
+    # Exact: member hashes include the grammar's node types, so a grammar upgrade is a new hash scheme.
+    "tree-sitter-typescript==0.23.2",
 ]
 keywords = ["documentation", "drift", "agents", "obsidian", "git-hooks"]
 classifiers = [

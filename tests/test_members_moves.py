@@ -46,3 +46,23 @@ def test_class_shell_hash_ignores_method_bodies_but_not_members_or_fields():
     assert m == astdiff.member_hash(mut("return 1", "return 2"), "C.m")  # sibling method: irrelevant
     assert astdiff.member_hash(SRC, "C.level") != astdiff.member_hash(mut("level: int = 0", "level: int = 1"), "C.level")
     assert astdiff.member_hash(SRC, "nope") is None and astdiff.member_hash("def (", "f") is None
+
+
+def test_member_hashes_are_tagged_and_python_version_stable():
+    h = astdiff.member_hash(SRC, "f")
+    assert h.startswith("py2:")
+    assert "posonlyargs" not in astdiff._stable_dump(__import__("ast").parse(SRC).body[1])  # no empty fields
+    legacy = astdiff._py_member_hash(SRC, "f", astdiff._dump)  # a 0.1 stamp's bare hash
+    assert astdiff.member_matches(legacy, SRC, "f") and astdiff.member_matches(h, SRC, "f")
+    assert not astdiff.member_matches(h, mut("return a + b", "return a - b"), "f")
+    assert astdiff.member_hash("export function f() {}", "f", path="x.ts").startswith("ts1:")
+
+
+def test_stamp_round_trip_keeps_hash_schemes():
+    from livedocs import stamps as st
+    b = st.Binding(sig="abcd", members={"f": "py2:0011", "g": "ts1:2233", "h": "4455"})
+    s = st.Stamp(note="n.md", note_hash="sha256:x", bindings={"a.py#f": b}, mentions={}, unresolved=[],
+                 stamped="2026-10-23T00:00:00Z", by="t", verdict="initial")
+    line = s.to_json()
+    assert '["h","ast:4455"]' in line and '["f","py2:0011"]' in line  # legacy stays `ast:`-tagged on disk
+    assert st.Stamp.from_json(line).bindings["a.py#f"].members == {"f": "py2:0011", "g": "ts1:2233", "h": "4455"}

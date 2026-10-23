@@ -20,7 +20,7 @@ class Binding:
     sig: str  # drift's fingerprint of the top-level target
     deco: str = ""  # our hash of the target's decorators (drift misses decorator changes)
     qualnames: list[str] = field(default_factory=list)  # what the note actually mentioned under this target
-    members: dict[str, str] = field(default_factory=dict)  # qualname → member_hash at stamp time
+    members: dict[str, str] = field(default_factory=dict)  # qualname → member hash at stamp time; bare hex = 0.1 Python scheme, else tagged (py2:, ts1:, json1:)
 
 
 @dataclass
@@ -64,14 +64,14 @@ def _untag(h: str) -> str:
 
 def _binding_out(b: Binding) -> dict:
     return {"fp": _tag("drift:", b.sig), "deco": _tag("ast:", b.deco), "qualnames": b.qualnames,
-            "members": [[q, _tag("ast:", h)] for q, h in b.members.items()]}
+            "members": [[q, h if ":" in h else _tag("ast:", h)] for q, h in b.members.items()]}
 
 
 def _binding_in(v: dict) -> Binding:
     sig = _untag(v.get("fp", "")) or v.get("sig", "")  # v2 "fp", v1 "sig"
     members = v.get("members") or {}
-    if isinstance(members, list):
-        members = {q: _untag(h) for q, h in members}
+    if isinstance(members, list):  # `ast:` is the 0.1 scheme, kept bare; newer schemes keep their tag
+        members = {q: h[len("ast:"):] if h.startswith("ast:") else h for q, h in members}
     return Binding(sig=sig, deco=_untag(v.get("deco", "")), qualnames=list(v.get("qualnames", [])), members=dict(members))
 
 
