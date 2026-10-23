@@ -6,7 +6,10 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "tree-sitter>=0.23",
+    "tree-sitter-typescript>=0.23",
+]
 keywords = ["documentation", "drift", "agents", "obsidian", "git-hooks"]
 classifiers = [
   "Development Status :: 3 - Alpha",

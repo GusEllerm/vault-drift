@@ -1,6 +1,9 @@
 """Symbol source at two versions of a file, and what kind of change happened.
 
 Kinds: signature | decorator | body | comment-or-docstring-only | unchanged | removed | added
+
+Every function takes the file's `path` as a keyword: TypeScript/JavaScript/Astro go to `ts`, JSON
+config keys to `configkeys`, everything else (and a missing path) is Python, as before.
 """
 
 from __future__ import annotations
@@ -9,12 +12,27 @@ import ast
 import hashlib
 from dataclasses import dataclass
 
+from . import configkeys, ts
+
 SIGNATURE, DECORATOR, BODY, COMMENT_ONLY, UNCHANGED, REMOVED, ADDED, UNPARSEABLE = (
     "signature", "decorator", "body", "comment-or-docstring-only", "unchanged", "removed", "added", "unparseable",
 )
 
 
-def parses(source: str | None) -> bool:
+def _lang(path: str | None) -> str:
+    if path and ts.is_ts(path):
+        return "ts"
+    if path and configkeys.is_config(path):
+        return "config"
+    return "py"
+
+
+def parses(source: str | None, *, path: str | None = None) -> bool:
+    lang = _lang(path)
+    if lang == "ts":
+        return ts.parses(path, source)
+    if lang == "config":
+        return configkeys.parses(source)
     if source is None:
         return False
     try:
@@ -49,7 +67,12 @@ def _find(tree: ast.Module, qualname: str) -> ast.AST | None:
     return node
 
 
-def symbol_source(source: str, qualname: str) -> str | None:
+def symbol_source(source: str, qualname: str, *, path: str | None = None) -> str | None:
+    lang = _lang(path)
+    if lang == "ts":
+        return ts.symbol_source(path, source, qualname)
+    if lang == "config":
+        return configkeys.symbol_source(source, qualname)
     try:
         tree = ast.parse(source)
     except SyntaxError:
@@ -69,8 +92,13 @@ def symbol_source(source: str, qualname: str) -> str | None:
     return seg
 
 
-def decorator_hash(source: str, top_level_name: str) -> str:
+def decorator_hash(source: str, top_level_name: str, *, path: str | None = None) -> str:
     """Hash of a top-level symbol's decorators (empty string if none or unparseable)."""
+    lang = _lang(path)
+    if lang == "ts":
+        return ts.decorator_hash(path, source, top_level_name)
+    if lang == "config":
+        return ""
     try:
         tree = ast.parse(source)
     except SyntaxError:
@@ -110,7 +138,9 @@ class Change:
     now: str | None
 
 
-def classify(old_source: str | None, new_source: str | None, qualname: str) -> Change:
+def classify(old_source: str | None, new_source: str | None, qualname: str, *, path: str | None = None) -> Change:
+    if _lang(path) != "py":
+        return _classify_other(old_source, new_source, qualname, path)
     if new_source is not None and not parses(new_source):
         return Change(UNPARSEABLE, symbol_source(old_source, qualname) if old_source else None, None)
     old = symbol_source(old_source, qualname) if old_source is not None else None
@@ -133,7 +163,33 @@ def classify(old_source: str | None, new_source: str | None, qualname: str) -> C
     return Change(BODY, old, new)
 
 
-def member_hash(source: str | None, qualname: str) -> str | None:
+def _classify_other(old_source: str | None, new_source: str | None, qualname: str, path: str) -> Change:
+    """The same kinds for TS/Astro (tree-sitter) and config keys (values)."""
+    if new_source is not None and not parses(new_source, path=path):
+        return Change(UNPARSEABLE, symbol_source(old_source, qualname, path=path) if old_source else None, None)
+    old = symbol_source(old_source, qualname, path=path) if old_source is not None else None
+    new = symbol_source(new_source, qualname, path=path) if new_source is not None else None
+    if old is None and new is None:
+        return Change(REMOVED, None, None)
+    if old is None:
+        return Change(ADDED, None, new)
+    if new is None:
+        return Change(REMOVED, old, None)
+    if old == new:
+        return Change(UNCHANGED, old, new)
+    if _lang(path) == "config":
+        same = configkeys.member_hash(old_source, qualname) == configkeys.member_hash(new_source, qualname)
+        return Change(COMMENT_ONLY if same else BODY, old, new)
+    if ts.signature_hash(path, old_source, qualname) != ts.signature_hash(path, new_source, qualname):
+        return Change(SIGNATURE, old, new)
+    if ts.decorator_hash(path, old_source, qualname) != ts.decorator_hash(path, new_source, qualname):
+        return Change(DECORATOR, old, new)
+    if ts.full_hash(path, old_source, qualname) == ts.full_hash(path, new_source, qualname):
+        return Change(COMMENT_ONLY, old, new)
+    return Change(BODY, old, new)
+
+
+def member_hash(source: str | None, qualname: str, *, path: str | None = None) -> str | None:
     """Content hash of what a note mentions, insensitive to comments, docstrings and formatting.
 
     function/method: the whole node (args, returns, decorators, body) with docstrings stripped.
@@ -141,7 +197,13 @@ def member_hash(source: str | None, qualname: str) -> str | None:
            but not method bodies (a note that mentions the class, not the method, doesn't depend on them).
     attribute/constant: the assignment node.
     None if the source doesn't parse or the symbol isn't there.
+    TS/Astro and config keys: see `ts.member_hash` and `configkeys.member_hash`.
     """
+    lang = _lang(path)
+    if lang == "ts":
+        return ts.member_hash(path, source, qualname)
+    if lang == "config":
+        return configkeys.member_hash(source, qualname)
     if source is None:
         return None
     try:
@@ -176,11 +238,11 @@ def member_hash(source: str | None, qualname: str) -> str | None:
 
 
 def first_line(src: str | None) -> str:
-    """The def/class line (after decorators), for compact was/now output."""
+    """The def/class line (after decorators and leading comments), for compact was/now output."""
     if not src:
         return ""
     for l in src.splitlines():
         s = l.strip()
-        if s and not s.startswith("@"):
+        if s and not s.startswith(("@", "//", "/*", "* ", "*/", "---")):
             return s
     return src.splitlines()[0].strip()

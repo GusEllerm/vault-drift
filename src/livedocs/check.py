@@ -8,7 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import astdiff, config, drift_io, gitx, stamps as st
+from . import astdiff, config, configkeys, drift_io, gitx, stamps as st, ts
 
 FRESH, CHANGED, BROKEN, UNKNOWN, SNAPSHOT = "fresh", "changed", "broken", "unknown", "snapshot"
 
@@ -122,7 +122,12 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             continue
         code = (a.get("reason") or {}).get("code")
         lines = _note_lines(text, stamp.mentions.get(target, []))
-        if a["result"] != "fresh" and code in drift_io.BROKEN_CODES:
+        current_text = (repo / path).read_text(encoding="utf-8") if (repo / path).exists() else None
+        # drift reports a TS symbol missing when it can no longer parse the file (JSX added to a .js
+        # file); if livedocs still finds it there, it is a change to compare, not a broken anchor.
+        lost_by_drift = (code == "symbol_not_found" and "#" in target and ts.is_ts(path)
+                         and astdiff.symbol_source(current_text, target.split("#", 1)[1], path=path) is not None)
+        if a["result"] != "fresh" and code in drift_io.BROKEN_CODES and not lost_by_drift:
             moved = _find_move(repo, target, binding, idx) if binding.members else None
             if moved:
                 state = _worse(state, CHANGED)
@@ -133,20 +138,19 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
                 findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target,
                                         "anchor-missing", None, None, lines, None, code))
             continue
-        current_text = (repo / path).read_text(encoding="utf-8") if (repo / path).exists() else None
-        if current_text is not None and path.endswith(".py") and not astdiff.parses(current_text):
+        if current_text is not None and _parsed(path) and not astdiff.parses(current_text, path=path):
             # Mid-edit file: fail closed rather than report every symbol as removed.
             state = _worse(state, UNKNOWN)
             if f"parse-error: {path}" not in reasons:
                 reasons.append(f"parse-error: {path}")
             continue
-        deco_now = astdiff.decorator_hash(current_text or "", target.split("#", 1)[1]) if "#" in target and current_text else ""
+        deco_now = astdiff.decorator_hash(current_text or "", target.split("#", 1)[1], path=path) if "#" in target and current_text else ""
         # The member hashes are authoritative for what the note mentions: drift's fingerprint is the
         # trigger for symbols, but it does not see everything (a line added inside a string constant
         # left a file anchor `fresh` in 1b t5), so compare members whether or not drift flagged.
         changed_members: list[str] = []
         if binding.members and current_text is not None:
-            changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q) != h]
+            changed_members = [q for q, h in binding.members.items() if astdiff.member_hash(current_text, q, path=path) != h]
         if a["result"] != "fresh" or deco_now != binding.deco or changed_members:
             if binding.members and not changed_members:
                 refined.append(target)
@@ -158,22 +162,39 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
     return Report(note, state, reasons, findings, stamp, warnings, refined)
 
 
+def _parsed(path: str) -> bool:
+    return path.endswith(".py") or ts.is_ts(path) or configkeys.is_config(path)
+
+
 def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
-    """A symbol drift can't find any more: is there one with the same name elsewhere in src whose
-    mentioned members hash identically? Then it moved (the run-1 'split server.py' case)."""
-    if "#" not in target:
-        return None
+    """An anchor drift can't find any more: is each mentioned symbol, under its top-level name, somewhere
+    else with identical member hashes? Then it moved (the run-1 'split server.py' case; a renamed
+    component file). A whole-file anchor moves when every member it carries is found elsewhere."""
     from . import symbols as sy
+    old_path = target.split("#", 1)[0]
+    if "#" in target:
+        tops = [target.split("#", 1)[1]]
+    elif binding.members:
+        tops = sorted({q.split(".", 1)[0] for q in binding.members})
+    else:
+        return None
     if idx is None:
         idx = sy.index(repo, "WORKTREE")
-    old_path, top = target.split("#", 1)
-    for cand in idx.by_qualname(top):
-        if cand.path == old_path:
-            continue
-        src = (repo / cand.path).read_text(encoding="utf-8", errors="replace")
-        if all(astdiff.member_hash(src, q) == h for q, h in binding.members.items()):
-            return cand.path
-    return None
+    dests: set[str] = set()
+    for top in tops:
+        members = {q: h for q, h in binding.members.items() if q == top or q.startswith(top + ".")}
+        hit = None
+        for cand in idx.by_qualname(top):
+            if cand.path == old_path or cand.qualname != top:
+                continue
+            src = (repo / cand.path).read_text(encoding="utf-8", errors="replace")
+            if all(astdiff.member_hash(src, q, path=cand.path) == h for q, h in members.items()):
+                hit = cand.path
+                break
+        if hit is None:
+            return None
+        dests.add(hit)
+    return ", ".join(sorted(dests)) or None
 
 
 MECHANICAL_KINDS = frozenset({astdiff.UNCHANGED, astdiff.COMMENT_ONLY, "moved"})
@@ -202,23 +223,23 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
     was_src = gitx.blob_at(git_repo, base, path) if base else None
     lines = _note_lines(text, stamp.mentions.get(target, []))
     quals = binding.qualnames or ([target.split("#", 1)[1]] if "#" in target else [])
+    sx = lambda src, q: astdiff.symbol_source(src or "", q, path=path)
     out: list[Finding] = []
     if not quals:  # whole-file anchor with nothing specific mentioned
         out.append(Finding(target, path, "", "file", None, None, lines, base, "file changed"))
         return out
     top = target.split("#", 1)[1] if "#" in target else path.rsplit("/", 1)[-1]
     for q in quals:
-        member_same = bool(binding.members.get(q)) and astdiff.member_hash(now_src, q) == binding.members[q]
+        member_same = bool(binding.members.get(q)) and astdiff.member_hash(now_src, q, path=path) == binding.members[q]
         if member_same:
             # The member hash is what a mention depends on (a class's shell, a function's substance):
             # if it is unchanged the change is benign by construction, whatever a full-AST diff says
             # (a class mention must not flag when only an unmentioned method body changed — 1b, t6).
-            ch = astdiff.Change(astdiff.UNCHANGED, astdiff.symbol_source(was_src or "", q) if was_src else None,
-                                astdiff.symbol_source(now_src or "", q))
+            ch = astdiff.Change(astdiff.UNCHANGED, sx(was_src, q) if was_src else None, sx(now_src, q))
         elif was_src is not None:
-            ch = astdiff.classify(was_src, now_src, q)
+            ch = astdiff.classify(was_src, now_src, q, path=path)
         else:
-            ch = astdiff.Change("unknown-base", None, astdiff.symbol_source(now_src or "", q))
+            ch = astdiff.Change("unknown-base", None, sx(now_src, q))
         detail = ""
         if ch.kind == astdiff.UNCHANGED:
             if was_src is None:
@@ -226,7 +247,7 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
             elif "#" not in target:
                 detail = f"{top} changed elsewhere; {q} unchanged"
             elif q != top:
-                top_ch = astdiff.classify(was_src, now_src, top)
+                top_ch = astdiff.classify(was_src, now_src, top, path=path)
                 detail = f"{top} changed elsewhere ({top_ch.kind}); {q} unchanged"
             else:
                 detail = f"{q} unchanged in substance (comments/formatting only)"

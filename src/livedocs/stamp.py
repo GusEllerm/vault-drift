@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import astdiff, config, drift_io, mentions as mn, stamps as st, symbols as sy
+from . import astdiff, config, configkeys, drift_io, mentions as mn, stamps as st, symbols as sy
 
 
 class StampError(RuntimeError):
@@ -18,7 +18,7 @@ def _code_like(m: mn.Mention) -> bool:
     snake_case with an underscore, or a call. Bare CamelCase is excluded — it is usually an external
     name (an SSH option, a library class) and produced noise in the first gate run."""
     t = m.text
-    if m.raw.endswith(")"):
+    if m.call:
         return True
     if m.kind == mn.DOTTED:
         return "_" in t
@@ -38,6 +38,26 @@ def _dangling(ms: list[mn.Mention], unresolved: set[str], previous: st.Stamp | N
         if m.raw in previously_resolved or _code_like(m):
             out.add(m.raw)
     return sorted(out)
+
+
+def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False) -> bool:
+    """Whether stamping binds candidate `c` of resolution `r` (coverage counts the same thing).
+
+    Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in. A path to a code file
+    names its symbols, not every line of it: only a TS/JS/Astro module's default export binds by path
+    (resolved upstream), and a whole-file anchor on a hub module flags every note that names it on every
+    commit — gravity-works' agents hand-acked 766 times on such anchors (P29). Explicit paths to
+    non-code files (`pyproject.toml`, `wrangler.jsonc`) are cheap and catch config claims. Constants
+    bind the file too (drift can't hash them) but carry their own member hash."""
+    if r.status == sy.UNRESOLVED:
+        return False
+    if c.kind == sy.FILE and not file_anchors and (r.mention.kind != mn.PATH or sy.is_code(c.path)):
+        return False
+    return True
+
+
+def _hashable(path: str) -> bool:
+    return sy.is_code(path) or configkeys.is_config(path)
 
 
 @dataclass
@@ -82,6 +102,7 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
         raise StampError("note body unchanged since the last stamp: use --ack --reason to re-verify without edits")
 
     idx = idx or sy.index(repo, "WORKTREE")
+    file_anchors = file_anchors or bool(config.load(repo).get("file_anchors"))
     ms = mn.mentions(text)
     resolutions = sy.resolve_note(doc, text, idx, ms)
 
@@ -94,33 +115,48 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             unresolved.append(r.mention.raw)
             continue
         for c in r.candidates:
-            # Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in;
-            # explicit paths to non-Python files (`pyproject.toml`) are cheap and catch config claims.
-            # Constants bind the file too (drift can't hash them) but carry their own member hash.
-            if c.kind == sy.FILE and not file_anchors and (r.mention.kind != mn.PATH or c.path.endswith(".py")):
+            if not binds(r, c, file_anchors):
                 continue
             t = c.drift_target
             if c.qualname and c.qualname not in quals[t]:
                 quals[t].append(c.qualname)
             raws[t].append([r.mention.raw, r.mention.line])
 
-    bindings: dict[str, st.Binding] = {}
+    sigs: dict[str, str] = {}
     failed: list[str] = []
+    fallback: list[str] = []
     for target in sorted(quals.keys() | raws.keys()):
         try:
-            sig = drift_io.link(repo, doc, target)
+            sigs[target] = drift_io.link(repo, doc, target)
         except drift_io.DriftError as e:
+            path = target.split("#", 1)[0]
+            if "#" in target and not path.endswith(".py") and "cannot compute fingerprint" in str(e):
+                # drift can't fingerprint this symbol (JSX in a .js file, a declaration form it doesn't
+                # parse): bind the file and let the member hashes carry the substance (P24's pattern).
+                for q in quals.pop(target, []):
+                    if q not in quals[path]:
+                        quals[path].append(q)
+                raws[path].extend(raws.pop(target, []))
+                fallback.append(path)
+                continue
             failed.append(f"{target}: {e}")
-            continue
+    for path in sorted(set(fallback) - sigs.keys()):
+        try:
+            sigs[path] = drift_io.link(repo, doc, path)
+        except drift_io.DriftError as e:
+            failed.append(f"{path}: {e}")
+
+    bindings: dict[str, st.Binding] = {}
+    for target, sig in sorted(sigs.items()):
         deco = ""
         members: dict[str, str] = {}
         path = target.split("#", 1)[0]
-        if path.endswith(".py") and (repo / path).exists():
+        if _hashable(path) and (repo / path).exists():
             src = (repo / path).read_text(encoding="utf-8", errors="replace")
             if "#" in target:
-                deco = astdiff.decorator_hash(src, target.split("#", 1)[1])
+                deco = astdiff.decorator_hash(src, target.split("#", 1)[1], path=path)
             for q in quals.get(target, []):
-                h = astdiff.member_hash(src, q)
+                h = astdiff.member_hash(src, q, path=path)
                 if h:
                     members[q] = h
         bindings[target] = st.Binding(sig=sig, deco=deco, qualnames=quals.get(target, []), members=members)

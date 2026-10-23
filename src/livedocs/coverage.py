@@ -32,6 +32,7 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
     repo = Path(repo)
     vault = repo / vault_rel
     idx = sy.index(repo, "WORKTREE")
+    file_anchors = bool(config.load(repo).get("file_anchors"))
     all_stamps = st.load(vault)
     out: list[NoteCoverage] = []
     for p in sorted(vault.rglob("*.md")):
@@ -44,7 +45,8 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
             continue
         ms = mn.mentions(text)
         res = sy.resolve_note(f"{vault_rel}/{note}", text, idx, ms)
-        anchored = sum(1 for r in res if r.status in (sy.RESOLVED, sy.SUPERSET) and r.targets)
+        # Anchored = stamping would bind it (the same rule), so the number is what the gate checks.
+        anchored = sum(1 for r in res if any(stp.binds(r, c, file_anchors) for c in r.candidates))
         unresolved = [r for r in res if r.status == sy.UNRESOLVED]
         dangling = sorted({r.mention.raw for r in unresolved if stp._code_like(r.mention)})
         latest = st.latest(st.for_note(all_stamps, note))

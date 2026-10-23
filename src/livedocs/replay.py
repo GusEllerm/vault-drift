@@ -8,6 +8,12 @@ Per commit c on a replay branch in a dedicated worktree:
   3. notes deleted/renamed in c: unlink their bindings.
   4. notes added/edited in c: stamp them (verdict update, by history).
   5. commit lock + stamps on the replay branch so the diff base resolves as in production.
+
+`gate=True` simulates the pre-commit gate: after the checks, every unedited note left CHANGED or
+BROKEN is re-stamped as an ack, mechanically when the report is provably benign and as a (simulated)
+hand ack otherwise, so each commit's flags are the reconciliations that commit would have demanded.
+The per-commit counts go to gate.jsonl. (1a recall runs leave it off: there a real catch stays flagged
+until the author edits the note.)
 """
 
 from __future__ import annotations
@@ -53,6 +59,9 @@ class Summary:
     pre_edit_states: dict = field(default_factory=dict)
     episodes: int = 0
     at_risk: int = 0
+    gate_auto: int = 0  # gate=True: notes the gate would have acked mechanically
+    gate_hand: int = 0  # gate=True: notes the committing agent would have had to update or ack
+    gate_blocked_commits: int = 0
     seconds: float = 0.0
 
 
@@ -94,7 +103,8 @@ def _has_mentions(text: str) -> bool:
 
 
 def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | Path, *,
-        limit: int | None = None, file_anchors: bool = False, refine: bool = False, log=print) -> Summary:
+        limit: int | None = None, file_anchors: bool = False, refine: bool = False, gate: bool = False,
+        log=print) -> Summary:
     repo = Path(repo).resolve()
     out_dir = Path(out_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -113,6 +123,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
     stamps_rel = f"{vault_rel}/{st.STAMPS_REL}"
 
     rows_f = (out_dir / "rows.jsonl").open("w")
+    gate_f = (out_dir / "gate.jsonl").open("w") if gate else None
     summ = Summary()
     carried_lock = carried_stamps = None  # bytes carried between commits
     stamped_notes: set[str] = set()
@@ -121,11 +132,15 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
         short = c[:8]
         # 1. tree of c, plus carried livedocs state
         _git(wt, "read-tree", "-u", "--reset", c)
-        if carried_lock is not None:
-            (wt / LOCK).write_bytes(carried_lock)
-        if carried_stamps is not None:
-            (vault / st.STAMPS_REL).parent.mkdir(parents=True, exist_ok=True)
-            (vault / st.STAMPS_REL).write_bytes(carried_stamps)
+        # The replay owns the livedocs state: a repository that already uses livedocs has its own
+        # drift.lock and stamps in the tree, which must not leak into the replay.
+        for rel, carried in ((LOCK, carried_lock), (f"{vault_rel}/{st.STAMPS_REL}", carried_stamps)):
+            f = wt / rel
+            if carried is not None:
+                f.parent.mkdir(parents=True, exist_ok=True)
+                f.write_bytes(carried)
+            elif f.exists():
+                f.unlink()
         ev = note_events(wt, c, vault_rel) if seq > 0 else {"A": [], "M": [], "D": [], "R": []}
         if seq == 0:  # everything present at the start commit counts as added
             ev["A"] = [str(p.relative_to(vault)) for p in vault.rglob("*.md") if ".obsidian" not in p.parts]
@@ -142,6 +157,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 drift_json = drift_io.check_json(wt)
             except drift_io.DriftError as e:
                 log(f"[{short}] drift check failed: {e}")
+        flagged: dict[str, ck.Report] = {}
         for note in sorted(stamped_notes):
             phase, text = "check", None
             if note in edited or note in gone:
@@ -156,6 +172,8 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                       f"{rep.stamp.stamped}|{rep.stamp.note_hash[:12]}" if rep.stamp else None,
                       bound, rep.state == ck.FRESH and phase == "check" and bool(bound))
             rows_f.write(row.to_json() + "\n")
+            if phase == "check" and rep.state in (ck.CHANGED, ck.BROKEN):
+                flagged[note] = rep
             summ.rows += 1
             if phase == "pre_edit":
                 summ.pre_edit_rows += 1
@@ -199,15 +217,45 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 except stp.StampError as e:  # unchanged body (a rename or whitespace-only edit): keep the old stamp
                     log(f"[{short}] {note}: {e}")
 
+        # 4b. the simulated gate: reconcile what this commit flagged
+        if gate:
+            auto, hand = [], []
+            for note, rep in sorted(flagged.items()):
+                if note in edited or note in gone or not (vault / note).exists():
+                    continue
+                benign = ck.mechanically_benign(rep)
+                doc = f"{vault_rel}/{note}"
+                for (d, t), _sig in drift_io.lock(wt).items():
+                    if d == doc:
+                        try:
+                            drift_io.unlink(wt, d, t)
+                        except drift_io.DriftError:
+                            pass
+                try:
+                    stp.stamp(wt, vault_rel, note, by="gate-sim", verdict=st.ACK, file_anchors=file_anchors, idx=idx,
+                              reason="mechanical" if benign else "simulated hand ack")
+                except stp.StampError as e:
+                    log(f"[{short}] gate ack {note}: {e}")
+                    continue
+                (auto if benign else hand).append(note)
+            summ.gate_auto += len(auto)
+            summ.gate_hand += len(hand)
+            summ.gate_blocked_commits += bool(hand)
+            gate_f.write(json.dumps({"commit": c, "seq": seq, "auto": auto, "hand": hand,
+                                     "kinds": {n: sorted({f.kind for f in flagged[n].findings}) for n in hand}}) + "\n")
+
         # 5. commit the replay state
         _git(wt, "add", "-A")
         _git(wt, "commit", "-q", "--allow-empty", "-m", f"replay {short} (seq {seq})")
         carried_lock = (wt / LOCK).read_bytes() if (wt / LOCK).exists() else None
         carried_stamps = (vault / st.STAMPS_REL).read_bytes() if (vault / st.STAMPS_REL).exists() else None
         summ.commits += 1
-        log(f"[{seq:3}/{len(commits)}] {short} stamped={len(stamped_notes):3} rows={summ.rows} states={summ.states} pre_edit={summ.pre_edit_states}")
+        log(f"[{seq:3}/{len(commits)}] {short} stamped={len(stamped_notes):3} rows={summ.rows} states={summ.states} pre_edit={summ.pre_edit_states}"
+            + (f" gate auto={summ.gate_auto} hand={summ.gate_hand}" if gate else ""))
 
     rows_f.close()
+    if gate_f:
+        gate_f.close()
     summ.episodes = _episodes(out_dir / "rows.jsonl", out_dir / "episodes.jsonl")
     summ.seconds = round(time.time() - t0, 1)
     (out_dir / "summary.json").write_text(json.dumps(summ.__dict__, indent=1))

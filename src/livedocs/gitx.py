@@ -27,7 +27,24 @@ def blob_at(repo: str | Path, ref: str, path: str) -> str | None:
     return p.stdout if p.returncode == 0 else None
 
 
+def has_head(repo: str | Path) -> bool:
+    return bool(run(repo, "rev-parse", "--verify", "-q", "HEAD", check=False).strip())
+
+
+def empty_tree(repo: str | Path) -> str:
+    """The empty tree's id in this repository's object format (SHA-1 or SHA-256)."""
+    p = subprocess.run(["git", "-C", str(repo), "hash-object", "-t", "tree", "--stdin"], input="",
+                       capture_output=True, text=True, timeout=60)
+    if p.returncode != 0:
+        raise GitError(f"git hash-object: {p.stderr.strip()}")
+    return p.stdout.strip()
+
+
 def changed_files(repo: str | Path, cached: bool = False, base: str = "HEAD") -> list[str]:
+    # Before the first commit there is no HEAD: everything in the index is new, so compare against
+    # the empty tree (the first commit of a new-vault repository must not be blocked by its own gate).
+    if base == "HEAD" and not has_head(repo):
+        base = empty_tree(repo)
     args = ["diff", "--name-only"] + (["--cached"] if cached else []) + [base]
     return [l for l in run(repo, *args).split("\n") if l]
 

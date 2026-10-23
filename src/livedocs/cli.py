@@ -127,6 +127,7 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--limit", type=int)
     s.add_argument("--file-anchors", action="store_true")
     s.add_argument("--refine", action="store_true", help="suppress flags when mentioned members are unchanged (run-2 mode)")
+    s.add_argument("--gate", action="store_true", help="simulate the pre-commit gate: ack what each commit flags (overhead runs)")
     s.set_defaults(fn=cmd_replay)
 
     s = sub.add_parser("affected", help="notes bound to files changed in the working tree (or --cached: the index)")
@@ -202,7 +203,7 @@ def cmd_grade(args: argparse.Namespace) -> int:
 def cmd_replay(args: argparse.Namespace) -> int:
     from . import replay
     summ = replay.run(Path(args.repo), args.vault, args.start, args.end, args.out, limit=args.limit,
-                      file_anchors=args.file_anchors, refine=args.refine)
+                      file_anchors=args.file_anchors, refine=args.refine, gate=args.gate)
     print(json.dumps(summ.__dict__, indent=1))
     return 0
 
