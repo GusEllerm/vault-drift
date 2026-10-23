@@ -36,9 +36,10 @@ commit that changes the code is blocked until the note is updated or acknowledge
 - Name code in backticks, by symbol: `` `some_function()` ``, `` `SomeClass.method` ``,
   `` `SOME_CONFIG.key` ``, `` `<SomeComponent />` ``. Those are the claims livedocs checks; each binds
   only what it names. Prose that names no code is not checked (and is reported as such).
-- A path to a code module binds only its default export (a component, a `defineConfig({{…}})` object);
-  name the functions and types you describe. A path to a config file (`` `some.config.json` ``) binds the
-  whole file; `` `some.config.json#build.outDir` `` binds one key.
+- A path to a small code module binds the whole file (any change asks about the note); a large one
+  (over 1,000 lines) binds only its default export, so name the functions and types you describe. A path
+  to a config file (`` `some.config.json` ``) binds the file; `` `some.config.json#build.outDir` `` binds
+  one key.
 - Commit the note; the commit stamps it. There is nothing else to run.
 - When a commit is blocked, the message shows *was / now* for the code that changed and the note lines
   that mention it. Edit the note and commit again, or `livedocs stamp <note> --ack --reason "…"` if the

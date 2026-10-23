@@ -106,15 +106,19 @@ parentheses, so formatting and comment edits are acked mechanically at commit. d
 top-level symbols in `.ts` and `.js`; everywhere else (JSX, `.mjs`, Astro, `default`, keys) the file is
 bound and the member hashes decide.
 
-**Paths name a module's default export, not its every line.** A backtick path to a code file binds that
-module's default export (a component, a `defineConfig({…})` object) and nothing else; a module with no
-default export binds nothing by path. Whole-file anchors on hub modules made the gate block every note
-that names the file on every commit that touched it (one TypeScript project hand-acked 766 times on them). Name the
-functions and types a note describes. Set `"file_anchors": true` in `.livedocs/config.json` to bind
-whole files anyway.
+**A path names a file, and a big file is not a claim.** A backtick path to a TypeScript/JavaScript/Astro
+module binds the whole file when the module has at most 1,000 lines: any change to it, other than
+comments and formatting, flags the note. A larger module binds only its default export (a component, a
+`defineConfig({…})` object) by path, so name the functions and types a note describes. On one
+TypeScript project, whole-file anchors on every named module cost 931 hand reconciliations in 338
+commits, half of them from a single 1,600-line hub; the note-invalidating changes they caught were all
+in modules of 619 lines or fewer. Set `"path_anchors"` in `.livedocs/config.json` to a different line
+limit, to `"file"` (every named file binds whole) or to `"default-export"` (never the whole file). A
+path to a Python file binds nothing by itself, as before; paths to config files bind the file.
 
 Notes that stay cheap to keep anchored:
-- name symbols, not files: `getProjects()`, `projectSchema.title`, `<ProjectCard />`;
+- name symbols: `getProjects()`, `projectSchema.title`, `<ProjectCard />`. A path to a small module is
+  fine (it means "anything in this file"), but every change to that file will then ask about the note;
 - give exported symbols names that are unique across the repo: a bare `load` defined in every
   `src/modules/*/loader.ts` binds all of them (safe, but each change flags every note that says `load`);
 - title a module note with its path (`# src/modules/projects/schema.ts`): ambiguous names then prefer

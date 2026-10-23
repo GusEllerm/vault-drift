@@ -203,7 +203,7 @@ def test_new_vault_scaffolds_ts_modules(ts_repo):
     from livedocs import scaffold
     written = scaffold.new_vault(ts_repo, "docs/vault", scaffold_modules=True)
     home = (ts_repo / "docs/vault/Home.md").read_text()
-    assert "`defineConfig({…})`" in home  # the template's braces survive str.format
+    assert "{name}" not in home and "{project}" not in home and "binds the whole file" in home  # rendered
     mods = sorted(w for w in written if w.startswith("docs/vault/Modules/") and not w.endswith("Modules.md"))
     assert "docs/vault/Modules/lib-util.md" in mods and "docs/vault/Modules/components-ProjectCard.md" in mods
     assert not any("index" in m for m in mods)  # a barrel that only re-exports gets no note
