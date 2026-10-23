@@ -24,6 +24,7 @@ The personal-website session, relaying the user, asked for livedocs beyond Pytho
 - **Testbenches:** detached clones of gravity-works and scheduler-dojo in `testbench/` (several copies for parallel runs). Nothing was run in the user's game repositories except read-only git.
 - **Measured:** [[TS Run 1]]: a new gate-simulation replay mode, 0.1.4 vs 0.2.0 on both repos; a 1a run on gravity-works graded on a stratified sample by eight Opus agents; Python regression on hpc-bridge; Astro on 374 real files.
 - **Early guidance sent to the website session** (cheap vs costly coding patterns), adopted there as provisional conventions.
+- **Released (D19, D20):** `main` fast-forwarded to `389ac3c` and tag `v0.2.0` pushed; the publish, tests and livedocs workflows passed and 0.2.0 is on PyPI. The user's global tool was reinstalled from PyPI (tree-sitter included, TS parser verified). The branch and both worktrees were removed; raw replay outputs were moved out of the repo (the compressed copies are committed). The website and Baesian sessions were told, including a correction to the early path guidance.
 
 ## Key findings
 
