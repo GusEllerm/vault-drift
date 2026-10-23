@@ -16,7 +16,12 @@ def cmd_survey(args: argparse.Namespace) -> int:
     """Resolve every mention in every note of a vault; print per-note counts (M1 proof)."""
     repo = Path(args.repo).resolve()
     vault = repo / args.vault
-    idx = sy.index(repo, args.ref)
+    from . import gitx
+    if args.ref == "HEAD" and not gitx.has_head(repo):  # a new repository: survey what is on disk
+        print("no commits yet: surveying the working tree (including files not yet added)")
+        idx = sy.index(repo, "WORKTREE", untracked=True)
+    else:
+        idx = sy.index(repo, args.ref)
     notes = sorted(p for p in vault.rglob("*.md") if ".obsidian" not in p.parts and ".livedocs" not in p.parts)
     total = Counter()
     rows = []
