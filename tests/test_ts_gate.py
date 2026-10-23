@@ -76,9 +76,16 @@ def test_benign_and_real_changes(ts_repo):
     assert not ck.mechanically_benign(rep) and {(f.qualname, f.kind) for f in rep.findings} >= {("Header", "body")}
     _git(ts_repo, "checkout", "--", ".")
 
-    # Astro: a template comment is benign; a Props change is a signature change of the component.
+    # Astro: a template comment is benign; a template change is not (it is outside the frontmatter, and
+    # once slipped through as "unchanged"); a Props change is a signature change of the component.
     _edit(ts_repo, "src/components/ProjectCard.astro", "<!-- a card -->", "<!-- card -->")
     assert ck.mechanically_benign(ck.check(ts_repo, V, "Modules/components.md"))
+    _edit(ts_repo, "src/components/ProjectCard.astro", '<article class="card">', '<article class="card wide">')
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "wider card")  # a committed base: classify runs
+    rep = ck.check(ts_repo, V, "Modules/components.md")
+    assert not ck.mechanically_benign(rep) and ("default", "body") in {(f.qualname, f.kind) for f in rep.findings}
+    assert "card wide" in next(f.now for f in rep.findings if f.qualname == "default")
+    _git(ts_repo, "reset", "-q", "--hard", "HEAD~1")
     _edit(ts_repo, "src/components/ProjectCard.astro", "title: string;", "title: string;\n  href: string;")
     rep = ck.check(ts_repo, V, "Modules/components.md")
     assert ("default", "signature") in {(f.qualname, f.kind) for f in rep.findings}

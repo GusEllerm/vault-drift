@@ -94,7 +94,8 @@ class Decl:
 @dataclass
 class Module:
     ok: bool  # parsed without syntax errors
-    source: bytes
+    source: bytes  # what was parsed (for .astro: the frontmatter, line-aligned)
+    full: str = ""  # the whole file (an Astro component's source is frontmatter plus template)
     decls: dict[str, Decl] = field(default_factory=dict)
     aliases: dict[str, str] = field(default_factory=dict)  # exported name → local qualname (`export { a as b }`)
     reexports: list[tuple[str, str, str]] = field(default_factory=list)  # (exported name, specifier, imported name)
@@ -118,7 +119,7 @@ def _module(grammar: str, astro: bool, source: str) -> Module:
         code = source
     data = code.encode("utf-8")
     tree = _parser(grammar).parse(data)
-    m = Module(ok=not tree.root_node.has_error, source=data)
+    m = Module(ok=not tree.root_node.has_error, source=data, full=source)
     _Walker(m).program(tree.root_node)
     if astro:
         root = tree.root_node
@@ -512,7 +513,7 @@ def tokens(nodes) -> list[str]:
                 continue
             s = _text(n)
             if t == "jsx_text":
-                s = " ".join(s.split())
+                s = _jsx_text(s)
                 if not s:
                     continue
             out.append(s)
@@ -527,6 +528,22 @@ def tokens(nodes) -> list[str]:
                 if not (c.type == "," and ((nx := _next_real(kids, i)) is None or nx.type in _CLOSERS))]
         stack.extend(reversed(keep))
     return out
+
+
+def _jsx_text(s: str) -> str:
+    """JSX text as React renders it: whitespace that contains a line break disappears (lines are trimmed
+    and joined with one space), other runs become one space. So reflowing text is formatting, but
+    `<b>x</b> y` and `<b>x</b>y` stay different."""
+    lines = s.split("\n")
+    kept = []
+    for i, line in enumerate(lines):
+        if i > 0:
+            line = line.lstrip()
+        if i < len(lines) - 1:
+            line = line.rstrip()
+        if line:
+            kept.append(line)
+    return re.sub(r"[ \t]+", " ", " ".join(kept))
 
 
 def _digest(parts: list[str]) -> str:
@@ -612,6 +629,8 @@ def symbol_source(path: str, source: str | None, qualname: str) -> str | None:
     if d is None:
         return None
     m = module(path, source)
+    if d.kind == COMPONENT:  # the whole component: was/now and "unchanged" must see the template too
+        return m.full
     return m.source[d.span[0]:d.span[1]].decode("utf-8", "replace")
 
 

@@ -241,6 +241,11 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
             ch = astdiff.Change(astdiff.UNCHANGED, sx(was_src, q) if was_src else None, sx(now_src, q))
         elif was_src is not None:
             ch = astdiff.classify(was_src, now_src, q, path=path)
+            if ch.kind == astdiff.UNCHANGED and ":" in binding.members.get(q, ""):
+                # The member hash (current scheme) says this changed; equal source text must not overrule
+                # it, or the gate would ack a real change as benign. Only 0.1's bare Python hashes, which
+                # differ across CPython minors, are left to the text comparison.
+                ch = astdiff.Change(astdiff.BODY, ch.was, ch.now)
         else:
             ch = astdiff.Change("unknown-base", None, sx(now_src, q))
         detail = ""

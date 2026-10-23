@@ -232,7 +232,8 @@ def code_roots(repo: str | Path) -> tuple[str, ...] | None:
     return None
 
 
-def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = None) -> SymbolIndex:
+def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = None, *,
+          untracked: bool = False) -> SymbolIndex:
     """Index the project's Python at `ref` (or the working tree if ref is "WORKTREE").
 
     Which files count as code: `roots` if given, else `code_roots` from config, else every tracked
@@ -245,7 +246,8 @@ def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = N
         # A checkout-index snapshot (the pre-commit gate) has no .git: walk the files instead.
         all_files = {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
     elif ref == "WORKTREE":
-        all_files = {l for l in _git(repo, "ls-files").split("\n") if l}
+        extra = ("--others", "--exclude-standard") if untracked else ()  # not yet committed, not ignored
+        all_files = {l for l in _git(repo, "ls-files", "--cached", *extra).split("\n") if l}
     else:
         all_files = {l for l in _git(repo, "ls-tree", "-r", "--name-only", ref).split("\n") if l}
     idx.all_files = all_files

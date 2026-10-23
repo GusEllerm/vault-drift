@@ -197,3 +197,22 @@ def test_class_shell_for_every_class_form():
         assert h(src, q, "a.ts") != h(src.replace(" other() { return 2 }", ""), q, "a.ts"), q  # a member removed
         assert h(src, q, "a.ts") == h(src.replace("return 2", "return 3"), q, "a.ts"), q  # a method body
         assert h(src, f"{q}.other", "a.ts") != h(src.replace("return 2", "return 3"), f"{q}.other", "a.ts"), q
+
+
+def test_new_vault_scaffolds_ts_modules(ts_repo):
+    from livedocs import scaffold
+    written = scaffold.new_vault(ts_repo, "docs/vault", scaffold_modules=True)
+    home = (ts_repo / "docs/vault/Home.md").read_text()
+    assert "`defineConfig({…})`" in home  # the template's braces survive str.format
+    mods = sorted(w for w in written if w.startswith("docs/vault/Modules/") and not w.endswith("Modules.md"))
+    assert "docs/vault/Modules/lib-util.md" in mods and "docs/vault/Modules/components-ProjectCard.md" in mods
+    assert not any("index" in m for m in mods)  # a barrel that only re-exports gets no note
+    assert (ts_repo / "docs/vault/Modules/lib-util.md").read_text().startswith("# src/lib/util.ts")
+
+
+def test_jsx_text_whitespace_follows_jsx():
+    base = "export const C = () => <p><b>x</b> y</p>"
+    assert h(base, "C") != h(base.replace("</b> y", "</b>y"), "C")  # renders differently
+    assert h(base, "C") == h(base.replace("</b> y", "</b>   y"), "C")
+    assert h("export const C = () => <p>hello world</p>", "C") == \
+        h("export const C = () => (\n  <p>\n    hello\n    world\n  </p>\n)", "C")  # reflow
