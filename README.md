@@ -111,8 +111,8 @@ module binds the whole file when the module has at most 1,000 lines: any change 
 comments and formatting, flags the note. A larger module binds only its default export (a component, a
 `defineConfig({…})` object) by path, so name the functions and types a note describes. On one
 TypeScript project, whole-file anchors on every named module cost 931 hand reconciliations in 338
-commits, half of them from a single 1,600-line hub; the note-invalidating changes they caught were all
-in modules of 619 lines or fewer. Set `"path_anchors"` in `.livedocs/config.json` to a different line
+commits, half of them from a single 1,600-line hub, while 10 of the 11 note-invalidating changes they
+caught were in named modules of 620 lines or fewer. Set `"path_anchors"` in `.livedocs/config.json` to a different line
 limit, to `"file"` (every named file binds whole) or to `"default-export"` (never the whole file). A
 path to a Python file binds nothing by itself, as before; paths to config files bind the file.
 

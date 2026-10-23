@@ -62,7 +62,23 @@ The real history has 178 hand acks and 29 mechanical: agents acked many benign c
 
 ## 4. Recall
 
-*(pending: stratified sample of 185 items graded by 7 Opus agents; see `results/gw-1a/sample/`.)*
+**Method.** The 1a run (gravity-works, flags persist until the author edits the note) yielded 346 real flag episodes (333 changed, 13 broken), 299 at-risk rows and 53 pre-edit-fresh rows. 242 further "episodes" were snapshot/unknown rows, which the extractor wrongly counted as flags (fixed: episodes are `changed`/`broken` only); they are excluded. Too many items to grade in full, so a seeded stratified sample of 215 items was graded against `results/rubric.md` by eight Opus agents (about 1.8M tokens), with a fifth stratum for P29's cost: notes that read fresh while a file they name only by path changed. `results/summarize_sample.py` scales each stratum to its population (Wilson 95% intervals).
+
+**Graded under the first P29** (module paths bound only their default export):
+
+| Stratum | Population | Graded | Wrong | Estimate |
+|---|---|---|---|---|
+| Flags needing a reader | 220 | 45 | 6 real catches | 29 (14–58) |
+| Flags acked mechanically | 126 | 36 | 2 real (hidden by the gate) | 7 (2–23) |
+| At-risk (fresh, anchored file changed) | 299 | 45 | 0 | 0 (0–24) |
+| Pre-edit-fresh (author edited a fresh note) | 53 | 35 | 6 anchorable + 6 prose-only misses | 9 + 9 |
+| Path-only risk | 183 | 30 | 0 | 0 (0–21) |
+
+- **1a miss rate ≈ 20%** (9 anchorable misses against 36 real catches; the intervals are wide), against D7's kill threshold of 10%; Python run 1 measured 4.3%. Counting the two real catches the gate acked unseen, the gate's miss rate was ≈ 31%.
+- **What the misses were.** Anchorable: behaviour that moved into code the note doesn't name (a new `parGhostRule` overriding a setting, the share verdict now from the tape recorder, porch rows filled in an unnamed `PORCH_ROWS` constant), a name that never existed in code (`SQRT_SIM_SCALE`), a level mention bound to the wrong declaration, and a `.level.ts` path that bound nothing. Prose-only: closed lists that gained a member ("three rooms", "both wrong answers"), "depends only on `three`". The two hidden auto-acks were both "moved" in one refactor that split `src/boot.ts`, in notes that say "`frameCamera` (`src/boot.ts`)".
+- **0.1.4 would have flagged 11 of the 12 misses**, through whole-file anchors on files the notes name by path. In 10 of them a flagged file was a source module of 620 lines or fewer; the 11th was flagged only through `src/boot.ts` and a test file. Half of 0.1.4's overhead came from that one 1,596-line hub (709 of 1,365 findings).
+- **Fixes, same day:** P29 revised (a path to a module of at most 1,000 lines binds the whole file again), and a move is no longer benign when the note names the file the code left. Checked miss by miss under the revised rules, **11 of the 12 sampled misses would be flagged to the committing agent: all 6 anchorable and 5 of the 6 prose-only.** Ten come through whole-file anchors on small named modules (as in 0.1.4), and one through the note's own `bedroom02.level.ts` mention, which 0.1.4 could not read as a path and 0.2 binds whole (140 lines, changed in that commit). The twelfth is a prose-only claim nothing anchors (0.1.4 missed it too). Both hidden auto-acks would surface: both notes name `src/boot.ts`. This is a retrospective check, not a re-grading; the at-risk and path-only strata found no misses, and their 95% upper bounds (24 and 21) are the honest remaining uncertainty.
+- **Precision** among flags a reader looked at: 6 of 45 (13%); most false flags were `irrelevant` (19), `file-anchor` (10) and `ambiguous-superset` (7: a generic `parBuild()` bound to every level's).
 
 ## 5. Astro and TSX on real files
 
