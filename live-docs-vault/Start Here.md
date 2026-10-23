@@ -19,7 +19,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 
 ## Current status
 
-*As of 2026-10-23.*
+*As of 2026-10-23 (evening).*
 
 - **Research and review are done.** Three critic agents reviewed design v0.1 ([[2026-09-21 Design Review]]); the user then resolved the contested points ([[2026-09-22 Resolving the Review]]).
 - **[[Live Docs Design]] is at v0.3.** The product is a **guarantee**: an agent reading a note about code is told if that code is technically out of date. Scope is documentation of code only; Obsidian is the interface, not a dependency.
@@ -45,9 +45,10 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **0.1.2 and 0.1.3 (2026-09-28), both from adopters' reports:** Python code is discovered wherever it lives, not only under `src/` (`code_roots` in config pins it); stamp format v2 tags fingerprints and stores members as pairs so secret scanners don't misread stamps, and `init`/`new-vault` write `.gitguardian.yaml`. See [[2026-09-28 Code Discovery and Stamp Format v2]].
 - **Hook PATH fix (2026-09-29, released in 0.1.4):** Stop hooks looped in sessions without `livedocs` on PATH. The commands now fall back to the init-time launcher and `~/.local/bin`, and the Stop fallback is a user-facing `systemMessage`. See [[2026-09-29 Hook PATH Fix]]. Existing repos need `livedocs init` re-run after release.
 - **Vault housekeeping (2026-10-23):** session logs split one per session; D16 (MIT) and D17 (PyPI, private repo) recorded; P8–P25 checked against the code in [[Decision Log#Where the proposals stand (agent summary, 2026-10-23)]]; the design note's banner names the decisions that override v0.3. See [[2026-10-23 Vault Gaps]].
-- **Incoming request (2026-10-23, not started):** the personal-website session, relaying the user, asks for TypeScript/TSX/JS support (`.astro` once the stack is chosen; JSON/YAML config keys optional), tested on detached clones of gravity-works and scheduler-dojo.
-- **Open for the user:** the trusted-publisher setup on PyPI; the run-1 calibration pass (`results/1a-run1/user-calibration.md`); accepting or rejecting P8–P25.
-- **Candidate next steps:** note-hygiene guidance (widely mentioned symbols cost per mention); a second testbench repo (everything so far is one repo, one author); languages beyond Python; report drift's two gaps upstream (percent-encoded links; file fingerprints blind to lines inside module-level strings).
+- **TypeScript support, 0.2.0 (2026-10-23):** TS/TSX/JS, Astro and JSON config keys, for the user's Astro website ([[TypeScript Support]], measured in [[TS Run 1]]). On gravity-works the gate asked for 362 hand reconciliations where 0.1.4 asked for 931 (600-line path rule, D18); recall was graded on a 215-item sample. Python resolution is unchanged on hpc-bridge. Seven bugs fixed on the way, three of them already in 0.1.4: the first commit of a new repository was blocked; an image bound by a note crashed the gate; Python member hashes depended on the CPython minor version. Released as 0.2.0 (D19); the global tool now installs from PyPI (D20). See [[2026-10-23 TypeScript Support]].
+- **Open for the user:** the run-1 calibration pass (`results/1a-run1/user-calibration.md`); accepting or rejecting P8–P28 and P30–P32; whether gravity-works and scheduler-dojo run `livedocs rebind` (their TS notes bind whole files until then). (PyPI trusted publishing works: 0.1.1–0.1.4 shipped through it.)
+- **Note for agents:** develop livedocs in this checkout or a worktree; since D20 the user's global tool is the PyPI release, so neither reaches other projects' gates.
+- **Candidate next steps:** report the TS gaps upstream to drift (JSX in `.tsx`, `.mjs` and friends, comment-sensitive fingerprints); replay an Astro history once the website has one; note-hygiene guidance (widely mentioned symbols cost per mention); a testbench written by someone else (all three so far were built by the user's agents); report drift's two gaps upstream (percent-encoded links; file fingerprints blind to lines inside module-level strings).
 
 *Update this section at the end of every session.*
 
@@ -72,10 +73,12 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
   - [[Live Docs Design]] (v0.3): summary, components, freshness states, what the agent sees, the Phase 1 experiment, open questions, and the deferred backlog.
   - [[Implementation Plan]] (v0.2): the Phase 1 code — package layout, verified drift facts, components, the 1a replay harness, milestones.
   - [[Judge]] (draft): step C — an LLM judge between the hash and the agent, its placement, stamps, prompt, cost and evaluation.
+  - [[TypeScript Support]] (draft v0.1): TS/JS/Astro/JSON parsing, binding rules, member hashes, hash schemes (P26–P32).
 - **Results:**
   - [[1a Run 1]]: the first replay run on hpc-bridge — numbers, causes, and the options they leave open.
   - [[1a Run 2]]: the same history with the D fixes — what improved, and the precision/recall trade-off that shapes the judge.
   - [[1b Run 1]]: six agent sessions reconciling notes at the commit gate — honest, substantive, two bugs found.
+  - [[TS Run 1]]: TypeScript on gravity-works and scheduler-dojo — gate overhead 0.1.4 vs 0.2.0, graded recall, the path-rule threshold curve.
 - **Reviews:**
   - [[2026-09-21 Design Review]]: three critics, two rounds, and what changed as a result.
   - [[2026-09-22 Implementation Plan Review]]: eleven issues against plan v0.1, most verified on the testbench.
@@ -86,6 +89,7 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
   - [[Obsidian Platform Constraints]]: what Obsidian can and can't do here.
 - **Decisions:** [[Decision Log]]
 - **Sessions** (newest first):
+  - [[2026-10-23 TypeScript Support]]
   - [[2026-10-23 Vault Gaps]]
   - [[2026-09-29 Hook PATH Fix]]
   - [[2026-09-28 Code Discovery and Stamp Format v2]]

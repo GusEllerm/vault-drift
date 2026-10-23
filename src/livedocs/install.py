@@ -176,7 +176,7 @@ again (the commit stamps it), or if the note is still correct run
 `livedocs stamp <note> --ack --reason "<why>"`, `git add -A`, and commit. New and edited notes are stamped
 by the commit that contains them; nothing else to run. `livedocs affected` lists the notes your
 uncommitted changes touch; `livedocs coverage` shows which claims are anchored. In notes, name symbols
-(`getProjects()`, `Box.area`, `<ProjectCard />`): a path to a large module (over 1,000 lines) binds only
+(`getProjects()`, `Box.area`, `<ProjectCard />`): a path to a large module (over 600 lines) binds only
 its default export, and a path to a small one binds the whole file, so every change to it asks again.
 """
 

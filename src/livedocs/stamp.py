@@ -40,7 +40,7 @@ def _dangling(ms: list[mn.Mention], unresolved: set[str], previous: st.Stamp | N
     return sorted(out)
 
 
-PATH_ANCHOR_MAX_LINES = 1000
+PATH_ANCHOR_MAX_LINES = 600  # the user's choice (D18) from TS Run 1's threshold curve
 
 
 def path_anchor_mode(repo: str | Path, file_anchors: bool = False):
@@ -62,7 +62,8 @@ def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False, *, mode=PA
     Python file binds nothing by itself (since run 1). A path to a TS/JS/Astro module binds its default
     export, and the whole file when the module is small (P29): on gravity-works, whole-file anchors on
     every named module cost 931 hand reconciliations in 338 commits, half of them from one 1,600-line
-    hub, while 10 of the 11 misses they rescued named a module of 620 lines or fewer (TS Run 1). Constants
+    hub. At a 600-line limit the gate asked 362 times instead of 931 and still flagged 5 of the 6 sampled
+    misses that a default-export-only rule let through (TS Run 1; the limit is D18). Constants
     bind the file too (drift can't hash them) but carry their own member hash."""
     if r.status == sy.UNRESOLVED:
         return False

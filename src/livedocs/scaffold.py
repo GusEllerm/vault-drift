@@ -37,7 +37,7 @@ commit that changes the code is blocked until the note is updated or acknowledge
   `` `SOME_CONFIG.key` ``, `` `<SomeComponent />` ``. Those are the claims livedocs checks; each binds
   only what it names. Prose that names no code is not checked (and is reported as such).
 - A path to a small code module binds the whole file (any change asks about the note); a large one
-  (over 1,000 lines) binds only its default export, so name the functions and types you describe. A path
+  (over 600 lines) binds only its default export, so name the functions and types you describe. A path
   to a config file (`` `some.config.json` ``) binds the file; `` `some.config.json#build.outDir` `` binds
   one key.
 - Commit the note; the commit stamps it. There is nothing else to run.

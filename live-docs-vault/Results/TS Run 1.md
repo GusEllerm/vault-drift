@@ -44,7 +44,7 @@ The first P29 failed recall (§4); the revised rule recovers it at a price. **Wh
 | 1,000 | 540 (measured) | 6 | 11 |
 | every file (0.1.4) | 931 | — | — |
 
-The choice of limit is the user's (P29); six anchorable misses are thin evidence for any one number.
+The user chose 600 lines (D18). Six anchorable misses are thin evidence for any one number; the limit is configurable (`path_anchors`).
 
 - **The simulation reproduces the real history:** gravity-works' agents hand-acked 766 times under 0.1, with zero mechanical acks (931 simulated, and the gap is notes the agents updated instead of acking). Every 0.1 binding there was a whole-file anchor, which can never be proven benign.
 - Of 0.2's 210, 130 involve TypeScript symbols. The 80 `file` findings are whole-file anchors on non-code files (JSON data, CSS), which still bind by path.

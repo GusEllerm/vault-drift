@@ -107,12 +107,12 @@ top-level symbols in `.ts` and `.js`; everywhere else (JSX, `.mjs`, Astro, `defa
 bound and the member hashes decide.
 
 **A path names a file, and a big file is not a claim.** A backtick path to a TypeScript/JavaScript/Astro
-module binds the whole file when the module has at most 1,000 lines: any change to it, other than
+module binds the whole file when the module has at most 600 lines: any change to it, other than
 comments and formatting, flags the note. A larger module binds only its default export (a component, a
 `defineConfig({…})` object) by path, so name the functions and types a note describes. On one
 TypeScript project, whole-file anchors on every named module cost 931 hand reconciliations in 338
-commits, half of them from a single 1,600-line hub, while 10 of the 11 note-invalidating changes they
-caught were in named modules of 620 lines or fewer. Set `"path_anchors"` in `.livedocs/config.json` to a different line
+commits, half of them from a single 1,600-line hub; at a 600-line limit the gate asked 362 times and
+still caught 5 of the 6 sampled note-invalidating changes that a default-export-only rule missed. Set `"path_anchors"` in `.livedocs/config.json` to a different line
 limit, to `"file"` (every named file binds whole) or to `"default-export"` (never the whole file). A
 path to a Python file binds nothing by itself, as before; paths to config files bind the file.
 
