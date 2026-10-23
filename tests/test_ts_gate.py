@@ -191,6 +191,19 @@ def test_paths_to_notes_media_and_lockfiles_never_bind(ts_repo):
     assert set(b) == {"wrangler.jsonc"}  # site content, declared out of scope
 
 
+def test_ignore_paths_apply_to_existing_stamps(ts_repo):
+    (ts_repo / "content").mkdir()
+    (ts_repo / "content/Site.md").write_text("Hello.\n")
+    (ts_repo / "vault/Concepts/site.md").write_text("# Site\n\nThe tagline is in `content/Site.md`.\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "content")
+    stp.stamp(ts_repo, V, "Concepts/site.md", by="test")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "stamp")
+    (ts_repo / "content/Site.md").write_text("Hello there.\n")
+    assert ck.check(ts_repo, V, "Concepts/site.md").state == ck.CHANGED
+    (ts_repo / ".livedocs/config.json").write_text('{"vault": "vault", "ignore_paths": ["content/**"]}\n')
+    assert ck.check(ts_repo, V, "Concepts/site.md").state == ck.FRESH  # no re-stamp needed (CI verify too)
+
+
 def test_ignore_paths_and_the_gates_fast_path(ts_repo, monkeypatch, capsys):
     from livedocs import drift_io
     _stamp_all(ts_repo)

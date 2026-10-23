@@ -113,9 +113,12 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
     reasons: list[str] = []
     findings: list[Finding] = []
     refined: list[str] = []
+    cfg = config.load(git_repo)
     for target, binding in stamp.bindings.items():
         a = by_target.get(target)
         path = target.split("#", 1)[0]
+        if cfg.get("ignore_paths") and config.ignored(git_repo, path, cfg):
+            continue  # declared out of scope after this stamp was made: takes effect without re-stamping
         if a is None:
             state = _worse(state, UNKNOWN)
             reasons.append(f"anchor-not-in-drift-output: {target}")

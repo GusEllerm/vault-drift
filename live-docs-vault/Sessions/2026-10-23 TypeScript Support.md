@@ -26,6 +26,12 @@ The personal-website session, relaying the user, asked for livedocs beyond Pytho
 - **Early guidance sent to the website session** (cheap vs costly coding patterns), adopted there as provisional conventions.
 - **Released (D19, D20):** `main` fast-forwarded to `389ac3c` and tag `v0.2.0` pushed; the publish, tests and livedocs workflows passed and 0.2.0 is on PyPI. The user's global tool was reinstalled from PyPI (tree-sitter included, TS parser verified). The branch and both worktrees were removed; raw replay outputs were moved out of the repo (the compressed copies are committed). The website and Baesian sessions were told, including a correction to the early path guidance.
 
+- **Personal-website Phase 0 review, three issues (fixed on branch `hooks-paths`):**
+  1. The pre-commit hook failed under the Obsidian Git plugin, which runs hooks with `PATH=/usr/bin:/bin`: `livedocs` and a Homebrew `drift` weren't found. The hook now tries the clone's recorded launcher (git config, written by `init`) and the usual install directories, and passes the extended PATH on so drift is found too.
+  2. A dev note naming `content/Site.md` bound the site's content page. A path now never binds vault notes, media, fonts, archives or lockfiles. Markdown outside the vault still binds, because hpc-bridge's skills and commands are Markdown, and `ignore_paths` takes content out of scope.
+  3. Commits that touch nothing bound now pass without running drift.
+  Also found: a missing drift made the gate stamp notes silently unbound; it now blocks with a clear message. Reproduced end to end with real commits under `/usr/bin:/bin` from a built wheel; 70 tests.
+
 ## Key findings
 
 - **Gate overhead on gravity-works:** 0.1.4 demanded 931 hand reconciliations (the real history has 766 hand acks and 0 mechanical). The first path rule (a module path binds only its default export) cut that to 210, but graded recall showed a ~20% miss rate, above D7's 10%. 11 of the 12 sampled misses were notes naming small modules by path. The revised rule binds small modules whole: 540 at 1,000 lines (measured), 362 at 600 lines (re-scored). The user chose 600 (D18).
