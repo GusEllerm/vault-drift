@@ -131,3 +131,16 @@ def test_first_commit_of_a_new_repo_passes_the_gate(tmp_path, monkeypatch):
     run("add", "-A")
     monkeypatch.chdir(tmp_path)
     assert pre_commit.main() == 0
+
+
+def test_a_bound_binary_file_flags_without_crashing(ts_repo):
+    (ts_repo / "public").mkdir()
+    (ts_repo / "public/logo.png").write_bytes(b"\x89PNG\r\n\x1a\n\x00\x01")
+    (ts_repo / "vault/Concepts/brand.md").write_text("# Brand\n\nThe logo is `public/logo.png`.\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "logo")
+    stp.stamp(ts_repo, V, "Concepts/brand.md", by="test")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "stamp")
+    (ts_repo / "public/logo.png").write_bytes(b"\x89PNG\r\n\x1a\n\xff\xfe")
+    _git(ts_repo, "commit", "-qam", "new logo")
+    rep = ck.check(ts_repo, V, "Concepts/brand.md")
+    assert rep.state == ck.CHANGED and rep.findings[0].kind == "file"

@@ -23,7 +23,8 @@ def head(repo: str | Path) -> str:
 
 def blob_at(repo: str | Path, ref: str, path: str) -> str | None:
     """File contents at `ref`, or None if it doesn't exist there."""
-    p = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{path}"], capture_output=True, text=True, timeout=60)
+    p = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{path}"], capture_output=True, text=True,
+                       errors="replace", timeout=60)  # a bound file may be binary (an image)
     return p.stdout if p.returncode == 0 else None
 
 

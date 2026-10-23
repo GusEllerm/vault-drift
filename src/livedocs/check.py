@@ -122,7 +122,9 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             continue
         code = (a.get("reason") or {}).get("code")
         lines = _note_lines(text, stamp.mentions.get(target, []))
-        current_text = (repo / path).read_text(encoding="utf-8") if (repo / path).exists() else None
+        # Only code and config files are read as text: a note may bind an image, which has no text.
+        current_text = (repo / path).read_text(encoding="utf-8", errors="replace") \
+            if _parsed(path) and (repo / path).is_file() else None
         # drift reports a TS symbol missing when it can no longer parse the file (JSX added to a .js
         # file); if livedocs still finds it there, it is a change to compare, not a broken anchor.
         lost_by_drift = (code == "symbol_not_found" and "#" in target and ts.is_ts(path)
