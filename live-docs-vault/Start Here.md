@@ -4,8 +4,8 @@ status: active
 authority: describes
 summary: "Entry point to this vault: what the project is, where it stands, and what to read first."
 created: 2026-09-21
-updated: 2026-09-29
-reviewed: 2026-09-22
+updated: 2026-10-23
+reviewed: 2026-10-23
 tags: [live-docs, index]
 ---
 
@@ -19,7 +19,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 
 ## Current status
 
-*As of 2026-09-29.*
+*As of 2026-10-23.*
 
 - **Research and review are done.** Three critic agents reviewed design v0.1 ([[2026-09-21 Design Review]]); the user then resolved the contested points ([[2026-09-22 Resolving the Review]]).
 - **[[Live Docs Design]] is at v0.3.** The product is a **guarantee**: an agent reading a note about code is told if that code is technically out of date. Scope is documentation of code only; Obsidian is the interface, not a dependency.
@@ -41,9 +41,12 @@ This vault is also the long-term, cross-session memory for the live-docs project
 - **Packaging done** (2026-09-23): README, `livedocs verify` for CI, GitHub workflows, pre-commit-framework hook, 0.1.0. Installable with `uv tool install git+https://github.com/GusEllerm/vault-drift`.
 - **MIT licence added.** Notes are now stamped by the commit that adds or edits them; `--repo`/`--vault` default sensibly. The whole flow is verified on a fresh empty-vault repo (session log).
 - **`livedocs new-vault`** scaffolds an Obsidian vault and wires everything in with one command.
-- **On PyPI (2026-09-24):** `uv tool install livedocs`. Future releases: bump the version, tag `v*`, push — after the user adds the trusted publisher on PyPI. The repo stays private.
+- **On PyPI (2026-09-24):** `uv tool install livedocs`. Future releases: bump the version, tag `v*`, push — after the user adds the trusted publisher on PyPI. The repo stays private. See [[2026-09-24 PyPI Release]].
+- **0.1.2 and 0.1.3 (2026-09-28), both from adopters' reports:** Python code is discovered wherever it lives, not only under `src/` (`code_roots` in config pins it); stamp format v2 tags fingerprints and stores members as pairs so secret scanners don't misread stamps, and `init`/`new-vault` write `.gitguardian.yaml`. See [[2026-09-28 Code Discovery and Stamp Format v2]].
 - **Hook PATH fix (2026-09-29, released in 0.1.4):** Stop hooks looped in sessions without `livedocs` on PATH. The commands now fall back to the init-time launcher and `~/.local/bin`, and the Stop fallback is a user-facing `systemMessage`. See [[2026-09-29 Hook PATH Fix]]. Existing repos need `livedocs init` re-run after release.
-- **Open for the user:** the trusted-publisher setup on PyPI; the run-1 calibration pass (`results/1a-run1/user-calibration.md`).
+- **Vault housekeeping (2026-10-23):** session logs split one per session; D16 (MIT) and D17 (PyPI, private repo) recorded; P8–P25 checked against the code in [[Decision Log#Where the proposals stand (agent summary, 2026-10-23)]]; the design note's banner names the decisions that override v0.3. See [[2026-10-23 Vault Gaps]].
+- **Incoming request (2026-10-23, not started):** the personal-website session, relaying the user, asks for TypeScript/TSX/JS support (`.astro` once the stack is chosen; JSON/YAML config keys optional), tested on detached clones of gravity-works and scheduler-dojo.
+- **Open for the user:** the trusted-publisher setup on PyPI; the run-1 calibration pass (`results/1a-run1/user-calibration.md`); accepting or rejecting P8–P25.
 - **Candidate next steps:** note-hygiene guidance (widely mentioned symbols cost per mention); a second testbench repo (everything so far is one repo, one author); languages beyond Python; report drift's two gaps upstream (percent-encoded links; file fingerprints blind to lines inside module-level strings).
 
 *Update this section at the end of every session.*
@@ -58,7 +61,7 @@ This vault is also the long-term, cross-session memory for the live-docs project
 3. [[Live Docs Design]]: the current proposal (v0.3).
 4. [[Decision Log]]: accepted and proposed decisions.
 5. [[2026-09-21 Design Review]]: why v0.2 differs from v0.1.
-6. The latest session log: [[2026-09-23 Runs 1 and 2]].
+6. The latest session logs (newest first in the Map below). [[2026-09-23 Runs 1 and 2]] holds most of Phase 1.
 7. Research notes, as needed (listed below).
 
 Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' live-docs-vault/`
@@ -83,6 +86,10 @@ Quick triage without opening every note: `grep -rh --include='*.md' '^summary:' 
   - [[Obsidian Platform Constraints]]: what Obsidian can and can't do here.
 - **Decisions:** [[Decision Log]]
 - **Sessions** (newest first):
+  - [[2026-10-23 Vault Gaps]]
+  - [[2026-09-29 Hook PATH Fix]]
+  - [[2026-09-28 Code Discovery and Stamp Format v2]]
+  - [[2026-09-24 PyPI Release]]
   - [[2026-09-23 Runs 1 and 2]]
   - [[2026-09-22 Resolving the Review]]
   - [[2026-09-21 Research and Design]]

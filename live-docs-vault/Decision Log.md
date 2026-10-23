@@ -4,8 +4,8 @@ status: active
 authority: specifies
 summary: "Every project decision, with date, who made it (user or agent), and status (accepted, proposed, contested or superseded)."
 created: 2026-09-21
-updated: 2026-09-22
-reviewed: 2026-09-22
+updated: 2026-10-23
+reviewed: 2026-10-23
 tags: [live-docs, decisions]
 ---
 
@@ -38,6 +38,8 @@ For a decision that needs more than one row, write a note from the [[Decision]] 
 | D13 | 2026-09-23 | **The signal is deterministic, not a verdict.** A flag means exactly "this note has not been edited and code it mentions has changed". Whether the note still reads correctly is the job of the agent who made the change, at commit (D11), where it has the context. Consequences: no separate LLM judge (the committing agent is the judge; the [[Judge]] note becomes optional automation); precision is an overhead measure, not a kill criterion; what matters is recall, reconciliation overhead per commit, and a coverage signal for claims no anchor can see. Member-level suppression is a knob (−40% overhead, −25% catches); the default is annotation. Supersedes the "then C" half of D12. | user | [[2026-09-23 Runs 1 and 2]] |
 | D12 | 2026-09-23 | **1a verdict: D then C.** Fix the tooling noise (member-level fingerprints, comment-insensitive hashing, move detection, attribute resolution, dangling-mention warning, file anchors for config files), re-run 1a, then add an LLM judge between the hash and the agent. (Resolves C5.) | user | [[1a Run 1]] |
 | D11 | 2026-09-22 | **Write-time posture: block at commit.** A pre-commit hook compares *staged* blobs; `changed` and `broken` notes in the staged tree must be updated or acked before the commit; `unknown` never blocks. CI runs the same check as the backstop for `--no-verify`, merges and rebases. The Stop hook stays non-blocking (a heads-up). Consequence: every commit's notes are vouched for against that commit's code, so the diff base is always the last commit that touched the stamp. Phase 1a stays list-only; 1b tests block-at-commit directly (update / ack / `--no-verify` behaviour). | user | [[2026-09-22 Resolving the Review]] |
+| D16 | 2026-09-23 | **MIT licence.** (Recorded 2026-10-23; the choice is in the session log.) | user | [[2026-09-23 Runs 1 and 2]] |
+| D17 | 2026-09-24 | **Distribute through PyPI; the repo stays private.** Chosen over making the repo public when an agent couldn't install from the private repo. Releases are tag-driven (`v*`) via trusted publishing. (Recorded 2026-10-23.) | user | [[2026-09-24 PyPI Release]] |
 
 ## Proposed: design v0.2 (awaiting user review)
 
@@ -60,13 +62,37 @@ These came out of [[2026-09-21 Design Review]]. All three critics agreed on them
 
 | ID | Date | Proposal | Design ref |
 |---|---|---|---|
-| P19 | 2026-09-22 | 1a grading: an agent grades everything against a rubric; the user grades every miss plus 25 calibration flags (another 25 if agreement < 85%) | §9 Q2 |
+| P19 | 2026-09-22 | 1a grading: an agent grades everything against a rubric; the user grades every miss plus 25 calibration flags (another 25 if agreement < 85%). **Accepted as D10.** | §9 Q2 |
 | P20 | 2026-09-22 | Bypass escalation: measure in Phase 1; above 5% of vault reads, close holes in cost order (Bash deny → Grep tagging → MCP gateway) | §6.6 |
 | P21 | 2026-09-22 | 1a is primary and tests the guarantee; 1b is secondary and gates Phase 2 investment only | §8 |
 | P22 | 2026-09-22 | Replay window is vault-creation → tip (~249 commits), not tip−200. A real edit to a note in history counts as a re-stamp by its author; the check runs against the note as last stamped. | §8 |
 | P23 | 2026-09-23 | With a judge present, triggers stay coarse (drift top-level flags) and member hashes only annotate; member-level suppression is a no-judge fallback option. Run 2 showed suppression costs a quarter of real catches. | [[1a Run 2]] |
 | P25 | 2026-09-23 | **Snapshot notes are not live documentation.** Dated review/report notes (`Reference/Review 2026-09-03 — …`) mention nearly every symbol and were hand-acked "dated snapshot" in every 1b task. Proposal: a frontmatter flag (`livedocs: snapshot`, or `authority: log`) makes `stamp` bind nothing and `check` report `snapshot` (never `changed`), so they cost no reconciliation. **Implemented 2026-09-23** (`livedocs: snapshot` frontmatter or `snapshot_globs` in config); on hpc-bridge it removed 44% of bindings and took t1 from 4 hand acks to 0. | [[1b Run 1]] |
 | P24 | 2026-09-23 | Anchor module constants (drift binds the file; we hash the assignment). The one `unbound-mention` miss in run 2 was a constant. **Implemented 2026-09-23** and proven on `shapes.md`. | [[1a Run 2]] |
+
+## Where the proposals stand (agent summary, 2026-10-23)
+
+Agent-written, checked against the code at 0.1.4. **Nothing here changes a proposal's status**; the user accepts or rejects each one. "Overlaps" names accepted decisions that already settle part of it.
+
+| ID | In the code | Overlaps |
+|---|---|---|
+| P8 | Yes: the vault lives in the repo it documents. | — |
+| P10 | 1a ran twice; 1b ran in D13's form (the commit gate, one arm), not arms A/B/C. | D13 |
+| P11 | Yes: drift unmodified, livedocs wraps it. | — |
+| P12 | Partly: was/now pinned to note lines, capped at 1,500 characters (`render.py`). No once-per-session dedupe. | — |
+| P13 | Yes: the report's rule line says the code decides what the system does. | — |
+| P14 | Yes, plus a fifth state, `snapshot` (P25). | — |
+| P15 | Yes: checks are read-only, stamps append-only with the note hash, diff base from `git log -S` on `drift.lock` (`gitx.py`). | — |
+| P16 | Partly: anchors come from mentions. `depends_on` enters the note hash but doesn't add or override anchors. | — |
+| P17 | Yes, as tiers: Stop heads-up recommended; read gate and bypass log opt-in. | D11, D14 |
+| P18 | Retire isn't built. Gaming was measured in [[1b Run 1]] (none seen). | D13 (no separate judge) |
+| P19 | Accepted as D10. | D10 |
+| P20 | Not built; the bypass log is measurement only. | D14 |
+| P21 | 1a ran first and was primary; its metrics are now recall, overhead and coverage. | D13 |
+| P22 | Yes (`replay.py`). | — |
+| P23 | Annotation is the default and suppression a flag; there is no judge. | D13 |
+| P24 | Yes. | — |
+| P25 | Yes. | — |
 
 ## Contested: resolved
 

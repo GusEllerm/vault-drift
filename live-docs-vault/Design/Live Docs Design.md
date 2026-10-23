@@ -4,7 +4,7 @@ status: draft
 authority: specifies
 summary: "Draft v0.3: a guarantee that an agent reading a note about code is told when that code has changed since the note was verified. Phase 1 measures whether the guarantee holds on a real repo."
 created: 2026-09-21
-updated: 2026-09-22
+updated: 2026-10-23
 reviewed: 2026-09-22
 tags: [live-docs, design]
 ---
@@ -13,6 +13,7 @@ tags: [live-docs, design]
 
 > **Status: draft v0.3, 2026-09-22.** v0.2 was revised after [[2026-09-21 Design Review]]; v0.3 applies the user's answers to the contested points (D4–D8 in [[Decision Log]]). The remaining proposals (P10–P18) are still unreviewed by the user.
 > - Because this note is a draft, it doesn't bind anything yet ([[Vault Conventions]]).
+> - **Decisions taken since v0.3 aren't folded in yet (noted 2026-10-23). Where they disagree with this note, they win:** D11 (block at commit), D13 (a flag is a deterministic fact; no separate judge; precision is overhead, not a kill criterion), D14 (the commit gate and CI carry the guarantee; the read gate is opt-in), D15 ("aligned" means stamped against the current code). So condition 1 in §1 and the read-gate-first framing of §6.6 describe v0.3, not the shipped tool. The proposals' implementation status is in [[Decision Log#Where the proposals stand (agent summary, 2026-10-23)]].
 
 ## 1. Summary
 
