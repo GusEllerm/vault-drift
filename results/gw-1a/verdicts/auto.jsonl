@@ -1,0 +1,368 @@
+{"id": "ep:Home.md|2026-10-23T15:14:42Z|sha256:7d598|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Art Bible.md|2026-10-23T15:14:42Z|sha256:470c6|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Studio.md|2026-10-23T15:14:42Z|sha256:11e73|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:14:42Z|sha256:38451|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:14:42Z|sha256:5e696|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:14:42Z|sha256:517dc|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 0 close.md|2026-10-23T15:14:43Z|sha256:55b7a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Canonical Cameras.md|2026-10-23T15:14:43Z|sha256:4c429|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:14:44Z|sha256:7c82d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - render harness and ramps.md|2026-10-23T15:14:44Z|sha256:92dae|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - kitchen tile C (TA draft).md|2026-10-23T15:14:46Z|sha256:f7f63|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - car look variants.md|2026-10-23T15:14:46Z|sha256:4200c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Feel.md|2026-10-23T15:14:47Z|sha256:99bdf|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - car physics bakeoff.md|2026-10-23T15:14:47Z|sha256:5be19|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:14:47Z|sha256:37915|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - kitchen tile B.md|2026-10-23T15:14:48Z|sha256:2fff9|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-03 Stage 1 - kitchen tile A.md|2026-10-23T15:14:48Z|sha256:7a727|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-04 Stage 1 explorations.md|2026-10-23T15:14:49Z|sha256:f9fc7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Feel.md|2026-10-23T15:14:49Z|sha256:e6c6d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:14:49Z|sha256:8e6dd|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:14:50Z|sha256:8cf7b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:14:51Z|sha256:51e08|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 1 review.md|2026-10-23T15:14:51Z|sha256:fd8b3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:14:52Z|sha256:9af5a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Track Kit.md|2026-10-23T15:14:52Z|sha256:8b4fe|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 2 - honest rigs.md|2026-10-23T15:14:53Z|sha256:1112b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Feel.md|2026-10-23T15:14:54Z|sha256:f0330|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:14:54Z|sha256:5cede|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 2 - track kit.md|2026-10-23T15:14:55Z|sha256:a5349|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 2 - world builder share.md|2026-10-23T15:14:59Z|sha256:59497|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:14:56Z|sha256:7eac7|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:14:58Z|sha256:cd753|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:14:56Z|sha256:0d996|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:14:59Z|sha256:be17f|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 2 - track kit.md|2026-10-23T15:15:01Z|sha256:34bd2|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Feel.md|2026-10-23T15:15:03Z|sha256:76a71|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:14:59Z|sha256:be17f|src/world/level.ts#Level", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 2 - loop gate honesty.md|2026-10-23T15:15:05Z|sha256:a8c7f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/save.md|2026-10-23T15:14:58Z|sha256:18df9|src/track/pieces.ts#PieceParams", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 2 - feel track level.md|2026-10-23T15:15:09Z|sha256:e6474|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 2 - loop geometry fix.md|2026-10-23T15:15:13Z|sha256:0b228|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 2 - solver energy audit.md|2026-10-23T15:15:15Z|sha256:544e9|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Performance/stage-2.md|2026-10-23T15:15:16Z|sha256:d64ff|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 2 - qa gates.md|2026-10-23T15:15:16Z|sha256:31b3d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 2 review.md|2026-10-23T15:15:18Z|sha256:fc30c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Performance/stage-2.md|2026-10-23T15:15:23Z|sha256:14afd|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 2 - fix crew.md|2026-10-23T15:15:23Z|sha256:a756c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-04 Stage 2 - kit integration.md|2026-10-23T15:15:29Z|sha256:c8ab8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:15:35Z|sha256:e2f15|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - level ladder.md|2026-10-23T15:15:35Z|sha256:58e8c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:15:37Z|sha256:42fe6|src/render/post/bloom.ts#SoftBloomPass", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:15:35Z|sha256:4a4c9|src/render/toon-material.ts#ToonMaterial", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - post stack and backlog.md|2026-10-23T15:15:45Z|sha256:86edf|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/save.md|2026-10-23T15:15:48Z|sha256:42d46|src/feel/kittrack.ts#KitRig", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:15:49Z|sha256:ca400|src/feel/kittrack.ts#KitRig", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 3 - result screen help card pars.md|2026-10-23T15:15:50Z|sha256:985ae|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:15:54Z|sha256:dac73|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:15:55Z|sha256:826fa|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - hazards and juice.md|2026-10-23T15:15:59Z|sha256:8d948|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:16:05Z|sha256:907ad|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:15:59Z|sha256:c4893|src/dev/registry.ts#SceneContext", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 3 - kitchen set.md|2026-10-23T15:16:08Z|sha256:6886a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:16:13Z|sha256:6931e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 3 - level set wiring.md|2026-10-23T15:16:16Z|sha256:b8d26|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-07 Stage 3 kitchen renders.md|2026-10-23T15:16:18Z|sha256:dedb6|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 3 - shell readiness.md|2026-10-23T15:16:23Z|sha256:ad645|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 3 - set fix round 1.md|2026-10-23T15:16:28Z|sha256:c382d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-07 Stage 3 kitchen set round 2.md|2026-10-23T15:16:30Z|sha256:92711|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:15:48Z|sha256:ae5a1|src/ui/builder.ts#BuilderElements", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:15:59Z|sha256:c4893|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 3 - playtest fixes.md|2026-10-23T15:16:38Z|sha256:9a2c8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 3 - L01 promise fix.md|2026-10-23T15:16:46Z|sha256:63f84|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:16:48Z|sha256:11b06|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Performance/stage-3.md|2026-10-23T15:16:48Z|sha256:99490|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 3 - qa visual + perf.md|2026-10-23T15:16:48Z|sha256:0c27e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sets-kitchen.md|2026-10-23T15:16:28Z|sha256:ce58f|src/world/levels/kitchen01.level.ts#KitchenLevel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Stage 3 - ladder coherence.md|2026-10-23T15:17:00Z|sha256:af159|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Playtest E.md|2026-10-23T15:17:03Z|sha256:779f0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:16:55Z|sha256:69c3c|src/ui/builder.ts#BuilderElements", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:16:55Z|sha256:69c3c|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:16:55Z|sha256:69c3c|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:17:00Z|sha256:7aa1c|src/ui/builder.ts#BuilderElements", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:17:00Z|sha256:7aa1c|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:17:00Z|sha256:7aa1c|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-05 Playtest F.md|2026-10-23T15:17:06Z|sha256:adf3b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - shell truth.md|2026-10-23T15:17:12Z|sha256:66229|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:17:15Z|sha256:1eba5|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:16:26Z|sha256:dd32a|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:17:09Z|sha256:5c030|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sets-kitchen.md|2026-10-23T15:16:28Z|sha256:ce58f|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:17:10Z|sha256:ceacd|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:17:10Z|sha256:ceacd|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:17:17Z|sha256:bef6b|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - L04 learnability.md|2026-10-23T15:17:17Z|sha256:5cb03|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - camera and capture truth.md|2026-10-23T15:17:23Z|sha256:3d9a7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Playtest I confirmation.md|2026-10-23T15:17:26Z|sha256:34f49|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Performance/stage-3.md|2026-10-23T15:17:33Z|sha256:31d06|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:17:35Z|sha256:f18d3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-06 Stage 3 - review fixes.md|2026-10-23T15:17:35Z|sha256:9dab0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:17:31Z|sha256:1251a|src/render/post/tilt-shift.ts#TiltShiftPass", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/render.md|2026-10-23T15:17:31Z|sha256:791ef|src/render/post/tilt-shift.ts#TiltShiftPass", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:17:33Z|sha256:f8e2d|src/render/post/tilt-shift.ts#TiltShiftPass", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Stage 3 Review 2026-10-06.md|2026-10-23T15:17:39Z|sha256:5da4b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 4 - bedroom set production.md|2026-10-23T15:18:01Z|sha256:1aa97|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 Stage 4 bedroom production.md|2026-10-23T15:18:04Z|sha256:5cf85|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 4 - bedroom ladder.md|2026-10-23T15:18:18Z|sha256:91a66|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:18:21Z|sha256:f35e9|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-07 Stage 4 - room picker.md|2026-10-23T15:18:27Z|sha256:a3df6|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 Stage 4 garage.md|2026-10-23T15:18:40Z|sha256:ae97b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 Stage 4 garage.md|2026-10-23T15:18:46Z|sha256:84d13|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:18:53Z|sha256:da9bd|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - bathroom ladder.md|2026-10-23T15:19:09Z|sha256:835fd|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:17:58Z|sha256:092c7|src/render/lighting.ts#LightingRigOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:17:58Z|sha256:092c7|src/render/toon-material.ts#ToonMaterialParams", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/dev.md|2026-10-23T15:17:58Z|sha256:092c7|src/render/lighting.ts#LightingRig", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sets-kitchen.md|2026-10-23T15:19:12Z|sha256:02371|src/render/toon-material.ts#ToonMaterialParams", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:19:09Z|sha256:494c1|src/render/toon-material.ts#ToonMaterial", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 Stage 4 garden production.md|2026-10-23T15:19:35Z|sha256:6580c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - garden ladder.md|2026-10-23T15:19:50Z|sha256:909da|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:19:46Z|sha256:80f79|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:19:49Z|sha256:5b489|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:19:50Z|sha256:bc051|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Playtest K new rooms.md|2026-10-23T15:19:53Z|sha256:2bfba|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - playtest fixes J+K.md|2026-10-23T15:19:58Z|sha256:c8d11|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - garage production.md|2026-10-23T15:20:01Z|sha256:a11c8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:19:46Z|sha256:80f79|src/world/setPlacement.ts#STANDARD", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - camera latency notes round 2.md|2026-10-23T15:20:09Z|sha256:9ef57|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 4 - L02 discoverability.md|2026-10-23T15:20:19Z|sha256:fa2ba|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:19:46Z|sha256:80f79|src/sets/index.ts#SetRegistration", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - garage ladder.md|2026-10-23T15:20:55Z|sha256:77638|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - labels and layout.md|2026-10-23T15:21:17Z|sha256:c9c85|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:19:41Z|sha256:956d1|src/ui/builder.ts#BuilderElements", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:20:51Z|sha256:37aa0|src/ui/builder.ts#BuilderElements", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - N wave.md|2026-10-23T15:21:32Z|sha256:afb11|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - watchability resumed.md|2026-10-23T15:21:43Z|sha256:b9309|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - L02 fail-timing.md|2026-10-23T15:22:00Z|sha256:0218f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Playtest P round2.md|2026-10-23T15:22:03Z|sha256:3ff32|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Playtest Q round2.md|2026-10-23T15:22:07Z|sha256:db4e4|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - K5 booster + fixture reading.md|2026-10-23T15:22:15Z|sha256:dc272|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:22:13Z|sha256:d7047|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:22:22Z|sha256:4d397|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:22:22Z|sha256:4d397|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:22:15Z|sha256:433bc|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - focus and counters.md|2026-10-23T15:22:27Z|sha256:72a44|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:22:31Z|sha256:e70aa|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - build view controls.md|2026-10-23T15:22:34Z|sha256:bd67a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:22:13Z|sha256:d7047|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:21:51Z|sha256:7ae1b|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/camera.md|2026-10-23T15:22:31Z|sha256:875dd|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:22:22Z|sha256:4d397|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:22:33Z|sha256:88d3b|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:22:15Z|sha256:433bc|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - fixture readability signal.md|2026-10-23T15:22:52Z|sha256:fc00f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - R+S shell fixes.md|2026-10-23T15:23:05Z|sha256:81c9d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - K4 tap wall.md|2026-10-23T15:23:13Z|sha256:13baa|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-09 fixture signal.md|2026-10-23T15:23:15Z|sha256:389fe|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:23:11Z|sha256:6ab51|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:23:13Z|sha256:3099d|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - R+S shell fixes.md|2026-10-23T15:23:20Z|sha256:6e02b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - gesture and camera hardening.md|2026-10-23T15:23:30Z|sha256:7abad|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-09 fixture signal.md|2026-10-23T15:23:33Z|sha256:382c4|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - banked inlay verdict recheck.md|2026-10-23T15:23:33Z|sha256:6bd82|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - car stripe band.md|2026-10-23T15:23:44Z|sha256:38695|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - T+U autosave and plain hints.md|2026-10-23T15:23:53Z|sha256:c83ff|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - round4 feel fixes.md|2026-10-23T15:24:02Z|sha256:703ea|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-01-18 Stage 4 - B2 learnability.md|2026-10-23T15:24:09Z|sha256:dbed5|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:24:15Z|sha256:bfd96|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:23:59Z|sha256:a23c3|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Playtest V round5.md|2026-10-23T15:24:18Z|sha256:82c7c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:24:07Z|sha256:cb503|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:23:59Z|sha256:a23c3|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:24:09Z|sha256:6c077|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - round5 note tails phrasing.md|2026-10-23T15:24:23Z|sha256:dee30|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - viewport scaling audit.md|2026-10-23T15:24:31Z|sha256:d9057|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Playtest Y round6.md|2026-10-23T15:24:34Z|sha256:f516a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - click differential.md|2026-10-23T15:24:48Z|sha256:425e8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - short-window polish.md|2026-10-23T15:24:59Z|sha256:d3a9d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-09 stage 4 close.md|2026-10-23T15:25:03Z|sha256:5a1b0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:25:07Z|sha256:f3bae|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 close.md|2026-10-23T15:25:18Z|sha256:ada4c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 4 - short-window polish.md|2026-10-23T15:25:45Z|sha256:a9121|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:24:09Z|sha256:6c077|src/replay/replay.ts#ReplayResult", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:25:53Z|sha256:a0d85|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:25:58Z|sha256:703dd|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:26:01Z|sha256:22798|src/save/save.ts#SaveSettings", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 5 - cinematic replay.md|2026-10-23T15:26:01Z|sha256:12170|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 5 - synthesised sound.md|2026-10-23T15:26:07Z|sha256:4bb4a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-09 porch judging.md|2026-10-23T15:26:11Z|sha256:97763|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 5 - porch production set.md|2026-10-23T15:26:22Z|sha256:72c9f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-09 porch judging.md|2026-10-23T15:26:28Z|sha256:4b1f0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Stage 5 - porch ladder.md|2026-10-23T15:26:46Z|sha256:0f21a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:26:55Z|sha256:f0552|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - AA share and overlay fixes.md|2026-10-23T15:26:58Z|sha256:4c34e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - B2 pass 2.md|2026-10-23T15:27:12Z|sha256:2a400|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - replay red diagnosis.md|2026-10-23T15:27:20Z|sha256:85e91|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:27:05Z|sha256:c5fa1|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sound.md|2026-10-23T15:26:06Z|sha256:ec937|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:27:12Z|sha256:bf0e1|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:27:30Z|sha256:e510b|src/world/setPlacement.ts#STANDARD", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:27:36Z|sha256:3c639|src/world/setPlacement.ts#STANDARD", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - BB shell fixes.md|2026-10-23T15:27:36Z|sha256:2d891|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:28:02Z|sha256:36f09|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - K3 re-sweep.md|2026-10-23T15:28:02Z|sha256:b7636|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:27:49Z|sha256:f4d50|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:27:50Z|sha256:98ddc|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/camera.md|2026-10-23T15:27:16Z|sha256:d2e08|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:27:58Z|sha256:073d9|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - BB feel fixes.md|2026-10-23T15:28:16Z|sha256:60f02|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - BB feel fixes.md|2026-10-23T15:28:37Z|sha256:412f7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:28:41Z|sha256:7547f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 5 close.md|2026-10-23T15:28:43Z|sha256:376d4|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 stage 5 close.md|2026-10-23T15:28:51Z|sha256:4c1d7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Stage 5 - BB feel fixes.md|2026-10-23T15:28:51Z|sha256:f0f89|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:28:32Z|sha256:f5ce3|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:28:50Z|sha256:e02e4|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:28:32Z|sha256:f5ce3|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 5 close.md|2026-10-23T15:28:58Z|sha256:cafb0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:29:02Z|sha256:a1831|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Accessibility audit 2026-10-08.md|2026-10-23T15:29:06Z|sha256:0d95c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 a11y.md|2026-10-23T15:29:06Z|sha256:10711|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 campaign thirty.md|2026-10-23T15:29:17Z|sha256:891c4|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 a11y.md|2026-10-23T15:29:20Z|sha256:7854c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Performance 2026-10-08.md|2026-10-23T15:29:27Z|sha256:ab337|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 perf.md|2026-10-23T15:29:27Z|sha256:d9c3b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Copy pass 2026-10-08.md|2026-10-23T15:29:38Z|sha256:eab3c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 copy.md|2026-10-23T15:29:38Z|sha256:6af4b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Playtest DD final sweep.md|2026-10-23T15:29:50Z|sha256:e4cb3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/camera.md|2026-10-23T15:29:03Z|sha256:40d31|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:29:17Z|sha256:7e385|src/ui/builder.ts#BuilderOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:29:17Z|sha256:7e385|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 place honesty.md|2026-10-23T15:29:56Z|sha256:01999|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:30:02Z|sha256:96d81|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 k3 discoverability.md|2026-10-23T15:30:07Z|sha256:18f9e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/Final Report.md|2026-10-23T15:30:12Z|sha256:12e79|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Accessibility audit 2026-10-08.md|2026-10-23T15:30:16Z|sha256:b2417|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Review 2026-10-08 stage 6 close.md|2026-10-23T15:30:24Z|sha256:d923d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:28:32Z|sha256:f5ce3|src/world/setPlacement.ts#PORCH_ROWS", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Steering spike 2026-10-09.md|2026-10-23T15:30:35Z|sha256:46485|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:30:41Z|sha256:97d52|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 sandbox + encores.md|2026-10-23T15:30:45Z|sha256:2666c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-08 Stage 6 close - pacing.md|2026-10-23T15:31:00Z|sha256:d2590|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:31:09Z|sha256:42766|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Cross-platform determinism 2026-10-09.md|2026-10-23T15:31:13Z|sha256:64787|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-09 engineering.md|2026-10-23T15:31:22Z|sha256:f37f6|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-09 design.md|2026-10-23T15:31:26Z|sha256:86e8f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:31:10Z|sha256:5fd61|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:30:45Z|sha256:7550f|src/ui/builder.ts#Builder", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T0 gates.md|2026-10-23T15:31:30Z|sha256:e35a1|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:31:39Z|sha256:acc5b|src/sound/sound.ts#SoundEngine", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:31:43Z|sha256:12ffa|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T0 extraction.md|2026-10-23T15:31:46Z|sha256:16e8e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T0 save.md|2026-10-23T15:31:53Z|sha256:d4097|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T1 feel.md|2026-10-23T15:32:02Z|sha256:f8b33|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T3 warp.md|2026-10-23T15:32:12Z|sha256:ca033|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:32:18Z|sha256:35cda|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T2 voice.md|2026-10-23T15:32:25Z|sha256:d112d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:32:18Z|sha256:f3892|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Home.md|2026-10-23T15:32:19Z|sha256:665a6|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/juice.md|2026-10-23T15:31:57Z|sha256:523c0|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:32:20Z|sha256:6936d|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sound.md|2026-10-23T15:31:59Z|sha256:fcf15|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:31:46Z|sha256:75a3e|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:30:45Z|sha256:7550f|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:32:56Z|sha256:c3c96|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/sound.md|2026-10-23T15:31:59Z|sha256:fcf15|src/save/save.ts#SaveSettings", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T3 ghosts.md|2026-10-23T15:33:14Z|sha256:069c8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:33:21Z|sha256:175a2|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:33:29Z|sha256:50796|src/pages/ghost.ts#GhostRace", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-09 Program T3 farewell.md|2026-10-23T15:33:29Z|sha256:f1d3f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Program P3 final reds.md|2026-10-23T15:33:46Z|sha256:48190|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-10 player re-run.md|2026-10-23T15:33:50Z|sha256:c5453|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 P4 program shortlist.md|2026-10-23T15:34:06Z|sha256:bd63e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 P4 program shortlist.md|2026-10-23T15:34:17Z|sha256:6a502|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-10 player final.md|2026-10-23T15:34:24Z|sha256:776f8|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Program close.md|2026-10-23T15:34:28Z|sha256:0cbf3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Program filmcar.md|2026-10-23T15:34:42Z|sha256:babfc|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 Program P4 chrome.md|2026-10-23T15:34:56Z|sha256:d0c53|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-11 engineering round2.md|2026-10-23T15:35:00Z|sha256:b64c3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-11 design round2.md|2026-10-23T15:35:04Z|sha256:fb9a9|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-11 player round2.md|2026-10-23T15:35:07Z|sha256:ff292|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:35:15Z|sha256:608a3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:35:20Z|sha256:38978|src/sets/bathroom/index.ts#BathroomSet", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:35:20Z|sha256:38978|src/sets/garage/index.ts#GarageSet", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:35:20Z|sha256:38978|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:35:20Z|sha256:38978|src/camera/run-camera.ts#RunCameraOptions", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:33:29Z|sha256:50796|src/render/post/bloom.ts#SoftBloomPass", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round2 ghosts.md|2026-10-23T15:35:28Z|sha256:d6fd0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round2 bloom.md|2026-10-23T15:35:38Z|sha256:e0cd3|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:35:42Z|sha256:7f4df|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:35:20Z|sha256:38978|src/world/level.ts#Level", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:35:55Z|sha256:d7719|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-10 P4 program shortlist.md|2026-10-23T15:36:01Z|sha256:9a8b5|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round2 choice.md|2026-10-23T15:36:01Z|sha256:17575|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:36:13Z|sha256:0988a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Performance/stage-2.md|2026-10-23T15:36:20Z|sha256:22a6b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round2 doors.md|2026-10-23T15:36:20Z|sha256:ed619|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-11 player round3 verdict.md|2026-10-23T15:36:57Z|sha256:d3618|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-11 player round3 verdict.md|2026-10-23T15:37:05Z|sha256:d205c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:36:17Z|sha256:a637e|src/world/level.ts#Level", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round3 lower.md|2026-10-23T15:37:14Z|sha256:cc0e5|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:36:17Z|sha256:a637e|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:36:17Z|sha256:a637e|src/ui/result.ts#ResultPanel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round3 rims.md|2026-10-23T15:37:30Z|sha256:36481|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-11 Round3 tail.md|2026-10-23T15:37:38Z|sha256:245ce|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Freeplay probe.md|2026-10-23T15:37:46Z|sha256:e3e97|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/probe-free/journal.md|2026-10-23T15:37:46Z|sha256:41178|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Freeplay Feasibility.md|2026-10-23T15:37:51Z|sha256:879ac|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Levels.md|2026-10-23T15:37:22Z|sha256:6ee5a|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:36:17Z|sha256:a637e|package.json", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:37:27Z|sha256:087ff|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:37:27Z|sha256:087ff|package.json", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Level Ladder.md|2026-10-23T15:37:29Z|sha256:b1bce|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:38:05Z|sha256:ed759|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Freeplay tally.md|2026-10-23T15:38:12Z|sha256:b2bcf|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Downhill Spike.md|2026-10-23T15:38:16Z|sha256:2feee|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Sheet re-probe.md|2026-10-23T15:38:20Z|sha256:c079e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/probe-sheet/journal.md|2026-10-23T15:38:20Z|sha256:d8e21|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:38:24Z|sha256:c0149|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:38:33Z|sha256:dbd98|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Freeplay Exploration.md|2026-10-23T15:38:05Z|sha256:cc06e|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/render.md|2026-10-23T15:35:36Z|sha256:a86f4|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:33:29Z|sha256:50796|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-12.md|2026-10-23T15:37:56Z|sha256:03dfc|src/world/world.ts#World", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:38:47Z|sha256:b9016|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:36:17Z|sha256:a637e|src/share/share.ts#SharePayload", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:38:49Z|sha256:a8090|src/ui/result.ts#ResultModel", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Seating fix.md|2026-10-23T15:38:55Z|sha256:a3788|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Freeplay chain.md|2026-10-23T15:39:14Z|sha256:e1fc1|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Freeplay chain.md|2026-10-23T15:39:29Z|sha256:ef6ac|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Final sheet probe.md|2026-10-23T15:39:45Z|sha256:750e9|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/probe-final/journal.md|2026-10-23T15:39:45Z|sha256:f25a2|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Ghost purity.md|2026-10-23T15:39:53Z|sha256:fa8d7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:40:00Z|sha256:23345|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Pullback + face.md|2026-10-23T15:40:08Z|sha256:ccd1a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:40:18Z|sha256:72ca5|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Greenlight reprobe.md|2026-10-23T15:40:23Z|sha256:e4e5f|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:40:28Z|sha256:b9ef7|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/replay.md|2026-10-23T15:39:52Z|sha256:4746a|tools/hash-atlas.mjs", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/share.md|2026-10-23T15:39:53Z|sha256:6a298|tools/hash-atlas.mjs", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:40:08Z|sha256:0787f|src/world/level.ts#Level", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:33:29Z|sha256:50796|tools/hash-atlas.mjs", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/Chain.md|2026-10-23T15:40:00Z|sha256:5911e|src/save/records.ts#PersonalRecords", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/share.md|2026-10-23T15:39:53Z|sha256:6a298|src/save/records.ts#PersonalRecords", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/tally.md|2026-10-23T15:40:02Z|sha256:9493d|src/save/records.ts#PersonalRecords", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Downhill house.md|2026-10-23T15:41:00Z|sha256:a131e|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/CI Pixel Truth.md|2026-10-23T15:41:06Z|sha256:7ca12|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:41:06Z|sha256:86fbd|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Pixel gate.md|2026-10-23T15:41:06Z|sha256:ecd5a|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Concepts/CI Pixel Truth.md|2026-10-23T15:41:25Z|sha256:bbf6d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-12 Front door.md|2026-10-23T15:41:42Z|sha256:17039|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-13 freeform verdict.md|2026-10-23T15:42:44Z|sha256:1fa3d|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-13 Freeform program close.md|2026-10-23T15:42:51Z|sha256:60406|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-13 engineering house era.md|2026-10-23T15:42:56Z|sha256:fb3bb|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-13 player house era.md|2026-10-23T15:43:01Z|sha256:cb78c|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-13 art of the house.md|2026-10-23T15:43:06Z|sha256:42d0b|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-13 Furnish the door.md|2026-10-23T15:43:47Z|sha256:951c4|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:41:31Z|sha256:aef50|src/sound/sound.ts#SoundEngine", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:41:31Z|sha256:aef50|src/boot.ts#bootGame", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Action Plan 2026-10-09.md|2026-10-23T15:33:29Z|sha256:50796|src/sound/sound.ts#SoundEngine", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Decision Log.md|2026-10-23T15:44:04Z|sha256:461da|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Modules/camera.md|2026-10-23T15:43:19Z|sha256:5d900|src/boot.ts#frameCamera", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:41:31Z|sha256:aef50|src/boot.ts#frameCamera", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/src.md|2026-10-23T15:41:31Z|sha256:aef50|src/boot.ts#runStatusLine", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/ui.md|2026-10-23T15:44:11Z|sha256:49534|src/boot.ts#runStatusLine", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Modules/world.md|2026-10-23T15:40:42Z|sha256:18fe3|src/boot.ts#runStatusLine", "verdict": "still-right", "cause": "moved", "by": "auto"}
+{"id": "ep:Sessions/2026-10-13 Wire the door.md|2026-10-23T15:44:11Z|sha256:e6bf0|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Sessions/2026-10-13 Extract the tail.md|2026-10-23T15:44:23Z|sha256:b7256|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}
+{"id": "ep:Reference/Evaluation 2026-10-13 loop four verdict.md|2026-10-23T15:44:34Z|sha256:37ccb|(none)", "verdict": "still-right", "cause": "class-granularity", "by": "auto"}

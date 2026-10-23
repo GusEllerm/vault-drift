@@ -1,0 +1,127 @@
+{
+ "strata": {
+  "S1 episode-reader": {
+   "population": 220,
+   "graded": 45,
+   "of_sampled": 45,
+   "wrong(anchorable)": 6,
+   "wrong(prose-only)": 0,
+   "rate": 0.133,
+   "rate_95ci": [
+    0.063,
+    0.262
+   ],
+   "estimated": 29.3,
+   "estimated_95ci": [
+    13.8,
+    57.6
+   ],
+   "causes": {
+    "wrong:real": 6,
+    "still-right:file-anchor": 10,
+    "still-right:ambiguous-superset": 7,
+    "still-right:other": 1,
+    "still-right:irrelevant": 19,
+    "still-right:class-granularity": 1,
+    "still-right:attribute-guess": 1
+   }
+  },
+  "S2 episode-auto": {
+   "population": 126,
+   "graded": 36,
+   "of_sampled": 36,
+   "wrong(anchorable)": 2,
+   "wrong(prose-only)": 0,
+   "rate": 0.056,
+   "rate_95ci": [
+    0.015,
+    0.181
+   ],
+   "estimated": 7.0,
+   "estimated_95ci": [
+    1.9,
+    22.9
+   ],
+   "causes": {
+    "still-right:class-granularity": 21,
+    "still-right:irrelevant": 3,
+    "still-right:moved": 1,
+    "still-right:attribute-guess": 5,
+    "wrong:real": 2,
+    "still-right:comment-only": 4
+   }
+  },
+  "S3 at_risk": {
+   "population": 299,
+   "graded": 45,
+   "of_sampled": 45,
+   "wrong(anchorable)": 0,
+   "wrong(prose-only)": 0,
+   "rate": 0.0,
+   "rate_95ci": [
+    0.0,
+    0.079
+   ],
+   "estimated": 0.0,
+   "estimated_95ci": [
+    0.0,
+    23.5
+   ],
+   "causes": {
+    "still-right:ok": 45
+   }
+  },
+  "S4 pre_edit_fresh": {
+   "population": 53,
+   "graded": 35,
+   "of_sampled": 35,
+   "wrong(anchorable)": 6,
+   "wrong(prose-only)": 6,
+   "rate": 0.171,
+   "rate_95ci": [
+    0.081,
+    0.327
+   ],
+   "estimated": 9.1,
+   "estimated_95ci": [
+    4.3,
+    17.3
+   ],
+   "causes": {
+    "still-right:ok": 23,
+    "wrong:prose-only-claim": 6,
+    "wrong:other": 3,
+    "wrong:unbound-mention": 3
+   }
+  },
+  "S5 path_risk": {
+   "population": 183,
+   "graded": 30,
+   "of_sampled": 30,
+   "wrong(anchorable)": 0,
+   "wrong(prose-only)": 0,
+   "rate": 0.0,
+   "rate_95ci": [
+    0.0,
+    0.114
+   ],
+   "estimated": 0.0,
+   "estimated_95ci": [
+    0.0,
+    20.8
+   ],
+   "causes": {
+    "still-right:ok": 30
+   }
+  }
+ },
+ "estimated_real_catches": 36.3,
+ "estimated_misses_anchorable": 9.1,
+ "estimated_prose_only_misses": 9.1,
+ "1a_miss_rate": 0.2,
+ "gate_miss_rate": 0.307,
+ "path_only_misses (P29 cost)": 0.0,
+ "1a_miss_rate_with_path_only": 0.2,
+ "gate_miss_rate_with_path_only": 0.307,
+ "note": "point estimates; per-stratum 95% intervals in strata[*].estimated_95ci"
+}

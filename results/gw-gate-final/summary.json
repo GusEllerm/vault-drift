@@ -1,0 +1,27 @@
+{
+ "commits": 338,
+ "rows": 38557,
+ "pre_edit_rows": 533,
+ "stamps": 739,
+ "stamp_failures": 0,
+ "states": {
+  "unknown": 404,
+  "snapshot": 29772,
+  "fresh": 7232,
+  "changed": 607,
+  "broken": 9
+ },
+ "pre_edit_states": {
+  "unknown": 5,
+  "changed": 336,
+  "snapshot": 96,
+  "fresh": 87,
+  "broken": 9
+ },
+ "episodes": 986,
+ "at_risk": 353,
+ "gate_auto": 76,
+ "gate_hand": 540,
+ "gate_blocked_commits": 114,
+ "seconds": 1553.4
+}

@@ -2,7 +2,7 @@
 type: results
 status: active
 authority: log
-summary: "TypeScript support measured on the user's TS repos: on gravity-works' 338 commits the simulated gate demanded 210 hand reconciliations instead of 931 (−77%), blocking 26% of commits instead of 42%; Python unchanged on hpc-bridge; Astro handling checked on 374 real files. Recall: see §4."
+summary: "TypeScript support measured on gravity-works and scheduler-dojo: the first path rule cut gate work 77% but missed ~20% of note-invalidating changes; the revised rule recovers the sampled misses at −42% work (540 vs 931 hand reconciliations); the line limit is the user's call. Python unchanged; Astro checked on 374 real files."
 created: 2026-10-23
 updated: 2026-10-23
 reviewed: 2026-10-23
@@ -24,13 +24,27 @@ tags: [live-docs, results, typescript]
 
 **gravity-works**
 
-| | 0.1.4 | 0.2.0 |
-|---|---|---|
-| Hand reconciliations demanded | **931** | **210** (−77%) |
-| Acked mechanically (unseen) | 0 | 113 |
-| Commits blocked | 143 of 338 (42%) | 89 (26%) |
-| Notes per blocked commit (mean / max) | 6.5 / 18 | 2.4 / 18 |
-| Finding kinds behind hand acks | file 931 | body 147, file 80, signature 14, anchor-missing 8, removed 2, added 1 |
+| | 0.1.4 | 0.2.0, first P29 (default export only) | 0.2.0, revised P29 (≤ 1,000 lines whole) |
+|---|---|---|---|
+| Hand reconciliations demanded | **931** | **210** (−77%) | **540** (−42%) |
+| Acked mechanically (unseen) | 0 | 113 | 76 |
+| Commits blocked | 143 of 338 (42%) | 89 (26%) | 114 (34%) |
+| Notes per blocked commit (mean / max) | 6.5 / 18 | 2.4 / 18 | 4.7 / 21 |
+| Finding kinds behind hand acks | file 931 | body 147, file 80, signature 14, other 11 | file 463, body 147, signature 14, other 16 |
+
+The first P29 failed recall (§4); the revised rule recovers it at a price. **Why the price is higher than the estimate:** the line limit applies when a note is stamped, and `src/boot.ts` (1,596 lines today) was under 1,000 lines for much of this history, so it still produced 190 of the 591 whole-file findings. Hubs start small. Re-scoring every finding and every sampled miss by each file's size at that commit (the reconstruction gives 528 at 1,000 lines against 540 measured):
+
+| Line limit | Hand reconciliations | Sampled anchorable misses flagged (of 6) | All sampled misses flagged (of 12) |
+|---|---|---|---|
+| default export only | 210 | 0 | 1 |
+| 300 | 313 | 3 | 7 |
+| 500 | 341 | 4 | 9 |
+| 600 | 362 | 5 | 10 |
+| 800 | 468 | 6 | 11 |
+| 1,000 | 540 (measured) | 6 | 11 |
+| every file (0.1.4) | 931 | — | — |
+
+The choice of limit is the user's (P29); six anchorable misses are thin evidence for any one number.
 
 - **The simulation reproduces the real history:** gravity-works' agents hand-acked 766 times under 0.1, with zero mechanical acks (931 simulated, and the gap is notes the agents updated instead of acking). Every 0.1 binding there was a whole-file anchor, which can never be proven benign.
 - Of 0.2's 210, 130 involve TypeScript symbols. The 80 `file` findings are whole-file anchors on non-code files (JSON data, CSS), which still bind by path.
@@ -39,11 +53,11 @@ tags: [live-docs, results, typescript]
 
 | | 0.1.4 | 0.2.0 |
 |---|---|---|
-| Hand reconciliations demanded | 90 | 84 |
-| — from Python code | 71 | 71 |
-| — from TypeScript | 14 | 7 |
-| Acked mechanically | 76 | 132 |
-| Commits blocked | 24 of 78 | 23 |
+| Hand reconciliations demanded | 90 | 84 (first P29) / 92 (revised) |
+| — from Python code | 71 | 71 / 71 |
+| — from TypeScript | 14 | 7 / 16 |
+| Acked mechanically | 76 | 132 / 121 |
+| Commits blocked | 24 of 78 | 23 / 25 |
 
 The real history has 178 hand acks and 29 mechanical: agents acked many benign changes by hand (58 of the 178 reasons say "unchanged", "benign" or "re-read") and re-stamped under Python 3.12 because member hashes depended on the CPython minor (fixed: P32).
 
