@@ -25,3 +25,7 @@ results/*/items.jsonl
 results/*/batches/
 results/*.log
 dist/
+
+# TS run samples: batch markdown is regenerable from sample/items.jsonl.gz
+results/*/sample/batch-*.md
+results/*/sample/items.jsonl

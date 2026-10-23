@@ -249,11 +249,13 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
 
 
 def _episodes(rows_path: Path, out_path: Path) -> int:
-    """One episode per (note, stamp, anchor target) that was ever non-fresh: the first row that flagged it."""
+    """One episode per (note, stamp, anchor target) that was ever flagged (changed or broken): the first row
+    that flagged it. `snapshot` and `unknown` are not flags (before P25 nothing was a snapshot, so run 1/2's
+    `!= fresh` test was the same thing)."""
     seen: dict[tuple, dict] = {}
     for line in rows_path.read_text().splitlines():
         r = json.loads(line)
-        if r["phase"] != "check" or r["state"] in ("fresh",):
+        if r["phase"] != "check" or r["state"] not in ("changed", "broken"):
             continue
         targets = {f["target"] for f in r["findings"]} or {"(none)"}
         for t in targets:
