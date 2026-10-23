@@ -161,6 +161,16 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
                     members[q] = h
         bindings[target] = st.Binding(sig=sig, deco=deco, qualnames=quals.get(target, []), members=members)
 
+    # The lock holds what the note mentions now: drop bindings to code it no longer names (an edit
+    # removed the mention, or a rule changed what binds). Orphans cost drift time and list the note
+    # in `affected` for changes it doesn't depend on.
+    for (d, t), _sig in drift_io.lock(repo).items():
+        if d == doc and t not in bindings:
+            try:
+                drift_io.unlink(repo, d, t)
+            except drift_io.DriftError:
+                pass
+
     unresolved_set = set(unresolved)
     s = st.Stamp(note=note, note_hash=current, bindings=bindings,
                  mentions={t: raws[t] for t in bindings}, unresolved=sorted(unresolved_set),
@@ -168,3 +178,26 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
                  dangling=_dangling(ms, unresolved_set, previous))
     st.append(vault, s)
     return StampResult(s, len(bindings), failed)
+
+
+def rebind(repo: str | Path, vault_rel: str, *, reason: str, by: str = "human") -> tuple[list[str], list[str]]:
+    """Re-stamp every note whose text is what its latest stamp vouched for, under the current binding
+    rules (an ack: the note is unchanged, only what it binds is). For upgrades that change resolution,
+    e.g. 0.2's TypeScript symbols replacing whole-file anchors. Notes edited since their stamp are left
+    for the commit that contains the edit. Returns (rebound, skipped)."""
+    repo = Path(repo)
+    vault = repo / vault_rel
+    all_stamps = st.load(vault)
+    idx = sy.index(repo, "WORKTREE")
+    done, skipped = [], []
+    for note in sorted({s.note for s in all_stamps}):
+        p = vault / note
+        latest = st.latest(st.for_note(all_stamps, note))
+        if not p.exists() or latest is None or latest.snapshot:
+            continue
+        if latest.note_hash != st.note_hash(p.read_text(encoding="utf-8")):
+            skipped.append(note)
+            continue
+        stamp(repo, vault_rel, note, by=by, verdict=st.ACK, reason=reason, idx=idx)
+        done.append(note)
+    return done, skipped

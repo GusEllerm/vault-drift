@@ -57,7 +57,9 @@ def test_resolution_forms(ts_repo):
     assert r.candidates[0].path == "wrangler.jsonc"
     r = _res(idx, "`theme.color`", note="vault/Concepts/x.md", body="# X\n")  # key path below its constant
     assert r.rule == "dotted:key-suffix" and r.candidates[0].qualname == "config.theme.color"
-    assert _res(idx, "`color`").status == sy.UNRESOLVED  # bare key names never bind
+    r = _res(idx, "`color`")  # a bare key name binds only within the note's own module ...
+    assert r.rule == "name:local-or-key:own-module" and r.candidates[0].qualname == "config.theme.color"
+    assert _res(idx, "`color`", note="vault/Concepts/x.md", body="# X\n").status == sy.UNRESOLVED  # ... never globally
     r = _res(idx, "`ProjectCard.Props`", note="vault/Concepts/x.md", body="# X\n")
     assert r.candidates[0].path == "src/components/ProjectCard.astro"  # module.name
     r = _res(idx, "`Props`", note="vault/Modules/ProjectCard.md", body="# ProjectCard\n")
@@ -66,6 +68,15 @@ def test_resolution_forms(ts_repo):
     assert r.status == sy.SUPERSET  # two Props, no hint: all of them, never a false fresh
     r = _res(idx, "`Header`", note="vault/Modules/components.md", body="# Modules/components\n")
     assert r.candidates[0].path == "src/components/Header.tsx"
+
+
+def test_closures_are_members_of_their_function(tmp_path):
+    from livedocs import ts as t
+    src = "export function boot() {\n  function probeStep() { return 1 }\n  const onTick = () => probeStep();\n  const n = 3;\n}\n"
+    m = t.module("src/boot.ts", src)
+    assert {q: d.kind for q, d in m.decls.items()} == {"boot": sy.FUNCTION, "boot.probeStep": sy.LOCAL, "boot.onTick": sy.LOCAL}
+    assert t.member_hash("src/boot.ts", src, "boot.probeStep") == t.member_hash(
+        "src/boot.ts", src.replace("const n = 3", "const n = 4"), "boot.probeStep")  # a sibling statement
 
 
 def test_module_hints_for_ts_paths():

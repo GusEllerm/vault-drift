@@ -32,6 +32,8 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
     repo = Path(repo)
     vault = repo / vault_rel
     idx = sy.index(repo, "WORKTREE")
+    for lang in sorted(idx.unavailable):
+        print(f"warning: {lang} files present but not parseable here; their mentions read as unresolved")
     file_anchors = bool(config.load(repo).get("file_anchors"))
     all_stamps = st.load(vault)
     out: list[NoteCoverage] = []

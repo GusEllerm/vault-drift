@@ -32,7 +32,7 @@ def snapshot_index(repo: Path) -> Path:
 def _stamp_staged_notes(repo: Path, snap: Path, vault_rel: str, staged: list[str]) -> list[str]:
     """Stamp every staged vault note whose staged text is not what its latest stamp vouched for."""
     import shutil as _sh
-    from .. import gitx, stamp as stp, stamps as st
+    from .. import gitx, stamp as stp, stamps as st, symbols as sy
     prefix = f"{vault_rel}/"
     notes = [p[len(prefix):] for p in staged if p.startswith(prefix) and p.endswith(".md")
              and not p[len(prefix):].startswith((".livedocs", ".obsidian"))]
@@ -40,6 +40,7 @@ def _stamp_staged_notes(repo: Path, snap: Path, vault_rel: str, staged: list[str
         return []
     all_stamps = st.load(snap / vault_rel)
     done: list[str] = []
+    idx = None  # one symbol index of the staged tree for every note stamped here
     for note in notes:
         p = snap / vault_rel / note
         if not p.exists():  # deleted note
@@ -48,7 +49,8 @@ def _stamp_staged_notes(repo: Path, snap: Path, vault_rel: str, staged: list[str
         if latest is not None and latest.note_hash == st.note_hash(p.read_text(encoding="utf-8")):
             continue
         try:
-            stp.stamp(snap, vault_rel, note, by="pre-commit")
+            idx = idx or sy.index(snap, "WORKTREE")
+            stp.stamp(snap, vault_rel, note, by="pre-commit", idx=idx)
             done.append(note)
         except stp.StampError:
             continue
@@ -101,12 +103,15 @@ def main() -> int:
             _audit(repo, vault_rel, staged, reports)
             blocking: list[ck.Report] = []
             acked: list[str] = []
+            ack_idx = None
             for r in reports:
                 if r.state in (ck.FRESH, ck.UNKNOWN, ck.SNAPSHOT):
                     continue
                 if ck.mechanically_benign(r):
                     kinds = ", ".join(sorted({f.kind for f in r.findings}))
-                    stp.stamp(repo, vault_rel, r.note, by="pre-commit", verdict=st.ACK, reason=f"mechanical: {kinds}")
+                    from .. import symbols as sy
+                    ack_idx = ack_idx or sy.index(repo, "WORKTREE")
+                    stp.stamp(repo, vault_rel, r.note, by="pre-commit", verdict=st.ACK, reason=f"mechanical: {kinds}", idx=ack_idx)
                     acked.append(r.note)
                     continue
                 blocking.append(r)

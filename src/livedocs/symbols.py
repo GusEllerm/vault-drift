@@ -26,7 +26,7 @@ from . import configkeys, ts
 from .mentions import CAPS, DOTTED, NAME, PATH, Mention
 
 FUNCTION, CLASS, METHOD, ATTRIBUTE, CONSTANT, FILE = "function", "class", "method", "attribute", "constant", "file"
-INTERFACE, TYPE, ENUM, NAMESPACE, KEY, COMPONENT = ts.INTERFACE, ts.TYPE, ts.ENUM, ts.NAMESPACE, ts.KEY, ts.COMPONENT
+INTERFACE, TYPE, ENUM, NAMESPACE, KEY, COMPONENT, LOCAL = ts.INTERFACE, ts.TYPE, ts.ENUM, ts.NAMESPACE, ts.KEY, ts.COMPONENT, ts.LOCAL
 CODE_EXTS = (".py",) + ts.EXTS  # files whose path mention names a module, not a config file
 
 
@@ -480,6 +480,11 @@ def resolve(m: Mention, idx: SymbolIndex, hints: list[str] = ()) -> Resolution:
             own = _prefer_module(cands, hints)
             cands = own if own is not cands else []
             rule = "name:member:weak"
+    if not cands:  # a closure or a config key, by its bare name: only within the note's own module
+        pool = [s for s in idx.by_name(m.text) if s.kind in (LOCAL, KEY)]
+        own = _prefer_module(pool, hints)
+        cands = own if own is not pool else []
+        rule = "name:local-or-key:own-module"
     if not cands:  # a bare module name: `server`, `login` → the whole file
         files = idx.files_matching(m.text + ".py")
         for e in (ts.EXTS if idx.ts_files and not files else ()):

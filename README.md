@@ -7,7 +7,9 @@ code they mention, and makes the git commit the place where notes and code are r
 thin layer over [Fiberplane drift](https://github.com/fiberplane/drift) (which fingerprints symbols)
 that adds what an agent-written vault needs:
 
-- **Anchors derived from the note's own backtick mentions** — nothing to declare by hand.
+- **Anchors derived from the note's own backtick mentions** — nothing to declare by hand. Python,
+  TypeScript/JavaScript (`.ts .tsx .js .jsx .mjs .cjs .mts .cts`), Astro components, and keys in JSON
+  config files ([Languages](#languages)).
 - **A note hash and member-level hashes in append-only stamps**, so "this note was verified against
   this code" is a recorded fact, and only changes to what the note actually mentions count.
 - **A git pre-commit gate**: a commit that changes code a note mentions is blocked until the note is
@@ -37,7 +39,7 @@ folder in Obsidian as a vault. From there: write notes, commit, reconcile when t
 brew install fiberplane/tap/drift          # or: curl -fsSL https://drift.fp.dev/install.sh | sh
 ```
 
-Then `livedocs` itself, from PyPI (stdlib only, no Python dependencies):
+Then `livedocs` itself, from PyPI (its only dependencies are the tree-sitter TypeScript parser wheels):
 
 ```sh
 uv tool install livedocs                   # or: pipx install livedocs
@@ -84,7 +86,47 @@ edit code ──► git commit
 | `livedocs affected [--cached]` | notes bound to files changed in the working tree (or the index) |
 | `livedocs verify` | CI: every stamped note against the checked-out tree; exit 1 on changed/broken |
 | `livedocs coverage` | per-note anchored / dangling mentions |
+| `livedocs rebind` | after an upgrade: re-stamp every unedited note under the current binding rules |
 | `livedocs survey` | resolution statistics over a vault (diagnostics) |
+
+## Languages
+
+| Language | Files | A mention can name |
+|---|---|---|
+| Python | `.py` | functions, classes, methods, class attributes, module constants |
+| TypeScript / JavaScript | `.ts .tsx .mts .cts .js .jsx .mjs .cjs` | functions and arrow-function consts, classes and their methods/fields, interfaces and their members, type aliases, enums, constants, keys of top-level object literals (`SET_TOKENS.kitchen.background`, also inside `defineConfig({…})` and `z.object({…})`), default exports |
+| Astro | `.astro` | the component (by its file name: `ProjectCard`, `<ProjectCard />`) and its frontmatter's declarations (`Props`, `getStaticPaths`) |
+| JSON config | `package.json`, `tsconfig.json`, `wrangler.jsonc`, `*.config.json`, any `.jsonc` | key paths: `wrangler.jsonc#assets.directory`, `compilerOptions.paths` |
+
+How TypeScript mentions resolve: `<Header />` names a component; `@/components/Header` follows
+tsconfig `paths`; a barrel's `export { default as Header } from './Header'` resolves to the definition,
+never to the barrel; a default export is also found by its file's name. Every mentioned member carries a
+hash that ignores comments, whitespace, quote style, optional semicolons, trailing commas and redundant
+parentheses, so formatting and comment edits are acked mechanically at commit. drift fingerprints
+top-level symbols in `.ts` and `.js`; everywhere else (JSX, `.mjs`, Astro, `default`, keys) the file is
+bound and the member hashes decide.
+
+**Paths name a module's default export, not its every line.** A backtick path to a code file binds that
+module's default export (a component, a `defineConfig({…})` object) and nothing else; a module with no
+default export binds nothing by path. Whole-file anchors on hub modules made the gate block every note
+that names the file on every commit that touched it (one TypeScript project hand-acked 766 times on them). Name the
+functions and types a note describes. Set `"file_anchors": true` in `.livedocs/config.json` to bind
+whole files anyway.
+
+Notes that stay cheap to keep anchored:
+- name symbols, not files: `getProjects()`, `projectSchema.title`, `<ProjectCard />`;
+- give exported symbols names that are unique across the repo: a bare `load` defined in every
+  `src/modules/*/loader.ts` binds all of them (safe, but each change flags every note that says `load`);
+- title a module note with its path (`# src/modules/projects/schema.ts`): ambiguous names then prefer
+  that module;
+- one default-exported component per file, named after the file.
+
+In a repository with both Python and TypeScript, a note resolves in the language it is about (the module
+it is named after, or most of what it names) before falling back to both.
+
+**Upgrading from 0.1.x** in a TypeScript project: notes stamped by 0.1 hold whole-file anchors. Run
+`livedocs rebind`, then commit `drift.lock` and the stamps file. Every unedited note is acked under the
+new rules; edited notes are re-bound by the commit that contains them.
 
 ## Snapshot notes
 
@@ -145,7 +187,10 @@ Or with the [pre-commit](https://pre-commit.com) framework, add to `.pre-commit-
 - It does not follow the call graph: a note's claim about what a function *does* can go stale when a
   callee changes. That is the residual miss class, measured at about 1 in 20 real changes on the
   reference history.
-- Python only, for now (symbol resolution uses `ast`; drift fingerprints six languages).
+- Python, TypeScript/JavaScript, Astro and JSON config keys (see [Languages](#languages)). Module
+  resolution reads tsconfig/jsconfig `paths`, not bundler aliases (Vite `resolve.alias`). An Astro
+  template is compared as normalised text (comments and whitespace removed, `<script>` as TS tokens), not
+  parsed. YAML and TOML files bind as whole files.
 - Code is discovered wherever it lives — `src/`, `benchmark/src/`, a flat package — excluding tests,
   environments, build output and docs. To pin it, set `"code_roots": ["lib", "services/api"]` in
   `.livedocs/config.json`.

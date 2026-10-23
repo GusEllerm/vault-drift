@@ -61,6 +61,14 @@ def cmd_stamp(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_rebind(args: argparse.Namespace) -> int:
+    from . import stamp as stp, __version__
+    done, skipped = stp.rebind(Path(args.repo), args.vault, reason=args.reason or f"rebind: livedocs {__version__} binding rules")
+    print(f"rebound {len(done)} notes" + (f"; {len(skipped)} edited since their stamp, left for their commit: " + ", ".join(skipped) if skipped else ""))
+    print("Then: git add drift.lock", f"{args.vault}/.livedocs/stamps.jsonl", "&& git commit")
+    return 0
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     from . import check as ck, render
     rep = ck.check(Path(args.repo), args.vault, args.note)
@@ -112,6 +120,12 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--reason")
     s.add_argument("--file-anchors", action="store_true", help="also bind bare module mentions to whole files")
     s.set_defaults(fn=cmd_stamp)
+
+    s = sub.add_parser("rebind", help="re-stamp every unedited note under the current binding rules (after an upgrade)")
+    _common(s)
+    s.add_argument("--reason", help="recorded on each ack (default: 'rebind: livedocs <version> binding rules')")
+    s.add_argument("--by", default="human")
+    s.set_defaults(fn=cmd_rebind)
 
     s = sub.add_parser("check", help="report a note's freshness (read-only)")
     _common(s)
@@ -256,6 +270,8 @@ def cmd_install(args: argparse.Namespace) -> int:
         print("agents block:", p or "no AGENTS.md/CLAUDE.md found; add the block by hand if you want channel 3")
     if not install.check_drift():
         print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift  (or curl -fsSL https://drift.fp.dev/install.sh | sh)")
+    if w := install.check_languages(repo):
+        print(w)
     print("done. CI: run `livedocs affected --cached` or `livedocs check` in a job to catch --no-verify commits.")
     return 0
 
@@ -268,6 +284,8 @@ def cmd_new_vault(args: argparse.Namespace) -> int:
         print("wrote", w)
     if not install.check_drift():
         print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift")
+    if w := install.check_languages(repo):
+        print(w)
     print(f"done. Open {repo / args.vault} in Obsidian (Open folder as vault). Commit, then write notes; each commit stamps them.")
     return 0
 

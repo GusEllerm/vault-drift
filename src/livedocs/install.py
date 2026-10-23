@@ -175,7 +175,9 @@ any commit that changes code a note mentions until the note is reconciled: edit 
 again (the commit stamps it), or if the note is still correct run
 `livedocs stamp <note> --ack --reason "<why>"`, `git add -A`, and commit. New and edited notes are stamped
 by the commit that contains them; nothing else to run. `livedocs affected` lists the notes your
-uncommitted changes touch; `livedocs coverage` shows which claims are anchored.
+uncommitted changes touch; `livedocs coverage` shows which claims are anchored. In notes, name symbols
+(`getProjects()`, `Box.area`, `<ProjectCard />`), not files: a path to a code module binds only its
+default export, so a note that names only files is checked against almost nothing.
 """
 
 
@@ -193,3 +195,17 @@ def install_agents_block(repo: Path, vault_rel: str) -> Path | None:
 
 def check_drift() -> str | None:
     return shutil.which("drift")
+
+
+def check_languages(repo: Path) -> str | None:
+    """A warning if the repository has TypeScript/JavaScript/Astro but the parser can't load: without it
+    those notes would silently bind nothing (the failure the 0.1.2 code-discovery fix was about)."""
+    from . import gitx, ts
+    try:
+        files = gitx.run(repo, "ls-files").split("\n")
+    except gitx.GitError:
+        return None
+    if any(ts.is_ts(f) for f in files) and not ts.available():
+        return ("warning: this repository has TypeScript/JavaScript/Astro files but the tree-sitter parser "
+                "could not load; reinstall livedocs (its tree-sitter and tree-sitter-typescript dependencies)")
+    return None

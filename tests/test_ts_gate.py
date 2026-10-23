@@ -144,3 +144,22 @@ def test_a_bound_binary_file_flags_without_crashing(ts_repo):
     _git(ts_repo, "commit", "-qam", "new logo")
     rep = ck.check(ts_repo, V, "Concepts/brand.md")
     assert rep.state == ck.CHANGED and rep.findings[0].kind == "file"
+
+
+def test_rebind_replaces_whole_file_anchors_and_drops_orphans(ts_repo):
+    from livedocs import drift_io
+    cfg = ts_repo / ".livedocs/config.json"
+    cfg.write_text('{"vault": "vault", "file_anchors": true}\n')  # the pre-0.2 rule: a module path binds the file
+    stp.stamp(ts_repo, V, "Modules/util.md", by="test")
+    assert ("vault/Modules/util.md", "src/lib/util.ts") in drift_io.lock(ts_repo)
+    cfg.write_text('{"vault": "vault"}\n')
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "old-style stamps")
+    done, skipped = stp.rebind(ts_repo, V, reason="rebind")
+    assert done == ["Modules/util.md"] and skipped == []
+    lock = drift_io.lock(ts_repo)
+    assert ("vault/Modules/util.md", "src/lib/util.ts") not in lock  # orphan unlinked
+    assert ("vault/Modules/util.md", "src/lib/util.ts#add") in lock
+    latest = st.latest(st.for_note(st.load(ts_repo / V), "Modules/util.md"))
+    assert latest.verdict == st.ACK and latest.reason == "rebind" and "src/lib/util.ts" not in latest.bindings
+    (ts_repo / "vault/Modules/util.md").write_text("# src/lib/util.ts\n\nNow only `mul`.\n")  # edited: left for its commit
+    assert stp.rebind(ts_repo, V, reason="rebind") == ([], ["Modules/util.md"])

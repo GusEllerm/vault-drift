@@ -15,6 +15,7 @@ What a member is (qualnames):
   enum         members: `Color.Red`
   object keys  of a top-level object literal, through `as`/`satisfies` and the first argument of a call
                (`defineConfig({…})`, `z.object({…}).strict()`): `SET_TOKENS.kitchen.background`
+  closures     functions declared directly in a top-level function's body: `boot.probeStep`
   .astro       the component (`default`, aliased by the file name) and the frontmatter's declarations
 """
 
@@ -35,6 +36,7 @@ DRIFT_SYMBOL_EXTS = (".ts", ".js")
 
 FUNCTION, CLASS, METHOD, ATTRIBUTE, CONSTANT = "function", "class", "method", "attribute", "constant"
 INTERFACE, TYPE, ENUM, NAMESPACE, KEY, COMPONENT = "interface", "type", "enum", "namespace", "key", "component"
+LOCAL = "local"  # a function declared directly inside a top-level function: `boot.probeStep`
 
 MAX_KEY_DEPTH = 4  # SET_TOKENS.a.b.c.d
 MAX_KEYS = 300  # per top-level constant: a data table is not a config
@@ -147,11 +149,24 @@ def split_astro(source: str) -> tuple[str, str, int]:
 
 _HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
 _JSX_COMMENT = re.compile(r"\{\s*/\*.*?\*/\s*\}", re.S)
+_SCRIPT = re.compile(r"(<script\b[^>]*>)(.*?)(</script\s*>)", re.S | re.I)
+_STYLE = re.compile(r"(<style\b[^>]*>)(.*?)(</style\s*>)", re.S | re.I)
+_CSS_COMMENT = re.compile(r"/\*.*?\*/", re.S)
+
+
+def _script_canon(code: str) -> str:
+    tree = _parser("ts").parse(code.encode("utf-8"))
+    if tree.root_node.has_error:  # not TS (JSON-LD, a template language): compare it as text
+        return code
+    return "\x1e".join(tokens([tree.root_node]))
 
 
 def normalise_template(t: str) -> str:
-    """An Astro template without comments, whitespace collapsed: formatting-insensitive, not a parse."""
-    t = _HTML_COMMENT.sub(" ", t or "")
+    """An Astro template without comments, whitespace collapsed: formatting-insensitive, not a parse.
+    `<script>` bodies compare as TS tokens and `<style>` bodies without CSS comments."""
+    t = _SCRIPT.sub(lambda m: f"{m.group(1)} {_script_canon(m.group(2))} {m.group(3)}", t or "")
+    t = _STYLE.sub(lambda m: m.group(1) + _CSS_COMMENT.sub(" ", m.group(2)) + m.group(3), t)
+    t = _HTML_COMMENT.sub(" ", t)
     t = _JSX_COMMENT.sub(" ", t)
     return " ".join(t.split())
 
@@ -291,6 +306,8 @@ class _Walker:
         if t in ("function_declaration", "generator_function_declaration", "function_signature"):
             if name:
                 self.add(q(name), FUNCTION, decl, show=show, prefix=prefix, decorators=decorators, sig=[decl])
+                if not scope:
+                    self.locals(decl.child_by_field_name("body"), name)
                 if default and not scope:
                     self.m.default = name
         elif t in ("class_declaration", "abstract_class_declaration"):
@@ -330,6 +347,8 @@ class _Walker:
                 v = _unwrap(d.child_by_field_name("value"))
                 if v is not None and v.type in FUNC_VALUES:
                     self.add(q(n), FUNCTION, d, show=show, prefix=prefix + (kind_tok,), sig=[d, v])
+                    if not scope:
+                        self.locals(v.child_by_field_name("body"), q(n))
                 elif v is not None and v.type == "class":
                     self.add(q(n), CLASS, d, show=show, prefix=prefix + (kind_tok,), sig=[v], shell=True)
                     self.class_body(v.child_by_field_name("body"), q(n))
@@ -347,6 +366,23 @@ class _Walker:
                         self.declaration(inner, wrapper=None, default=False, decorators=[], scope=f"{name}.")
 
     # members ---------------------------------------------------------------
+
+    def locals(self, body, owner: str) -> None:
+        """Closures: functions declared directly in a top-level function's body (one level)."""
+        if body is None or body.type != "statement_block":
+            return
+        for st in body.named_children:
+            if st.type in ("function_declaration", "generator_function_declaration"):
+                n = _name(st)
+                if n:
+                    self.add(f"{owner}.{n}", LOCAL, st, sig=[st])
+            elif st.type == "lexical_declaration":
+                kt = _text(st.child_by_field_name("kind")) if st.child_by_field_name("kind") is not None else "const"
+                for d in st.named_children:
+                    nm = d.child_by_field_name("name") if d.type == "variable_declarator" else None
+                    v = _unwrap(d.child_by_field_name("value")) if nm is not None else None
+                    if nm is not None and nm.type == "identifier" and v is not None and v.type in FUNC_VALUES:
+                        self.add(f"{owner}.{_text(nm)}", LOCAL, d, prefix=(kt,), sig=[d, v])
 
     def class_body(self, body, cls: str) -> None:
         if body is None:

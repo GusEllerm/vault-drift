@@ -33,8 +33,12 @@ commit that changes the code is blocked until the note is updated or acknowledge
 
 ## How to write a note that stays true
 
-- Name code in backticks: `` `module.function()` ``, `` `ClassName` ``, `` `path/to/file.py` ``. Those are the
-  claims livedocs checks. Prose that names no code is not checked (and is reported as such).
+- Name code in backticks, by symbol: `` `function()` ``, `` `ClassName.method` ``, `` `CONFIG.key` ``,
+  `` `<Component />` ``. Those are the claims livedocs checks; each binds only what it names. Prose that
+  names no code is not checked (and is reported as such).
+- A path to a code module binds only its default export (a component, a `defineConfig({…})` object);
+  name the functions and types you describe. A path to a config file (`` `pyproject.toml` ``,
+  `` `wrangler.jsonc` ``) binds the file; `` `wrangler.jsonc#assets.directory` `` binds one key.
 - Commit the note; the commit stamps it. There is nothing else to run.
 - When a commit is blocked, the message shows *was / now* for the code that changed and the note lines
   that mention it. Edit the note and commit again, or `livedocs stamp <note> --ack --reason "…"` if the
@@ -147,9 +151,12 @@ def new_vault(repo: Path, vault_rel: str, *, name: str | None = None, scaffold_m
     if scaffold_modules:
         from . import symbols as sy
         idx = sy.index(repo, "WORKTREE")  # same discovery as stamping: src/, benchmark/src/, flat packages…
+        has_symbols = {s.path for s in idx.symbols}
         for path in sorted(idx.files):
-            if path.endswith("__init__.py"):
+            if path.endswith("__init__.py") or path.endswith(".d.ts"):
                 continue
+            if path not in has_symbols and not path.endswith(".py"):
+                continue  # a TS barrel that only re-exports: its symbols are documented where they live
             rel = Path(path)
             m = __import__("re").search(r"(?:^|/)src/", path)
             shown = path[m.end():] if m else path  # drop the leading …/src/ for the note name
