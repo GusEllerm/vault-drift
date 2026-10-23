@@ -257,7 +257,9 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
             elif q != top:
                 top_ch = astdiff.classify(was_src, now_src, top, path=path)
                 detail = f"{top} changed elsewhere ({top_ch.kind}); {q} unchanged"
-            else:
+            elif astdiff.classify(was_src, now_src, q, path=path).kind in (astdiff.UNCHANGED, astdiff.COMMENT_ONLY):
                 detail = f"{q} unchanged in substance (comments/formatting only)"
+            else:  # a class whose shell is unchanged: the edit is inside members the note doesn't name
+                detail = f"{q} unchanged where the note depends on it (its shell); the change is inside members it doesn't name"
         out.append(Finding(target, path, q, ch.kind, ch.was, ch.now, lines, base, detail))
     return out
