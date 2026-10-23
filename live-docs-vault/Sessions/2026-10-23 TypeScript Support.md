@@ -32,6 +32,8 @@ The personal-website session, relaying the user, asked for livedocs beyond Pytho
   3. Commits that touch nothing bound now pass without running drift.
   Also found: a missing drift made the gate stamp notes silently unbound; it now blocks with a clear message. Reproduced end to end with real commits under `/usr/bin:/bin` from a built wheel; 70 tests.
 
+- **`livedocs signatures`** (P36), requested by the Baesian session for its exported-API detector. Python: `__all__` or public names. TS/JS: `export` declarations, export clauses under their public names, the default export, non-private class members. Signatures include defaults; bodies, comments, decorators and field values never count. JSON; exit 0 unless an error. 74 tests.
+
 ## Key findings
 
 - **Gate overhead on gravity-works:** 0.1.4 demanded 931 hand reconciliations (the real history has 766 hand acks and 0 mechanical). The first path rule (a module path binds only its default export) cut that to 210, but graded recall showed a ~20% miss rate, above D7's 10%. 11 of the 12 sampled misses were notes naming small modules by path. The revised rule binds small modules whole: 540 at 1,000 lines (measured), 362 at 600 lines (re-scored). The user chose 600 (D18).
