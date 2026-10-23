@@ -70,6 +70,20 @@ These came out of [[2026-09-21 Design Review]]. All three critics agreed on them
 | P25 | 2026-09-23 | **Snapshot notes are not live documentation.** Dated review/report notes (`Reference/Review 2026-09-03 — …`) mention nearly every symbol and were hand-acked "dated snapshot" in every 1b task. Proposal: a frontmatter flag (`livedocs: snapshot`, or `authority: log`) makes `stamp` bind nothing and `check` report `snapshot` (never `changed`), so they cost no reconciliation. **Implemented 2026-09-23** (`livedocs: snapshot` frontmatter or `snapshot_globs` in config); on hpc-bridge it removed 44% of bindings and took t1 from 4 hand acks to 0. | [[1b Run 1]] |
 | P24 | 2026-09-23 | Anchor module constants (drift binds the file; we hash the assignment). The one `unbound-mention` miss in run 2 was a constant. **Implemented 2026-09-23** and proven on `shapes.md`. | [[1a Run 2]] |
 
+## Proposed: TypeScript support (awaiting user review)
+
+From [[TypeScript Support]], built on 2026-10-23 for the personal-website request; measured in [[TS Run 1]].
+
+| ID | Date | Proposal | Ref |
+|---|---|---|---|
+| P26 | 2026-10-23 | **Parse TS/JS/Astro with tree-sitter**, a hard dependency (`tree-sitter`, `tree-sitter-typescript`, about 4 MB of wheels), imported only when a repository has such files. Retires the README's "stdlib only" line. Alternatives: a hand-written scanner (JSX text, regex literals and ASI make a false *benign* likely, which silently breaks the guarantee); the project's own `node`/`tsc` (not present in the gate's index snapshot or every CI). | [[TypeScript Support#2. What is built]] |
+| P27 | 2026-10-23 | **drift fingerprints where it can, the file is bound elsewhere.** `.ts`/`.js` top-level symbols bind at drift's symbol granularity; JSX files, `.mjs` and similar, Astro, `default`, keys and closures bind the file and carry member hashes (P24's pattern). Stamp falls back to the file when drift refuses a symbol; a symbol drift loses but livedocs still parses is a change, not `broken`. | §2 |
+| P28 | 2026-10-23 | **Mixed repositories resolve in the note's language first** (its module's, else at least ¾ of its unambiguous mentions), falling back to both. scheduler-dojo: 61 → 23 Python mentions picking up TS candidates. | §2 |
+| P29 | 2026-10-23 | **A module path binds only the module's default export** (a component, a `defineConfig` object); a module with none binds nothing by path, as `.py` paths since run 1. `file_anchors: true` restores whole files. Evidence: gravity-works' 766 real hand acks and 0 mechanical under 0.1's whole-file anchors. **Changes behaviour for existing TS vaults** (upgrade with `livedocs rebind`). | §2, README |
+| P30 | 2026-10-23 | **JSON config key anchors**: known config files and `.jsonc` only; the value's hash per key path. | §2 |
+| P31 | 2026-10-23 | **Stamping drops a note's orphaned bindings; `livedocs rebind`** re-acks every unedited note under the current rules (the upgrade path for P29). | §2 |
+| P32 | 2026-10-23 | **Member hashes carry their scheme** (`py2:`, `ts1:`, `json1:`; bare = 0.1 Python), each compared with the function that made it. `py2` is stable across CPython minors (0.1's was not: CI on 3.12 failed stamps made on 3.13). The TS grammar is pinned exactly; upgrading it is a new scheme. | §2 |
+
 ## Where the proposals stand (agent summary, 2026-10-23)
 
 Agent-written, checked against the code at 0.1.4. **Nothing here changes a proposal's status**; the user accepts or rejects each one. "Overlaps" names accepted decisions that already settle part of it.
@@ -93,6 +107,7 @@ Agent-written, checked against the code at 0.1.4. **Nothing here changes a propo
 | P23 | Annotation is the default and suppression a flag; there is no judge. | D13 |
 | P24 | Yes. | — |
 | P25 | Yes. | — |
+| P26–P32 | Built in 0.2.0 (branch `ts-support`). | — |
 
 ## Contested: resolved
 
