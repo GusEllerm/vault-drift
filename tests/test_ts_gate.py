@@ -30,13 +30,11 @@ def _edit(repo, rel, old, new):
     p.write_text(p.read_text().replace(old, new))
 
 
-def test_bindings_follow_symbols_not_module_paths(ts_repo):
+def test_bindings_follow_symbols(ts_repo):
     r = stp.stamp(ts_repo, V, "Modules/util.md", by="test")
     b = r.stamp.bindings
     assert not r.failed
-    # `src/lib/util.ts` (a module path, no default export) binds nothing by itself (P29) ...
-    assert "src/lib/util.ts" not in b
-    # ... its symbols bind at drift's symbol granularity with their own member hashes.
+    # symbols bind at drift's symbol granularity with their own member hashes
     assert set(b) == {"src/lib/util.ts#add", "src/lib/util.ts#mul", "src/lib/util.ts#Box",
                       "src/lib/util.ts#config", "src/lib/util.ts#Props"}
     assert set(b["src/lib/util.ts#Box"].members) == {"Box.area", "Box.w"}
@@ -45,6 +43,28 @@ def test_bindings_follow_symbols_not_module_paths(ts_repo):
     assert set(r.stamp.bindings) == {"src/components/Header.tsx", "src/components/Footer.tsx",
                                      "src/components/ProjectCard.astro"}
     assert r.stamp.bindings["src/components/Footer.tsx"].members.keys() == {"default"}
+
+
+def test_module_paths_bind_small_files_whole(ts_repo):
+    (ts_repo / "vault/Concepts/paths.md").write_text("# paths\n\nSee `src/lib/util.ts` and `@/components/Footer`.\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "paths note")
+    b = stp.stamp(ts_repo, V, "Concepts/paths.md", by="test").stamp.bindings
+    assert b["src/lib/util.ts"].qualnames == [""]  # a small module binds whole (P29)
+    assert set(b["src/components/Footer.tsx"].qualnames) == {"default", ""}
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "stamp")
+    _edit(ts_repo, "src/lib/util.ts", "return 1;", "return 2;")  # any real change in the file is the note's concern
+    rep = ck.check(ts_repo, V, "Concepts/paths.md")
+    assert rep.state == ck.CHANGED and not ck.mechanically_benign(rep) and "file" in {f.kind for f in rep.findings}
+    _git(ts_repo, "checkout", "--", ".")
+    _edit(ts_repo, "src/lib/util.ts", "// Helpers.", "// Helpers for the site.")  # comments only: benign
+    assert ck.mechanically_benign(ck.check(ts_repo, V, "Concepts/paths.md"))
+    _git(ts_repo, "checkout", "--", ".")
+    # a 5-line limit: util.ts (30 lines) binds nothing by path, the one-line Footer.tsx still binds whole;
+    # "default-export": only the default export binds by path
+    for mode, footer in (('5', {"default", ""}), ('"default-export"', {"default"})):
+        (ts_repo / ".livedocs/config.json").write_text('{"vault": "vault", "path_anchors": %s}\n' % mode)
+        b = stp.stamp(ts_repo, V, "Concepts/paths.md", by="test", verdict=st.ACK, reason="mode").stamp.bindings
+        assert "src/lib/util.ts" not in b and set(b["src/components/Footer.tsx"].qualnames) == footer, mode
 
 
 def test_benign_and_real_changes(ts_repo):
@@ -157,10 +177,11 @@ def test_a_bound_binary_file_flags_without_crashing(ts_repo):
 def test_rebind_replaces_whole_file_anchors_and_drops_orphans(ts_repo):
     from livedocs import drift_io
     cfg = ts_repo / ".livedocs/config.json"
-    cfg.write_text('{"vault": "vault", "file_anchors": true}\n')  # the pre-0.2 rule: a module path binds the file
+    (ts_repo / "vault/Modules/util.md").write_text((ts_repo / "vault/Modules/util.md").read_text() + "See `src/lib/util.ts`.\n")
+    cfg.write_text('{"vault": "vault", "file_anchors": true}\n')  # binds the file whole
     stp.stamp(ts_repo, V, "Modules/util.md", by="test")
     assert ("vault/Modules/util.md", "src/lib/util.ts") in drift_io.lock(ts_repo)
-    cfg.write_text('{"vault": "vault"}\n')
+    cfg.write_text('{"vault": "vault", "path_anchors": "default-export"}\n')  # a rule under which it doesn't
     _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "old-style stamps")
     done, skipped = stp.rebind(ts_repo, V, reason="rebind")
     assert done == ["Modules/util.md"] and skipped == []

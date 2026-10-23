@@ -129,7 +129,7 @@ const { title } = Astro.props;
 </article>
 ''',
     "tests/util.test.ts": 'import { add } from "../src/lib/util";\nexport function add() { return 0 }\n',
-    "vault/Modules/util.md": "# src/lib/util.ts\n\n`add(a, b)` sums; `mul` multiplies. `Box.area()` squares `Box.w`. `siteConfig.theme.color` is red; `Props.title` is required. See `src/lib/util.ts`.\n",
+    "vault/Modules/util.md": "# src/lib/util.ts\n\n`add(a, b)` sums; `mul` multiplies. `Box.area()` squares `Box.w`. `siteConfig.theme.color` is red; `Props.title` is required.\n",
     "vault/Modules/components.md": "# components\n\n`<Header />` renders the title; `@/components/Footer` is a footer; `<ProjectCard />` wraps a `Header`.\n",
     "vault/Concepts/deploy.md": "# Deploy\n\nAssets come from `wrangler.jsonc#assets.directory`; the site URL is `site` in `astro.config.mjs`; `projectSchema.title` is a string.\n",
     ".livedocs/config.json": '{"vault": "vault"}\n',

@@ -204,6 +204,16 @@ def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
 
 
 MECHANICAL_KINDS = frozenset({astdiff.UNCHANGED, astdiff.COMMENT_ONLY, "moved"})
+
+
+def _file_finding(target, path, was_src, now_src, lines, base) -> Finding:
+    """A whole-file anchor's finding: comment/format-only across the whole TS module is benign."""
+    if ts.is_ts(path) and was_src is not None and now_src is not None:
+        a, b = ts.file_hash(path, was_src), ts.file_hash(path, now_src)
+        if a is not None and a == b:
+            return Finding(target, path, "", astdiff.COMMENT_ONLY, None, None, lines, base,
+                           "the whole file: comments/formatting only")
+    return Finding(target, path, "", "file", None, None, lines, base, "file changed")
 MOVED_FROM_NAMED = "moved-from-named-file"  # not mechanical: the note names the file the code left
 
 
@@ -248,11 +258,15 @@ def _findings_for(repo: Path, doc: str, target: str, binding: st.Binding, text: 
     quals = binding.qualnames or ([target.split("#", 1)[1]] if "#" in target else [])
     sx = lambda src, q: astdiff.symbol_source(src or "", q, path=path)
     out: list[Finding] = []
-    if not quals:  # whole-file anchor with nothing specific mentioned
-        out.append(Finding(target, path, "", "file", None, None, lines, base, "file changed"))
+    if not quals or quals == [""]:  # whole-file anchor with nothing specific mentioned
+        out.append(_file_finding(target, path, was_src, now_src, lines, base))
         return out
     top = target.split("#", 1)[1] if "#" in target else path.rsplit("/", 1)[-1]
     for q in quals:
+        if not q:  # the note names the whole file (a small module): any change in it is the note's concern
+            if was_src is None or was_src != now_src:
+                out.append(_file_finding(target, path, was_src, now_src, lines, base))
+            continue
         member_same = bool(binding.members.get(q)) and astdiff.member_matches(binding.members[q], now_src, q, path=path)
         if member_same:
             # The member hash is what a mention depends on (a class's shell, a function's substance):

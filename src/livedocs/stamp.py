@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import astdiff, config, configkeys, drift_io, mentions as mn, stamps as st, symbols as sy
+from . import astdiff, config, configkeys, drift_io, mentions as mn, stamps as st, symbols as sy, ts
 
 
 class StampError(RuntimeError):
@@ -40,20 +40,41 @@ def _dangling(ms: list[mn.Mention], unresolved: set[str], previous: st.Stamp | N
     return sorted(out)
 
 
-def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False) -> bool:
+PATH_ANCHOR_MAX_LINES = 1000
+
+
+def path_anchor_mode(repo: str | Path, file_anchors: bool = False):
+    """`path_anchors` from config: "file" (every named file binds whole: 0.1's rule), "default-export"
+    (only a module's default export binds by path), or a line count (the default): a named TS/JS/Astro
+    module of at most that many lines binds whole, a larger one only its default export."""
+    mode = config.load(repo).get("path_anchors", PATH_ANCHOR_MAX_LINES)
+    if file_anchors or config.load(repo).get("file_anchors"):
+        return "file"
+    return mode
+
+
+def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False, *, mode=PATH_ANCHOR_MAX_LINES,
+          idx: sy.SymbolIndex | None = None) -> bool:
     """Whether stamping binds candidate `c` of resolution `r` (coverage counts the same thing).
 
-    Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in. A path to a code file
-    names its symbols, not every line of it: only a TS/JS/Astro module's default export binds by path
-    (resolved upstream), and a whole-file anchor on a hub module flags every note that names it on every
-    commit — gravity-works' agents hand-acked 766 times on such anchors (P29). Explicit paths to
-    non-code files (`pyproject.toml`, `wrangler.jsonc`) are cheap and catch config claims. Constants
+    Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in. Explicit paths to
+    non-code files (`pyproject.toml`, `wrangler.jsonc`) are cheap and catch config claims. A path to a
+    Python file binds nothing by itself (since run 1). A path to a TS/JS/Astro module binds its default
+    export, and the whole file when the module is small (P29): on gravity-works, whole-file anchors on
+    every named module cost 931 hand reconciliations in 338 commits, half of them from one 1,600-line
+    hub, while the notes they rescued all named modules of 619 lines or fewer (TS Run 1). Constants
     bind the file too (drift can't hash them) but carry their own member hash."""
     if r.status == sy.UNRESOLVED:
         return False
-    if c.kind == sy.FILE and not file_anchors and (r.mention.kind != mn.PATH or sy.is_code(c.path)):
-        return False
-    return True
+    if c.kind != sy.FILE:
+        return True
+    if r.mention.kind != mn.PATH:
+        return file_anchors or mode == "file"
+    if not sy.is_code(c.path) or file_anchors or mode == "file":
+        return True
+    if isinstance(mode, int) and ts.is_ts(c.path) and idx is not None:
+        return idx.lines.get(c.path, mode + 1) <= mode
+    return False
 
 
 def _hashable(path: str) -> bool:
@@ -102,7 +123,7 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
         raise StampError("note body unchanged since the last stamp: use --ack --reason to re-verify without edits")
 
     idx = idx or sy.index(repo, "WORKTREE")
-    file_anchors = file_anchors or bool(config.load(repo).get("file_anchors"))
+    mode = path_anchor_mode(repo, file_anchors)
     ms = mn.mentions(text)
     resolutions = sy.resolve_note(doc, text, idx, ms)
 
@@ -115,11 +136,13 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             unresolved.append(r.mention.raw)
             continue
         for c in r.candidates:
-            if not binds(r, c, file_anchors):
+            if not binds(r, c, file_anchors, mode=mode, idx=idx):
                 continue
             t = c.drift_target
-            if c.qualname and c.qualname not in quals[t]:
-                quals[t].append(c.qualname)
+            # "" marks a whole-file anchor, so a symbol mentioned in the same file can't narrow it
+            q = c.qualname if c.kind != sy.FILE else ""
+            if q not in quals[t]:
+                quals[t].append(q)
             raws[t].append([r.mention.raw, r.mention.line])
 
     sigs: dict[str, str] = {}
@@ -156,6 +179,8 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             if "#" in target:
                 deco = astdiff.decorator_hash(src, target.split("#", 1)[1], path=path)
             for q in quals.get(target, []):
+                if not q:
+                    continue
                 h = astdiff.member_hash(src, q, path=path)
                 if h:
                     members[q] = h

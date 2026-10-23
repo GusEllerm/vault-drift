@@ -93,6 +93,7 @@ class SymbolIndex:
     files: set[str] = field(default_factory=set)  # indexed .py files under the roots
     all_files: set[str] = field(default_factory=set)  # every tracked file (for path mentions like pyproject.toml)
     defaults: dict[str, str] = field(default_factory=dict)  # TS/Astro file → qualname of its default export
+    lines: dict[str, int] = field(default_factory=dict)  # TS/Astro file → line count (whole-file path anchors)
     path_aliases: list = field(default_factory=list)  # tsconfig `paths`: [(pattern, [targets])]
     ts_files: int = 0
     unavailable: set[str] = field(default_factory=set)  # languages present but not parseable here
@@ -286,6 +287,7 @@ def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = N
                 idx.unavailable.add("typescript")
                 continue
             idx.files.add(path)
+            idx.lines[path] = source.count("\n") + 1
             ts_files[path] = fs
             for q, kind, a, b, decos in fs.symbols:
                 idx.add(Symbol(path, q, kind, a, b, decos))
@@ -434,11 +436,11 @@ def resolve(m: Mention, idx: SymbolIndex, hints: list[str] = ()) -> Resolution:
             if not cands:
                 return Resolution(m, UNRESOLVED, (), "path:no-symbol")
             return Resolution(m, RESOLVED if len(cands) == 1 else SUPERSET, tuple(cands), "path#symbol")
-        # A TS/JS/Astro module's identity is its default export (a component, a defineConfig object):
-        # that is what a path names. A module without one names nothing finer than the file (P29).
-        cands = [idx.at(f, idx.defaults[f]) if f in idx.defaults else Symbol(f, "", FILE) for f in files]
+        # A path names the file; a TS/JS/Astro module's default export (a component, a defineConfig
+        # object) is named too. Whether the whole file binds is stamp's rule (P29: small modules do).
+        cands = [c for f in files for c in ([idx.at(f, idx.defaults[f])] if f in idx.defaults else []) + [Symbol(f, "", FILE)]]
         rule = "path:default" if any(c.kind != FILE for c in cands) else "path"
-        return Resolution(m, RESOLVED if len(cands) == 1 else SUPERSET, tuple(cands), rule)
+        return Resolution(m, RESOLVED if len(files) == 1 else SUPERSET, tuple(cands), rule)
 
     if m.kind == CAPS:
         cands = [c for c in idx.by_qualname(m.text) if c.kind != KEY]  # a JSON top-level key is not a constant

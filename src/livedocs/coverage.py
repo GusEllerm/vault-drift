@@ -34,7 +34,7 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
     idx = sy.index(repo, "WORKTREE")
     for lang in sorted(idx.unavailable):
         print(f"warning: {lang} files present but not parseable here; their mentions read as unresolved")
-    file_anchors = bool(config.load(repo).get("file_anchors"))
+    mode = stp.path_anchor_mode(repo)
     all_stamps = st.load(vault)
     out: list[NoteCoverage] = []
     for p in sorted(vault.rglob("*.md")):
@@ -48,7 +48,7 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
         ms = mn.mentions(text)
         res = sy.resolve_note(f"{vault_rel}/{note}", text, idx, ms)
         # Anchored = stamping would bind it (the same rule), so the number is what the gate checks.
-        anchored = sum(1 for r in res if any(stp.binds(r, c, file_anchors) for c in r.candidates))
+        anchored = sum(1 for r in res if any(stp.binds(r, c, mode=mode, idx=idx) for c in r.candidates))
         unresolved = [r for r in res if r.status == sy.UNRESOLVED]
         dangling = sorted({r.mention.raw for r in unresolved if stp._code_like(r.mention)})
         latest = st.latest(st.for_note(all_stamps, note))

@@ -651,6 +651,16 @@ def signature_hash(path: str, source: str | None, qualname: str) -> str:
     return _digest(_signature(d)) if d is not None and d.sig_nodes else ""
 
 
+def file_hash(path: str, source: str | None) -> str | None:
+    """The whole module, comment- and formatting-insensitive (a whole-file anchor's benign test)."""
+    m = module(path, source)
+    if m is None or not m.ok:
+        return None
+    from_tree = tokens([_parser(_grammar(path)).parse(m.source).root_node])
+    extra = list(m.decls["default"].extra) if path.endswith(ASTRO_EXTS) and "default" in m.decls else []
+    return _digest(from_tree + extra)
+
+
 def decorator_hash(path: str, source: str | None, top_level_name: str) -> str:
     d = find(path, source, top_level_name)
     if d is None or not d.decorators:
