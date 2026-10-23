@@ -272,7 +272,10 @@ def cmd_install(args: argparse.Namespace) -> int:
         print("warning: `drift` is not on PATH. Install it: brew install fiberplane/tap/drift  (or curl -fsSL https://drift.fp.dev/install.sh | sh)")
     if w := install.check_languages(repo):
         print(w)
-    print("done. CI: run `livedocs affected --cached` or `livedocs check` in a job to catch --no-verify commits.")
+    if (repo / args.vault / ".livedocs" / "stamps.jsonl").exists():
+        print("existing stamps found: if they were made by livedocs 0.1, run `livedocs rebind` once and commit, "
+              "so TypeScript notes bind symbols instead of whole files.")
+    print("done. CI: run `livedocs verify` in a job to catch --no-verify commits, merges and rebases.")
     return 0
 
 

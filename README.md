@@ -126,7 +126,9 @@ it is named after, or most of what it names) before falling back to both.
 
 **Upgrading from 0.1.x** in a TypeScript project: notes stamped by 0.1 hold whole-file anchors. Run
 `livedocs rebind`, then commit `drift.lock` and the stamps file. Every unedited note is acked under the
-new rules; edited notes are re-bound by the commit that contains them.
+new rules; edited notes are re-bound by the commit that contains them. In any project, 0.1 stamps keep
+working, but their Python member hashes depend on the CPython minor version (a stamp made on 3.13 read as
+changed in CI on 3.12); 0.2's are stable across versions, and `rebind` moves existing notes to them.
 
 ## Snapshot notes
 
@@ -174,7 +176,7 @@ Or with the [pre-commit](https://pre-commit.com) framework, add to `.pre-commit-
 
 ```yaml
 - repo: https://github.com/GusEllerm/vault-drift
-  rev: v0.1.0
+  rev: v0.2.0
   hooks: [{ id: livedocs-gate }]
 ```
 
