@@ -258,9 +258,11 @@ class _Walker:
                 self.m.default = _text(v)
                 return
             kind = FUNCTION if v.type in FUNC_VALUES else CLASS if v.type == "class" else CONSTANT
-            self.add("default", kind, st, prefix=(), sig=[v] if kind == FUNCTION else [])
+            self.add("default", kind, st, prefix=(), sig=[v] if kind != CONSTANT else [], shell=kind == CLASS)
             if kind == CONSTANT:
                 self.keys(v, "default", 1, [0])
+            elif kind == CLASS:
+                self.class_body(v.child_by_field_name("body"), "default")
             self.m.default = "default"
             return
         source = st.child_by_field_name("source")
@@ -562,11 +564,11 @@ def _shell(d: Decl) -> list[str]:
     modifiers — not method bodies or parameters (a note that names the class, not the method, doesn't
     depend on them; same rule as the Python class shell)."""
     parts = list(d.prefix) + [p for dn in d.decorators for p in tokens([dn])] + _signature(d)
-    for node in d.nodes:
+    # The class node is a signature node (a declaration, or the `class` expression of a const or of an
+    # anonymous default export); its body holds the members.
+    classes = [n for n in d.sig_nodes if n.type in ("class_declaration", "abstract_class_declaration", "class")]
+    for node in classes:
         body = node.child_by_field_name("body")
-        if body is None and node.type == "variable_declarator":
-            v = _unwrap(node.child_by_field_name("value"))
-            body = v.child_by_field_name("body") if v is not None else None
         for c in (body.named_children if body is not None else ()):
             t = c.type
             if t in ("method_definition", "method_signature", "abstract_method_signature"):

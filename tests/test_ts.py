@@ -187,3 +187,13 @@ def test_changed_files_before_the_first_commit(tmp_path):
     (tmp_path / "a.md").write_text("x")
     run("add", "a.md")
     assert gitx.changed_files(tmp_path, cached=True) == ["a.md"]
+
+
+def test_class_shell_for_every_class_form():
+    forms = {"default": "export default class extends Base { run() { return 1 } other() { return 2 } }",
+             "N": "export class N extends Base { run() { return 1 } other() { return 2 } }",
+             "K": "export const K = class extends Base { run() { return 1 } other() { return 2 } }"}
+    for q, src in forms.items():
+        assert h(src, q, "a.ts") != h(src.replace(" other() { return 2 }", ""), q, "a.ts"), q  # a member removed
+        assert h(src, q, "a.ts") == h(src.replace("return 2", "return 3"), q, "a.ts"), q  # a method body
+        assert h(src, f"{q}.other", "a.ts") != h(src.replace("return 2", "return 3"), f"{q}.other", "a.ts"), q
