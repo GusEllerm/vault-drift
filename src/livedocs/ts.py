@@ -100,6 +100,7 @@ class Module:
     aliases: dict[str, str] = field(default_factory=dict)  # exported name → local qualname (`export { a as b }`)
     reexports: list[tuple[str, str, str]] = field(default_factory=list)  # (exported name, specifier, imported name)
     default: str | None = None  # qualname of the default export
+    exported: set[str] = field(default_factory=set)  # local names an `export { … }` clause exports
 
 
 def module(path: str, source: str | None) -> Module | None:
@@ -257,6 +258,7 @@ class _Walker:
             v = _unwrap(val)
             if v.type == "identifier":  # export default Header
                 self.m.default = _text(v)
+                self.m.exported.add(_text(v))
                 return
             kind = FUNCTION if v.type in FUNC_VALUES else CLASS if v.type == "class" else CONSTANT
             self.add("default", kind, st, prefix=(), sig=[v] if kind != CONSTANT else [], shell=kind == CLASS)
@@ -279,8 +281,11 @@ class _Walker:
                         self.m.reexports.append((a, _string_value(source), n))
                 elif a == "default":
                     self.m.default = n
-                elif a != n:
-                    self.m.aliases[a] = n
+                    self.m.exported.add(n)
+                else:
+                    self.m.exported.add(n)
+                    if a != n:
+                        self.m.aliases[a] = n
 
     def commonjs(self, st) -> None:
         # module.exports = { … } is a CommonJS config file's default export

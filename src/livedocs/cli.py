@@ -74,6 +74,22 @@ def cmd_rebind(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_signatures(args: argparse.Namespace) -> int:
+    from . import signatures
+    try:
+        cs = signatures.changes(Path(args.repo or _repo_default()), rev=args.rev)
+    except Exception as e:  # an error is the only nonzero exit: findings are data, not failure
+        print(f"livedocs signatures: {type(e).__name__}: {e}", file=sys.stderr)
+        return 2
+    if args.json:
+        print(signatures.to_json(cs))
+    else:
+        for c in cs:
+            print(f"{c.kind:9} {c.path}#{c.qualname}" + (f"\n  was: {c.was}" if c.was else "") + (f"\n  now: {c.now}" if c.now else ""))
+        print(f"{len(cs)} exported API change(s)" + (f" in {args.rev}" if args.rev else " staged"))
+    return 0
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     from . import check as ck, render
     rep = ck.check(Path(args.repo), args.vault, args.note)
@@ -131,6 +147,14 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--reason", help="recorded on each ack (default: 'rebind: livedocs <version> binding rules')")
     s.add_argument("--by", default="human")
     s.set_defaults(fn=cmd_rebind)
+
+    s = sub.add_parser("signatures", help="exported API signatures changed, added or removed: staged (--cached) or in a commit (--rev)")
+    s.add_argument("--repo", default=None, help="repository root (default: the current git repo)")
+    g = s.add_mutually_exclusive_group()
+    g.add_argument("--cached", action="store_true", help="the staged index against HEAD (the default)")
+    g.add_argument("--rev", help="a commit against its first parent")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_signatures)
 
     s = sub.add_parser("check", help="report a note's freshness (read-only)")
     _common(s)

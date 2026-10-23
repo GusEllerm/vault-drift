@@ -94,6 +94,7 @@ edit code ──► git commit
 | `livedocs verify` | CI: every stamped note against the checked-out tree; exit 1 on changed/broken |
 | `livedocs coverage` | per-note anchored / dangling mentions |
 | `livedocs rebind` | after an upgrade: re-stamp every unedited note under the current binding rules |
+| `livedocs signatures [--cached \| --rev C] [--json]` | exported API signatures changed, added or removed: staged against HEAD, or commit `C` against its first parent |
 | `livedocs survey` | resolution statistics over a vault (diagnostics) |
 
 ## Languages
@@ -144,6 +145,24 @@ it is named after, or most of what it names) before falling back to both.
 new rules; edited notes are re-bound by the commit that contains them. In any project, 0.1 stamps keep
 working, but their Python member hashes depend on the CPython minor version (a stamp made on 3.13 read as
 changed in CI on 3.12); 0.2's are stable across versions, and `rebind` moves existing notes to them.
+
+## API signature changes
+
+`livedocs signatures --cached --json` lists the exported API a staged commit changes (`--rev <commit>`:
+that commit against its first parent), for tools that gate API changes:
+
+```json
+[{"path": "src/api.ts", "qualname": "fileCard", "kind": "signature",
+  "was": "function fileCard(id: string, opts = { draft: false }): Card",
+  "now": "function fileCard(id: string, opts = { draft: true }): Card"}]
+```
+
+`kind` is `signature`, `added` or `removed`. Exported means `export`ed in TS/JS (declarations, `export
+{ … }` clauses under their public names, the default export, non-private members of exported classes) and
+listed in `__all__`, or public by name, in Python. A signature is the name, parameters with their
+defaults, return and type parameters, async/generator and class heritage; field types; all of an
+interface, type alias or enum; a constant's declared type. Bodies, comments, formatting, decorators and
+field values never count. The exit status is 0 whatever is found, and nonzero only on an error.
 
 ## Snapshot notes
 
