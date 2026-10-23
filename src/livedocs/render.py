@@ -37,6 +37,8 @@ def render(r: Report, max_chars: int = 1500, show_warnings: bool = True, max_war
             body.append(f"{f.path}#{f.qualname}: {f.detail or 'unchanged'}. {loc}")
         elif f.kind == "moved":
             body.append(f"{f.path}#{f.qualname}: {f.detail} (unchanged there). {loc}")
+        elif f.kind == "moved-from-named-file":
+            body.append(f"{f.path}#{f.qualname}: {f.detail} (unchanged there), but the note names {f.path}. {loc}")
         elif f.kind == astdiff.REMOVED:
             body.append(f"{f.path}#{f.qualname}: no longer defined in the file. {loc}")
         elif f.kind == astdiff.ADDED:

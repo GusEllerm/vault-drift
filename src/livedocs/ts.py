@@ -400,7 +400,9 @@ class _Walker:
             if t in ("method_definition", "method_signature", "abstract_method_signature"):
                 n = _name(c)
                 if n:
-                    self.add(f"{cls}.{n}", METHOD, c, decorators=pending, sig=[c])
+                    # a get/set accessor is a property to its readers, so it is an attribute
+                    accessor = any(x.type in ("get", "set") for x in c.children)
+                    self.add(f"{cls}.{n}", ATTRIBUTE if accessor else METHOD, c, decorators=pending, sig=[c])
                     if n == "constructor":
                         self.parameter_properties(c, cls)
             elif t == "public_field_definition":

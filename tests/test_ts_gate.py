@@ -104,9 +104,10 @@ def test_renamed_component_file_is_a_move(ts_repo):
     _stamp_all(ts_repo)
     _git(ts_repo, "mv", "src/components/Footer.tsx", "src/components/SiteFooter.tsx")
     rep = ck.check(ts_repo, V, "Modules/components.md")
-    moved = [f for f in rep.findings if f.kind == "moved"]
+    moved = [f for f in rep.findings if f.kind.startswith("moved")]
     assert rep.state == ck.CHANGED and moved and "SiteFooter.tsx" in moved[0].detail
-    assert ck.mechanically_benign(rep)
+    # the note names `@/components/Footer`, the file the component left: not benign (see the next test)
+    assert moved[0].kind == "moved-from-named-file" and not ck.mechanically_benign(rep)
 
 
 def test_pre_commit_gate_blocks_real_changes_and_acks_benign_ones(ts_repo, monkeypatch, capsys):
@@ -170,3 +171,28 @@ def test_rebind_replaces_whole_file_anchors_and_drops_orphans(ts_repo):
     assert latest.verdict == st.ACK and latest.reason == "rebind" and "src/lib/util.ts" not in latest.bindings
     (ts_repo / "vault/Modules/util.md").write_text("# src/lib/util.ts\n\nNow only `mul`.\n")  # edited: left for its commit
     assert stp.rebind(ts_repo, V, reason="rebind") == ([], ["Modules/util.md"])
+
+
+def test_a_move_is_benign_unless_the_note_names_the_old_file(ts_repo):
+    _stamp_all(ts_repo)
+    # components.md names `@/components/Footer` (the file) → moving Footer.tsx is a location change it states
+    (ts_repo / "vault/Modules/footer.md").write_text("# Footer\n\nThe footer is `SiteFooter`.\n")
+    stp.stamp(ts_repo, V, "Modules/footer.md", by="test")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "footer note")
+    _git(ts_repo, "mv", "src/components/Footer.tsx", "src/components/SiteFooter.tsx")
+    named = ck.check(ts_repo, V, "Modules/components.md")
+    assert {f.kind for f in named.findings} >= {"moved-from-named-file"} and not ck.mechanically_benign(named)
+    plain = ck.check(ts_repo, V, "Modules/footer.md")
+    assert {f.kind for f in plain.findings} == {"moved"} and ck.mechanically_benign(plain)
+
+
+def test_keys_and_accessors_do_not_bind_bare_words(ts_repo):
+    from livedocs import mentions as mn, symbols as sy
+    (ts_repo / "package.json").write_text('{"name": "site", "version": "1.0.0"}\n')
+    (ts_repo / "src/lib/clock.ts").write_text("export class Clock { get time() { return 1 } }\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "pkg")
+    idx = sy.index(ts_repo)
+    res = lambda t, note="vault/Concepts/x.md", body="# X\n": sy.resolve(mn.mentions(f"`{t}`")[0], idx, sy.module_hints(note, body))
+    assert res("name").status == sy.UNRESOLVED  # not package.json's key
+    assert res("time").status == sy.UNRESOLVED  # a short accessor name outside its module
+    assert res("time", "vault/Modules/clock.md", "# clock\n").candidates[0].qualname == "Clock.time"

@@ -206,7 +206,7 @@ EXCLUDED_SEGMENTS = frozenset({
 # set so Python repositories index exactly what they did before.
 TS_EXCLUDED_SEGMENTS = frozenset({
     "__tests__", "__mocks__", "e2e", "coverage", "public", "vendor", "playwright-report", "test-results",
-    "storybook-static", "out", "tmp", "temp", "scratch",
+    "storybook-static", "out", "tmp", "temp", "scratch", "tools",
 })
 # test files, stories, and scratch probes (`tmp-find-eq2.mjs` at a repo root defines names like `build`)
 _TS_TEST_FILE = re.compile(r"(\.(test|spec|stories|e2e)\.[cm]?[jt]sx?$)|^(tmp|temp|scratch)[-_.]")
@@ -441,7 +441,7 @@ def resolve(m: Mention, idx: SymbolIndex, hints: list[str] = ()) -> Resolution:
         return Resolution(m, RESOLVED if len(cands) == 1 else SUPERSET, tuple(cands), rule)
 
     if m.kind == CAPS:
-        cands = idx.by_qualname(m.text)
+        cands = [c for c in idx.by_qualname(m.text) if c.kind != KEY]  # a JSON top-level key is not a constant
         if not cands:
             return Resolution(m, UNRESOLVED, (), "caps:no-symbol")
         return Resolution(m, CONSTANT_ONLY, tuple(_prefer_module(cands, hints)), "caps:constant")
@@ -467,7 +467,8 @@ def resolve(m: Mention, idx: SymbolIndex, hints: list[str] = ()) -> Resolution:
         return _finish(m, cands, hints, rule)
 
     # NAME
-    cands = idx.by_qualname(m.text)  # top-level function/class/constant
+    # top-level function/class/constant; never a config key (`name` is package.json's first key)
+    cands = [c for c in idx.by_qualname(m.text) if c.kind != KEY]
     rule = "name:top-level"
     if m.jsx:  # <ProjectCard /> names a component: a TS/Astro top-level symbol, nothing else
         cands = [c for c in cands if ts.is_ts(c.path) and c.kind in (FUNCTION, CLASS, CONSTANT, COMPONENT)]

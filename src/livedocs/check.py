@@ -133,8 +133,11 @@ def check(repo: str | Path, vault_rel: str, note: str, drift_json: dict | None =
             moved = _find_move(repo, target, binding, idx) if binding.members else None
             if moved:
                 state = _worse(state, CHANGED)
+                # A pure move is benign, unless the note names the file the code left: then "X is in
+                # src/boot.ts" became false (gravity-works seq 332, two auto-acked misses in TS Run 1).
+                kind = MOVED_FROM_NAMED if _names_path(text, path) else "moved"
                 findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target,
-                                        "moved", None, None, lines, None, f"now in {moved}"))
+                                        kind, None, None, lines, None, f"now in {moved}"))
             else:
                 state = _worse(state, BROKEN)
                 findings.append(Finding(target, path, binding.qualnames[0] if binding.qualnames else target,
@@ -201,6 +204,23 @@ def _find_move(repo: Path, target: str, binding: st.Binding, idx) -> str | None:
 
 
 MECHANICAL_KINDS = frozenset({astdiff.UNCHANGED, astdiff.COMMENT_ONLY, "moved"})
+MOVED_FROM_NAMED = "moved-from-named-file"  # not mechanical: the note names the file the code left
+
+
+def _names_path(text: str, path: str) -> bool:
+    """Whether the note mentions `path` (or a suffix of it, `boot.ts`) as a path in backticks."""
+    from . import mentions as mn, symbols as sy
+    stem = sy._strip_ext(path)
+    for m in mn.mentions(text):
+        if m.kind != mn.PATH:
+            continue
+        t = m.text.removeprefix("./")
+        if t.startswith("@"):  # a tsconfig alias (@/components/Card, @components/Card) names a path below a root
+            t = t[1:].lstrip("/")
+        t_stem = sy._strip_ext(t)
+        if t and (path == t or path.endswith("/" + t) or stem == t_stem or stem.endswith("/" + t_stem)):
+            return True
+    return False
 
 
 def mechanically_benign(r: Report) -> bool:
