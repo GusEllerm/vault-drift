@@ -22,6 +22,7 @@ from . import astdiff, gitx
 
 MAX_DIFF_LINES = 160
 MAX_NOTE_LINES = 120
+MAX_EXCERPT_CHARS = 12000  # notes with paragraph-long lines (gravity-works) would otherwise swamp a batch
 
 
 def _replay_commits(repo: Path, branch: str) -> dict[int, str]:
@@ -36,8 +37,15 @@ def _replay_commits(repo: Path, branch: str) -> dict[int, str]:
 
 
 def _note_excerpt(text: str, lines: list[int], ctx: int = 4) -> str:
+    out = _note_excerpt_lines(text, lines, ctx)
+    if len(out) > MAX_EXCERPT_CHARS:
+        out = out[:MAX_EXCERPT_CHARS] + "\n   … (excerpt truncated; the full note is on the replay branch)"
+    return out
+
+
+def _note_excerpt_lines(text: str, lines: list[int], ctx: int = 4) -> str:
     ls = text.splitlines()
-    if len(ls) <= MAX_NOTE_LINES or not lines:
+    if len(ls) <= MAX_NOTE_LINES and (not lines or len(text) <= MAX_EXCERPT_CHARS) or not lines:
         return "\n".join(f"{i:4}: {l}" for i, l in enumerate(ls[:MAX_NOTE_LINES], 1))
     keep: set[int] = set()
     for n in lines:
@@ -49,6 +57,21 @@ def _note_excerpt(text: str, lines: list[int], ctx: int = 4) -> str:
         out.append(f"{i:4}: {ls[i - 1]}")
         last = i
     return "\n".join(out)
+
+
+def _mention_lines(repo: Path, rc: str, vault_rel: str, stamp_id: str | None, paths: list[str]) -> list[int]:
+    """Note lines whose mentions are bound to `paths`, from the stamp the row was checked against."""
+    if not stamp_id:
+        return []
+    from . import stamps as st
+    blob = gitx.blob_at(repo, rc, f"{vault_rel}/{st.STAMPS_REL}") or ""
+    stamped, _, h12 = stamp_id.partition("|")
+    for line in blob.splitlines():
+        if stamped in line and h12 in line:
+            s = st.Stamp.from_json(line)
+            if s.stamped == stamped and s.note_hash.startswith(h12):
+                return sorted({ln for t, raws in s.mentions.items() if t.split("#", 1)[0] in paths for _, ln in raws})
+    return []
 
 
 def _diff(repo: Path, a: str, b: str, paths: list[str]) -> str:
@@ -83,8 +106,8 @@ def export(repo: str | Path, vault_rel: str, out_dir: str | Path) -> Path:
             was = now = None
             path, _, top = f["target"].partition("#")
             if f["base_commit"] and f["qualname"]:
-                was = astdiff.symbol_source(gitx.blob_at(repo, f["base_commit"], path) or "", f["qualname"])
-                now = astdiff.symbol_source(gitx.blob_at(repo, rc, path) or "", f["qualname"])
+                was = astdiff.symbol_source(gitx.blob_at(repo, f["base_commit"], path) or "", f["qualname"], path=path)
+                now = astdiff.symbol_source(gitx.blob_at(repo, rc, path) or "", f["qualname"], path=path)
             findings.append({"target": f["target"], "qualname": f["qualname"], "kind": f["kind"], "detail": f["detail"],
                              "was": was, "now": now, "note_lines": f["note_lines"]})
         items.append({"id": f"ep:{e['note']}|{e['stamp_id']}|{e['target']}", "kind": "episode", "note": e["note"],
@@ -97,10 +120,11 @@ def export(repo: str | Path, vault_rel: str, out_dir: str | Path) -> Path:
             kind = "at_risk" if r["at_risk"] else "pre_edit_fresh"
             seq = r["seq"]
             text = note_at(seq, r["note"], pre=(r["phase"] == "pre_edit"))
+            lines = _mention_lines(repo, seqs[seq], vault_rel, r["stamp_id"], r["bound_paths_changed"])
             items.append({"id": f"{kind}:{r['note']}|{r['commit'][:8]}", "kind": kind, "note": r["note"], "seq": seq,
                           "commit": r["commit"][:8], "state": r["state"], "changed_paths": r["bound_paths_changed"],
                           "code_diff": _diff(repo, seqs[seq - 1], seqs[seq], r["bound_paths_changed"]),
-                          "note_excerpt": _note_excerpt(text, []),
+                          "note_excerpt": _note_excerpt(text, lines, ctx=2),
                           "question": "These anchored files changed but the note read FRESH. Did the change make any claim in the note wrong?"})
 
     (out_dir / "items.jsonl").write_text("\n".join(json.dumps(i, separators=(",", ":")) for i in items) + "\n")

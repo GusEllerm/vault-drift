@@ -109,6 +109,7 @@ def module(path: str, source: str | None) -> Module | None:
 
 @functools.lru_cache(maxsize=256)
 def _module(grammar: str, astro: bool, source: str) -> Module:
+    source = source.removeprefix("\ufeff")  # a byte-order mark is not code
     template = None
     if astro:
         fm, template, tline = split_astro(source)

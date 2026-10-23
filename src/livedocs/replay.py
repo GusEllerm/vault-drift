@@ -200,15 +200,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 p = vault / note
                 if not p.exists() or not _has_mentions(p.read_text(encoding="utf-8")):
                     continue
-                # drop stale bindings for this doc first so the lock only holds what the new text mentions
-                doc = f"{vault_rel}/{note}"
-                for (d, t), _sig in drift_io.lock(wt).items():
-                    if d == doc:
-                        try:
-                            drift_io.unlink(wt, d, t)
-                        except drift_io.DriftError:
-                            pass
-                try:
+                try:  # stamp drops the bindings the new text no longer makes
                     r = stp.stamp(wt, vault_rel, note, by="history", verdict=st.UPDATE if note in stamped_notes else st.INITIAL,
                                   file_anchors=file_anchors, idx=idx)
                     summ.stamps += 1
@@ -224,14 +216,7 @@ def run(repo: str | Path, vault_rel: str, start: str, end: str, out_dir: str | P
                 if note in edited or note in gone or not (vault / note).exists():
                     continue
                 benign = ck.mechanically_benign(rep)
-                doc = f"{vault_rel}/{note}"
-                for (d, t), _sig in drift_io.lock(wt).items():
-                    if d == doc:
-                        try:
-                            drift_io.unlink(wt, d, t)
-                        except drift_io.DriftError:
-                            pass
-                try:
+                try:  # (stamp drops the note's orphaned bindings itself)
                     stp.stamp(wt, vault_rel, note, by="gate-sim", verdict=st.ACK, file_anchors=file_anchors, idx=idx,
                               reason="mechanical" if benign else "simulated hand ack")
                 except stp.StampError as e:

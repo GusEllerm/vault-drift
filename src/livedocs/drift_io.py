@@ -63,9 +63,21 @@ def anchors_for(check: dict, doc: str) -> list[dict] | None:
 BROKEN_CODES = frozenset({"symbol_not_found", "file_not_found"})
 
 
+_LOCKS: dict[str, tuple[tuple[int, int, int], dict[tuple[str, str], str]]] = {}
+
+
 def lock(repo: str | Path, lock_path: str = "drift.lock") -> dict[tuple[str, str], str]:
+    """drift.lock as {(doc, target): sig}. Parsed once per version of the file: the gate and the checks
+    read it for every note, and a vault with ~1,500 bindings takes ~30 ms to parse."""
     p = Path(repo) / lock_path
-    if not p.exists():
+    try:
+        stt = p.stat()
+    except FileNotFoundError:
         return {}
-    data = tomllib.loads(p.read_text(encoding="utf-8"))
-    return {(b["doc"], b["target"]): b["sig"] for b in data.get("bindings", ())}
+    key, version = str(p.resolve()), (stt.st_ino, stt.st_mtime_ns, stt.st_size)
+    hit = _LOCKS.get(key)
+    if hit is None or hit[0] != version:
+        data = tomllib.loads(p.read_text(encoding="utf-8"))
+        hit = (version, {(b["doc"], b["target"]): b["sig"] for b in data.get("bindings", ())})
+        _LOCKS[key] = hit
+    return dict(hit[1])
