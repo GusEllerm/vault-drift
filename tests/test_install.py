@@ -77,3 +77,46 @@ def test_shared_settings_carry_no_machine_path(tmp_path):
         assert launcher in json.dumps(local)
         assert launcher not in json.dumps(shared)
     assert "$HOME/.local/bin/livedocs" in json.dumps(shared)
+
+
+def _hook_repo(tmp_path: Path) -> Path:
+    repo = tmp_path / "repo"
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    (repo / ".githooks").mkdir()
+    (repo / ".githooks" / "pre-commit").write_text(install.PRE_COMMIT)
+    return repo
+
+
+def _hook(repo: Path, home: Path) -> subprocess.CompletedProcess:
+    # GUI apps (the Obsidian Git plugin) run hooks with this PATH and nothing else
+    return subprocess.run(["sh", ".githooks/pre-commit"], cwd=repo, capture_output=True, text=True,
+                          env={"PATH": "/usr/bin:/bin", "HOME": str(home), "GIT_CONFIG_GLOBAL": "/dev/null"})
+
+
+def test_pre_commit_finds_the_launcher_recorded_in_git_config(tmp_path):
+    repo = _hook_repo(tmp_path)
+    exe = _fake(tmp_path / "Tools bin", 'echo ran "$@"; echo "PATH=$PATH"')
+    subprocess.run(["git", "-C", str(repo), "config", "livedocs.launcher", str(exe)], check=True)
+    r = _hook(repo, tmp_path / "home")
+    assert r.returncode == 0 and r.stdout.startswith("ran hook pre-commit")
+    assert "/opt/homebrew/bin" in r.stdout and "/.local/bin" in r.stdout  # so livedocs can find drift too
+
+
+def test_pre_commit_falls_back_to_home_local_bin(tmp_path):
+    repo, home = _hook_repo(tmp_path), tmp_path / "home"
+    _fake(home / ".local" / "bin", 'echo ran "$@"')
+    assert _hook(repo, home).stdout == "ran hook pre-commit\n"
+
+
+def test_pre_commit_says_what_is_missing(tmp_path):
+    r = _hook(_hook_repo(tmp_path), tmp_path / "home")
+    assert r.returncode == 1 and "livedocs.launcher" in r.stderr and "--no-verify" in r.stderr
+
+
+def test_init_records_this_machines_tools(tmp_path):
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    install.install_git(tmp_path)
+    cfg = subprocess.run(["git", "-C", str(tmp_path), "config", "--list", "--local"], capture_output=True, text=True).stdout
+    assert "core.hookspath=.githooks" in cfg
+    if install._launcher():
+        assert "livedocs.launcher=" in cfg

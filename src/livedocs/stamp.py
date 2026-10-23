@@ -54,7 +54,7 @@ def path_anchor_mode(repo: str | Path, file_anchors: bool = False):
 
 
 def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False, *, mode=PATH_ANCHOR_MAX_LINES,
-          idx: sy.SymbolIndex | None = None) -> bool:
+          idx: sy.SymbolIndex | None = None, vault_rel: str | None = None) -> bool:
     """Whether stamping binds candidate `c` of resolution `r` (coverage counts the same thing).
 
     Bare module mentions (`server`) are noisy whole-file anchors and stay opt-in. Explicit paths to
@@ -71,7 +71,11 @@ def binds(r: sy.Resolution, c: sy.Symbol, file_anchors: bool = False, *, mode=PA
         return True
     if r.mention.kind != mn.PATH:
         return file_anchors or mode == "file"
-    if not sy.is_code(c.path) or file_anchors or mode == "file":
+    if not sy.is_code(c.path):
+        if vault_rel and c.path.startswith(vault_rel.rstrip("/") + "/"):
+            return False  # another note: a link, not a claim about code
+        return sy.binds_by_path(c.path)  # config, styles, scripts, docs: yes; media, lockfiles: never
+    if file_anchors or mode == "file":
         return True
     if isinstance(mode, int) and ts.is_ts(c.path) and idx is not None:
         return idx.lines.get(c.path, mode + 1) <= mode
@@ -137,7 +141,7 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
             unresolved.append(r.mention.raw)
             continue
         for c in r.candidates:
-            if not binds(r, c, file_anchors, mode=mode, idx=idx):
+            if not binds(r, c, file_anchors, mode=mode, idx=idx, vault_rel=vault_rel):
                 continue
             t = c.drift_target
             # "" marks a whole-file anchor, so a symbol mentioned in the same file can't narrow it
@@ -152,6 +156,8 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
     for target in sorted(quals.keys() | raws.keys()):
         try:
             sigs[target] = drift_io.link(repo, doc, target)
+        except drift_io.DriftMissing:
+            raise  # nothing can bind: never record a silently unbound stamp
         except drift_io.DriftError as e:
             path = target.split("#", 1)[0]
             if "#" in target and not path.endswith(".py") and "cannot compute fingerprint" in str(e):
@@ -167,6 +173,8 @@ def stamp(repo: str | Path, vault_rel: str, note: str, *, by: str, verdict: str 
     for path in sorted(set(fallback) - sigs.keys()):
         try:
             sigs[path] = drift_io.link(repo, doc, path)
+        except drift_io.DriftMissing:
+            raise
         except drift_io.DriftError as e:
             failed.append(f"{path}: {e}")
 

@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import functools
 import json
+import os
 import re
+import shutil
 import subprocess
 import tomllib
 from pathlib import Path
@@ -16,11 +19,39 @@ class DriftError(RuntimeError):
     pass
 
 
+class DriftMissing(DriftError):
+    """drift is not installed (or not findable): nothing can be bound or checked. Never a per-binding failure."""
+
+
+_DIRS = ("~/.local/bin", "/opt/homebrew/bin", "/usr/local/bin")  # drift's installer, Homebrew
+
+
+@functools.cache
+def binary() -> str:
+    """The drift executable: $LIVEDOCS_DRIFT, PATH, this clone's `git config livedocs.drift` (written by
+    init), then the usual install directories. GUI apps (the Obsidian Git plugin) run hooks with
+    PATH=/usr/bin:/bin, where a Homebrew drift is invisible."""
+    env = os.environ.get("LIVEDOCS_DRIFT")
+    cands = [env] if env else []
+    cands.append(shutil.which("drift"))
+    try:
+        cands.append(subprocess.run(["git", "config", "--get", "livedocs.drift"], capture_output=True,
+                                    text=True, timeout=10).stdout.strip())
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+    cands += [str(Path(d).expanduser() / "drift") for d in _DIRS]
+    for c in cands:
+        if c and os.path.isfile(c) and os.access(c, os.X_OK):
+            return c
+    raise DriftMissing("drift not found (PATH, LIVEDOCS_DRIFT, git config livedocs.drift, ~/.local/bin, "
+                       "/opt/homebrew/bin, /usr/local/bin); install it: brew install fiberplane/tap/drift")
+
+
 def _run(repo: str | Path, *args: str) -> subprocess.CompletedProcess[str]:
     try:
-        return subprocess.run(["drift", *args], cwd=str(repo), capture_output=True, text=True, timeout=TIMEOUT)
+        return subprocess.run([binary(), *args], cwd=str(repo), capture_output=True, text=True, timeout=TIMEOUT)
     except FileNotFoundError as e:
-        raise DriftError("drift binary not found") from e
+        raise DriftMissing("drift binary not found") from e
     except subprocess.TimeoutExpired as e:
         raise DriftError(f"drift {args[0]} timed out") from e
 

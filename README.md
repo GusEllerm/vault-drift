@@ -58,6 +58,13 @@ That is the whole setup. Notes are stamped by the commit that adds or edits them
 it, and the gate binds its code mentions and records the stamp in the same commit. For an existing vault,
 `git add` the notes and commit once (or run `livedocs stamp <note>` per note to see what each binds).
 Each clone activates the versioned hook with `git config core.hooksPath .githooks` (`init` does it).
+
+**Committing from Obsidian or another GUI app.** Apps like the Obsidian Git plugin run hooks with a minimal
+PATH (`/usr/bin:/bin`). `init` records where `livedocs` and `drift` live in the clone's own git config
+(`livedocs.launcher`, `livedocs.drift`; never versioned), and the hook also looks in `~/.local/bin`,
+`/opt/homebrew/bin` and `/usr/local/bin`. A commit that touches nothing a note is bound to (site content,
+an asset, a new file no note mentions yet) passes without running anything. In a clone set up by an
+older livedocs, run `livedocs init` once more and commit the updated `.githooks/pre-commit`.
 `--repo` defaults to the current git repository and `--vault` to the configured one, so inside the repo
 the commands need no arguments.
 
@@ -114,7 +121,11 @@ TypeScript project, whole-file anchors on every named module cost 931 hand recon
 commits, half of them from a single 1,600-line hub; at a 600-line limit the gate asked 362 times and
 still caught 5 of the 6 sampled note-invalidating changes that a default-export-only rule missed. Set `"path_anchors"` in `.livedocs/config.json` to a different line
 limit, to `"file"` (every named file binds whole) or to `"default-export"` (never the whole file). A
-path to a Python file binds nothing by itself, as before; paths to config files bind the file.
+path to a Python file binds nothing by itself, as before; paths to config files, styles, scripts and
+docs bind the file. A path never binds another note in the vault, an image or other media, a font, an
+archive or a lockfile. To take a directory out of livedocs' scope entirely (site content an editor
+commits from Obsidian, generated data), list it in `"ignore_paths": ["content/**"]`: nothing in it is
+indexed or bound, and a commit that touches only those paths passes the gate untouched.
 
 Notes that stay cheap to keep anchored:
 - name symbols: `getProjects()`, `projectSchema.title`, `<ProjectCard />`. A path to a small module is

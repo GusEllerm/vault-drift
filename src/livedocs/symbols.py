@@ -22,7 +22,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import configkeys, ts
+from . import config, configkeys, ts
 from .mentions import CAPS, DOTTED, NAME, PATH, Mention
 
 FUNCTION, CLASS, METHOD, ATTRIBUTE, CONSTANT, FILE = "function", "class", "method", "attribute", "constant", "file"
@@ -32,6 +32,22 @@ CODE_EXTS = (".py",) + ts.EXTS  # files whose path mention names a module, not a
 
 def is_code(path: str) -> bool:
     return path.endswith(CODE_EXTS)
+
+
+# Files a path mention never binds: media, fonts, archives and lockfiles (no claim about the code lives
+# in an image's bytes or a lockfile's churn). Notes inside the vault never bind either (a note naming
+# another note is a link: stamp checks that). Everything else that is not code (config, styles, scripts,
+# Markdown outside the vault, which in a plugin is the product: skills, commands) binds the whole file, as
+# since run 1; `ignore_paths` takes site content out of scope.
+_NEVER_BINDS = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif", ".ico", ".bmp", ".tif", ".tiff", ".svg", ".pdf",
+                ".mp3", ".mp4", ".wav", ".ogg", ".webm", ".mov", ".woff", ".woff2", ".ttf", ".otf", ".eot",
+                ".zip", ".gz", ".tgz", ".tar", ".lock")
+_LOCKFILES = frozenset({"package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "npm-shrinkwrap.json"})
+
+
+def binds_by_path(path: str) -> bool:
+    name = path.rsplit("/", 1)[-1]
+    return not (path.lower().endswith(_NEVER_BINDS) or name in _LOCKFILES)
 
 
 def _strip_ext(p: str) -> str:
@@ -226,7 +242,6 @@ def is_excluded(path: str) -> bool:
 
 def code_roots(repo: str | Path) -> tuple[str, ...] | None:
     """Explicit code roots from .livedocs/config.json (`code_roots`), else None = discover."""
-    from . import config
     roots = config.load(repo).get("code_roots")
     if roots:
         return tuple(r.rstrip("/") + "/" for r in roots)
@@ -251,6 +266,9 @@ def index(repo: str | Path, ref: str = "HEAD", roots: tuple[str, ...] | None = N
         all_files = {l for l in _git(repo, "ls-files", "--cached", *extra).split("\n") if l}
     else:
         all_files = {l for l in _git(repo, "ls-tree", "-r", "--name-only", ref).split("\n") if l}
+    cfg = config.load(repo)
+    if cfg.get("ignore_paths"):
+        all_files = {f for f in all_files if not config.ignored(repo, f, cfg)}
     idx.all_files = all_files
     if roots:
         candidates = [f for f in all_files if any(f.startswith(r) for r in roots)]

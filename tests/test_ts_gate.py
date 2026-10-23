@@ -163,15 +163,57 @@ def test_first_commit_of_a_new_repo_passes_the_gate(tmp_path, monkeypatch):
 
 def test_a_bound_binary_file_flags_without_crashing(ts_repo):
     (ts_repo / "public").mkdir()
-    (ts_repo / "public/logo.png").write_bytes(b"\x89PNG\r\n\x1a\n\x00\x01")
-    (ts_repo / "vault/Concepts/brand.md").write_text("# Brand\n\nThe logo is `public/logo.png`.\n")
-    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "logo")
-    stp.stamp(ts_repo, V, "Concepts/brand.md", by="test")
+    (ts_repo / "public/engine.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00\x89\xff")
+    (ts_repo / "vault/Concepts/engine.md").write_text("# Engine\n\nThe physics runs in `public/engine.wasm`.\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "wasm")
+    stp.stamp(ts_repo, V, "Concepts/engine.md", by="test")
     _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "stamp")
-    (ts_repo / "public/logo.png").write_bytes(b"\x89PNG\r\n\x1a\n\xff\xfe")
-    _git(ts_repo, "commit", "-qam", "new logo")
-    rep = ck.check(ts_repo, V, "Concepts/brand.md")
+    (ts_repo / "public/engine.wasm").write_bytes(b"\x00asm\x01\x00\x00\x00\xfe\xfe")
+    _git(ts_repo, "commit", "-qam", "new engine")
+    rep = ck.check(ts_repo, V, "Concepts/engine.md")
     assert rep.state == ck.CHANGED and rep.findings[0].kind == "file"
+
+
+def test_paths_to_notes_media_and_lockfiles_never_bind(ts_repo):
+    (ts_repo / "content").mkdir()
+    (ts_repo / "content/Site.md").write_text("Hello.\n")
+    (ts_repo / "logo.png").write_bytes(b"\x89PNG")
+    (ts_repo / "package-lock.json").write_text("{}\n")
+    (ts_repo / "vault/Concepts/site.md").write_text(
+        "# Site\n\nThe tagline is in `content/Site.md`; the logo is `logo.png`; deps pinned in `package-lock.json`; "
+        "the worker is configured in `wrangler.jsonc`; see `vault/Modules/util.md`.\n")
+    _git(ts_repo, "add", "-A"); _git(ts_repo, "commit", "-qm", "content")
+    b = stp.stamp(ts_repo, V, "Concepts/site.md", by="test").stamp.bindings
+    # config and a Markdown file outside the vault bind; an image, a lockfile and another note don't
+    assert set(b) == {"wrangler.jsonc", "content/Site.md"}
+    (ts_repo / ".livedocs/config.json").write_text('{"vault": "vault", "ignore_paths": ["content/**"]}\n')
+    b = stp.stamp(ts_repo, V, "Concepts/site.md", by="test", verdict=st.ACK, reason="content is out of scope").stamp.bindings
+    assert set(b) == {"wrangler.jsonc"}  # site content, declared out of scope
+
+
+def test_ignore_paths_and_the_gates_fast_path(ts_repo, monkeypatch, capsys):
+    from livedocs import drift_io
+    _stamp_all(ts_repo)
+    (ts_repo / ".livedocs/config.json").write_text('{"vault": "vault", "ignore_paths": ["src/lib/**"]}\n')
+    from livedocs import symbols as sy
+    assert "src/lib/util.ts" not in sy.index(ts_repo, "WORKTREE").files  # out of scope: never indexed
+    (ts_repo / ".livedocs/config.json").write_text('{"vault": "vault"}\n')  # as committed
+    monkeypatch.chdir(ts_repo)
+    # A commit touching nothing any note is bound to passes without drift (Obsidian committing content).
+    (ts_repo / "README.md").write_text("# site\n")
+    _git(ts_repo, "add", "-A")
+    drift_io.binary.cache_clear()
+    monkeypatch.setenv("PATH", "/usr/bin:/bin"); monkeypatch.setenv("HOME", "/nonexistent")
+    monkeypatch.setattr(drift_io, "_DIRS", ())
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", "/dev/null")
+    _git(ts_repo, "config", "--unset-all", "livedocs.drift") if "livedocs.drift" in _git(ts_repo, "config", "--list") else None
+    assert pre_commit.main() == 0
+    # The same missing drift with bound code staged: blocked, saying why (never a silently unbound stamp).
+    _edit(ts_repo, "src/lib/util.ts", "return a + b", "return a - b")
+    _git(ts_repo, "add", "-A")
+    assert pre_commit.main() == 1
+    assert "drift not found" in capsys.readouterr().out
+    drift_io.binary.cache_clear()
 
 
 def test_rebind_replaces_whole_file_anchors_and_drops_orphans(ts_repo):

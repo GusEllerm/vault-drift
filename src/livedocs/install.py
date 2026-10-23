@@ -86,16 +86,25 @@ def install_claude(repo: Path, *, shared: bool = False, read_gate: bool = False,
     return p
 
 
+TOOL_DIRS = "$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin"  # uv/pipx/drift's installer, Homebrew
+
 PRE_COMMIT = """#!/bin/sh
 # livedocs: block the commit while a staged code change leaves a vault note unreconciled (D11/D14).
 # Versioned in .githooks/; activated per clone with `git config core.hooksPath .githooks`
 # (livedocs init does this). Skipping with --no-verify is caught by the same check in CI.
-if ! command -v livedocs >/dev/null 2>&1; then
-  echo "livedocs: not on PATH; install it (uv tool install livedocs) or commit with --no-verify." >&2
+# GUI apps (the Obsidian Git plugin, IDEs) run hooks with a minimal PATH, so after PATH this tries the
+# launcher this clone recorded at init (git config livedocs.launcher, never versioned) and the usual
+# install directories, which also lets livedocs find drift.
+L=$(command -v livedocs 2>/dev/null)
+[ -n "$L" ] || {{ L=$(git config --get livedocs.launcher 2>/dev/null); [ -x "$L" ] || L=""; }}
+PATH="$PATH:{dirs}"; export PATH
+[ -n "$L" ] || L=$(command -v livedocs 2>/dev/null)
+if [ -z "$L" ]; then
+  echo "livedocs: not found (PATH, git config livedocs.launcher, ~/.local/bin); install it (uv tool install livedocs) and run livedocs init, or commit with --no-verify." >&2
   exit 1
 fi
-exec livedocs hook pre-commit
-"""
+exec "$L" hook pre-commit
+""".format(dirs=TOOL_DIRS)
 
 
 def install_git(repo: Path) -> Path:
@@ -105,6 +114,10 @@ def install_git(repo: Path) -> Path:
     hook.write_text(PRE_COMMIT)
     hook.chmod(hook.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
     subprocess.run(["git", "-C", str(repo), "config", "core.hooksPath", ".githooks"], check=True)
+    # This machine's tools, for hooks run with a minimal PATH (per clone, in .git/config, never versioned).
+    for key, path in (("livedocs.launcher", _launcher()), ("livedocs.drift", shutil.which("drift"))):
+        if path:
+            subprocess.run(["git", "-C", str(repo), "config", key, str(Path(path).absolute())], check=True)
     return hook
 
 
@@ -194,7 +207,11 @@ def install_agents_block(repo: Path, vault_rel: str) -> Path | None:
 
 
 def check_drift() -> str | None:
-    return shutil.which("drift")
+    from . import drift_io
+    try:
+        return drift_io.binary()
+    except drift_io.DriftMissing:
+        return None
 
 
 def check_languages(repo: Path) -> str | None:

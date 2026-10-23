@@ -93,6 +93,22 @@ def main() -> int:
         if stamps_rel in unstaged and stamps_rel not in staged:
             print(f"livedocs: {stamps_rel} is modified but not staged; stage it (git add) or discard the change.")
             return 1
+        # Fast path: no staged note and no staged file any note is bound to (site content, an asset, a new
+        # file nothing mentions yet) means nothing to stamp or check, so nothing to run, drift included.
+        from .. import config, drift_io
+        cfg = config.load(repo)
+        relevant = [p for p in staged if not config.ignored(repo, p, cfg)]
+        prefix = f"{vault_rel}/"
+        staged_notes = [p for p in relevant if p.startswith(prefix) and p.endswith(".md")
+                        and not p[len(prefix):].startswith((".livedocs", ".obsidian"))]
+        bound = {t.split("#", 1)[0] for (_d, t) in drift_io.lock(repo)}
+        if not staged_notes and not set(relevant) & bound:
+            return 0
+        try:
+            drift_io.binary()
+        except drift_io.DriftMissing as e:
+            print(f"livedocs: commit blocked: {e}. (Or commit with --no-verify; CI's livedocs verify still checks.)")
+            return 1
         snap = snapshot_index(repo)
         try:
             # Notes being committed are vouched for at this commit: stamp any staged note whose text

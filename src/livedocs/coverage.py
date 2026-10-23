@@ -48,7 +48,7 @@ def coverage(repo: str | Path, vault_rel: str) -> list[NoteCoverage]:
         ms = mn.mentions(text)
         res = sy.resolve_note(f"{vault_rel}/{note}", text, idx, ms)
         # Anchored = stamping would bind it (the same rule), so the number is what the gate checks.
-        anchored = sum(1 for r in res if any(stp.binds(r, c, mode=mode, idx=idx) for c in r.candidates))
+        anchored = sum(1 for r in res if any(stp.binds(r, c, mode=mode, idx=idx, vault_rel=vault_rel) for c in r.candidates))
         unresolved = [r for r in res if r.status == sy.UNRESOLVED]
         dangling = sorted({r.mention.raw for r in unresolved if stp._code_like(r.mention)})
         latest = st.latest(st.for_note(all_stamps, note))

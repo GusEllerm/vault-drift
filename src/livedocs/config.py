@@ -20,6 +20,15 @@ def load(repo: str | Path) -> dict:
         return {}
 
 
+def ignored(repo: str | Path, path: str, cfg: dict | None = None) -> bool:
+    """Whether a repo-relative path is out of livedocs' scope by `ignore_paths` (globs, e.g. "content/**"):
+    it never resolves as a code mention, never binds, and a commit touching only such paths passes the gate
+    without running anything (the Obsidian Git plugin committing site content)."""
+    cfg = load(repo) if cfg is None else cfg
+    return any(fnmatch.fnmatch(path, g) or path.startswith(g.rstrip("*").rstrip("/") + "/")
+               for g in cfg.get("ignore_paths", ()) if g)
+
+
 _FLAG = re.compile(r"^livedocs:\s*snapshot\s*$", re.M)
 
 
